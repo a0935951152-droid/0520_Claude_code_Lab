@@ -12,11 +12,10 @@
 ├── README.md           # 專案說明
 ├── CHANGELOG.md        # 版本更新紀錄
 ├── TODO.md             # 待辦事項
-├── CLAUDE.md           # Claude 專案記憶（規則 / 連結對照 / 注意事項）
-└── .claude/
-    └── skills/
-        └── resume-push.md   # 履歷生成→推送 Skill
+└── CLAUDE.md           # Claude 專案記憶（規則 / 連結對照 / 注意事項）
 ```
+
+> 註：`/resume-push` Skill 屬使用者層級（`~/.claude/skills/resume-push.md`），不歸屬本 repo。
 
 ---
 

@@ -46,6 +46,12 @@
 | 🧠 OCR × Transformer 翻譯優化專案（→ DRIVE 按鈕） | `https://drive.google.com/drive/folders/17lfCUG3l4pKyeh4Tiow0iKpoI6pt31J9?usp=drive_link` | 新分頁 |
 | 🔧 Nanoclaw（→ YOUTUBE 按鈕） | `https://www.youtube.com/watch?si=GWQhakzTJZB3ECQC&v=q3xqWqy11ho&feature=youtu.be` | 新分頁 |
 | 🏛️ 交大 AI 架構師（→ DRIVE 按鈕） | `https://drive.google.com/file/d/19aE9BpgaeGVXs9VHT1B1IDvQBwjYg0N0/view` | 新分頁 |
+| ⬇ EXPORT PDF 按鈕（右下角固定） | `window.print()` | 瀏覽器列印對話框 |
+| ☀ LIGHT / 🌙 DARK 模式切換（左下角） | toggle `body.light-mode` | 切換深/淺色，localStorage 持久化 |
+| EN / 中 語言切換（左下角） | `data-i18n` 屬性 + JS translations | 中英內容互換，localStorage 持久化 |
+| ✉ CONTACT 聯絡按鈕（左下角） | 開啟 modal → 送出後 `mailto:` | 填寫姓名/Email/留言後開啟郵件客戶端 |
+| 技能分組標題（// SOFTWARE & AI 等） | toggle `.skill-group.collapsed` | 點擊展開/收合該組技能列表 |
+| 訪客計數器（footer 下方） | `https://visitor-badge.laobi.icu/badge?page_id=...` | 自動計數圖示 |
 
 ---
 
