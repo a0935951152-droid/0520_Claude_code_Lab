@@ -4,6 +4,24 @@
 
 ---
 
+## [0.6] — 2026-05-07
+
+### Changed
+- `index.html` — 補完所有四張專案卡連結，改用按鈕物件設計（不整張卡片可點）
+  - ⚡ Edge AI：URL 補完整（`...1JvKEiwZu58XSDgcmFgQtnCNYhsKCS4BXV0aUHWvVqfQ/edit?usp=sharing`），加 `→ DOCS` 按鈕
+  - 🔧 Nanoclaw：新增 `→ YOUTUBE` 按鈕（YouTube demo）
+  - 🧠 OCR：URL 補完整（`...17lfCUG3l4pKyeh4Tiow0iKpoI6pt31J9?usp=drive_link`），加 `→ DRIVE` 按鈕
+  - 🏛️ 交大 AI：新增 `→ DRIVE` 按鈕（Google Drive 專案檔）
+  - 移除 `a.project-link` 全卡包裹寫法，改為 `.proj-btn` 行內按鈕
+- `CLAUDE.md` — 更新連結對照表與版本歷程
+- `README.md` — 補充 v0.6 更新紀錄
+- `TODO.md` — 勾選「補齊 Nanoclaw / 交大 專案外部連結」
+
+### Technical
+- 新增 `.proj-btn` CSS：`Share Tech Mono`、cyan 邊框、hover 發光，與風格一致
+
+---
+
 ## [0.5] — 2026-05-06
 
 ### Added

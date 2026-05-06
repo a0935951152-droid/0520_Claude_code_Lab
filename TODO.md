@@ -10,9 +10,8 @@
   - Settings → Pages → Source: `main` → Save
   - URL: `https://a0935951152-droid.github.io/0520_Claude_code_Lab/`
 
-- [ ] **補齊 Nanoclaw / 交大 專案外部連結**
-  - PDF 中此兩項目無可擷取 URL（僅圖片附件）
-  - 待使用者提供完整連結後更新
+- [x] **補齊 Nanoclaw / 交大 專案外部連結**（2026-05-07）
+  - Nanoclaw → YouTube Demo；交大 AI → Google Drive
 
 - [ ] **列印 / PDF 匯出版本**
   - 加入 `@media print` CSS，隱藏動畫、調整配色為適合列印的黑白版面

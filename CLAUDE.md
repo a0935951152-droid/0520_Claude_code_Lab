@@ -42,12 +42,10 @@
 |------|------|----------|
 | MAIL 聯絡欄 | `mailto:a0935951152@gmail.com` | 預設郵件客戶端 |
 | GIT 聯絡欄 | `https://github.com/a0935951152-droid` | 新分頁 |
-| ⚡ Edge AI 智慧跟隨風扇系統（專案卡） | `https://docs.google.com/document/d/1JvKEiwZu58XSDgcmF` | 新分頁 |
-| 🧠 OCR × Transformer 翻譯優化專案（專案卡） | `https://drive.google.com/drive/folders/17lfCUG3l4pKyeh4Tiow` | 新分頁 |
-| 🔧 Nanoclaw（專案卡） | 無（PDF 無對應 URL） | — |
-| 🏛️ 交大 AI 架構師（專案卡） | 無（PDF 無對應 URL） | — |
-
-> 注意：Edge AI / OCR 連結來自 PDF 截斷版，完整 URL 待確認。
+| ⚡ Edge AI 智慧跟隨風扇系統（→ DOCS 按鈕） | `https://docs.google.com/document/d/1JvKEiwZu58XSDgcmFgQtnCNYhsKCS4BXV0aUHWvVqfQ/edit?usp=sharing` | 新分頁 |
+| 🧠 OCR × Transformer 翻譯優化專案（→ DRIVE 按鈕） | `https://drive.google.com/drive/folders/17lfCUG3l4pKyeh4Tiow0iKpoI6pt31J9?usp=drive_link` | 新分頁 |
+| 🔧 Nanoclaw（→ YOUTUBE 按鈕） | `https://www.youtube.com/watch?si=GWQhakzTJZB3ECQC&v=q3xqWqy11ho&feature=youtu.be` | 新分頁 |
+| 🏛️ 交大 AI 架構師（→ DRIVE 按鈕） | `https://drive.google.com/file/d/19aE9BpgaeGVXs9VHT1B1IDvQBwjYg0N0/view` | 新分頁 |
 
 ---
 
@@ -60,6 +58,7 @@
 | v0.3 | 2026-05-06 | 賽博龐克履歷 `index.html` 初版 |
 | v0.4 | 2026-05-06 | 文件體系（CHANGELOG / TODO / Skill） |
 | v0.5 | 2026-05-06 | PDF 連結導入履歷元素、CLAUDE.md 建立 |
+| v0.6 | 2026-05-07 | 補完四張專案卡連結，改為 `.proj-btn` 按鈕設計 |
 
 ---
 
