@@ -46,6 +46,7 @@
 | 🧠 OCR × Transformer 翻譯優化專案（→ DRIVE 按鈕） | `https://drive.google.com/drive/folders/17lfCUG3l4pKyeh4Tiow0iKpoI6pt31J9?usp=drive_link` | 新分頁 |
 | 🔧 Nanoclaw（→ YOUTUBE 按鈕） | `https://www.youtube.com/watch?si=GWQhakzTJZB3ECQC&v=q3xqWqy11ho&feature=youtu.be` | 新分頁 |
 | 🏛️ 交大 AI 架構師（→ DRIVE 按鈕） | `https://drive.google.com/file/d/19aE9BpgaeGVXs9VHT1B1IDvQBwjYg0N0/view` | 新分頁 |
+| ⬇ EXPORT PDF 按鈕 | `window.print()` | 瀏覽器列印對話框 |
 
 ---
 
@@ -59,6 +60,7 @@
 | v0.4 | 2026-05-06 | 文件體系（CHANGELOG / TODO / Skill） |
 | v0.5 | 2026-05-06 | PDF 連結導入履歷元素、CLAUDE.md 建立 |
 | v0.6 | 2026-05-07 | 補完四張專案卡連結，改為 `.proj-btn` 按鈕設計 |
+| v0.7 | 2026-05-07 | PDF 匯出按鈕、`@media print`、行動裝置優化 |
 
 ---
 
@@ -88,6 +90,5 @@
 
 ## 注意事項
 
-- PDF 連結為截斷版（`...` 結尾），若用戶反映連結失效，請求完整 URL 後更新對照表與 `index.html`。
 - `GITHUB_PERSONAL_ACCESS_TOKEN` 已存入 `~/.claude/settings.json`，**勿在對話中重新顯示 token 明文**。
 - 推送前務必用 `mcp__plugin_github_github__get_file_contents` 取得最新 SHA，避免 409 衝突。

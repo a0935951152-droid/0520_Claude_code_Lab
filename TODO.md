@@ -6,19 +6,17 @@
 
 ## 高優先度
 
-- [ ] **啟用 GitHub Pages**，讓 `index.html` 可直接用網址瀏覽
-  - Settings → Pages → Source: `main` → Save
+- [x] **啟用 GitHub Pages**（已確認上線）（2026-05-07）
   - URL: `https://a0935951152-droid.github.io/0520_Claude_code_Lab/`
 
 - [x] **補齊 Nanoclaw / 交大 專案外部連結**（2026-05-07）
   - Nanoclaw → YouTube Demo；交大 AI → Google Drive
 
-- [ ] **列印 / PDF 匯出版本**
-  - 加入 `@media print` CSS，隱藏動畫、調整配色為適合列印的黑白版面
+- [x] **列印 / PDF 匯出版本**（2026-05-07）
+  - 深色保留、移除動畫與切角、右下角固定 `⬇ EXPORT PDF` 按鈕
 
-- [ ] **行動裝置優化**
-  - 統計欄 Stats Bar 在小螢幕改為 2×3 格局
-  - 頭像框尺寸自適應縮放
+- [x] **行動裝置優化**（2026-05-07）
+  - Stats Bar 改 3×2 grid、頭像 clamp、字體縮減、Header padding 縮小
 
 ---
 
