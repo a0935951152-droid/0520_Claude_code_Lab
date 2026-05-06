@@ -206,6 +206,7 @@
             border-left: 2px solid var(--cyan);
             padding-left: 8px;
             transition: color 0.3s, text-shadow 0.3s;
+            text-decoration: none;
         }
 
         .contact-item:hover { color: var(--cyan); text-shadow: 0 0 8px var(--cyan); }
@@ -495,6 +496,18 @@
         .project-name { font-family: 'Share Tech Mono', monospace; font-size: 14px; color: var(--cyan); text-shadow: 0 0 8px rgba(0,245,255,0.4); }
         .project-desc { font-size: 12px; color: var(--text); margin-top: 8px; line-height: 1.65; }
 
+        /* link wrapper — invisible, full-block */
+        a.project-link {
+            display: block;
+            text-decoration: none;
+            color: inherit;
+            cursor: pointer;
+        }
+
+        a.project-link .project-item {
+            cursor: pointer;
+        }
+
         /* ── FOOTER ── */
         .footer {
             text-align: center;
@@ -520,10 +533,18 @@
                 <div class="eng-name">ZHE_AN_XIAO &nbsp;//&nbsp; SYSTEM_ONLINE</div>
                 <div class="title-tag">AI ENGINEER &nbsp;/&nbsp; FIRMWARE &nbsp;/&nbsp; ML RESEARCHER</div>
                 <div class="contact-row">
-                    <div class="contact-item"><span class="lbl">MAIL</span>a0935951152@gmail.com</div>
+                    <!-- Email → mailto -->
+                    <a class="contact-item" href="mailto:a0935951152@gmail.com">
+                        <span class="lbl">MAIL</span>a0935951152@gmail.com
+                    </a>
+                    <!-- Phone (display only) -->
                     <div class="contact-item"><span class="lbl">TEL</span>0935-951-152</div>
+                    <!-- Location (display only) -->
                     <div class="contact-item"><span class="lbl">LOC</span>新竹市東區</div>
-                    <div class="contact-item"><span class="lbl">GIT</span>github.com/a0935951152-droid</div>
+                    <!-- GitHub → link -->
+                    <a class="contact-item" href="https://github.com/a0935951152-droid" target="_blank" rel="noopener">
+                        <span class="lbl">GIT</span>github.com/a0935951152-droid
+                    </a>
                 </div>
             </div>
         </div>
@@ -769,14 +790,18 @@
             <div class="panel">
                 <div class="panel-title">PROJECT_REGISTRY</div>
 
-                <div class="project-item">
-                    <div class="project-name">⚡ Edge AI 智慧跟隨風扇系統</div>
-                    <div class="project-desc">整合語音辨識、LLM 對話、紅外線鏡頭追蹤及居家 IoT 控制。陣列麥克風搭配輕量語音模型 + CV 追蹤模型，PID 控制 DC 風扇，減少熱流冗餘能耗，架構整合 NLP 裝置。</div>
-                    <div class="skill-tags" style="margin-top:10px">
-                        <span class="skill-tag">ESP32</span><span class="skill-tag">Raspberry Pi5</span><span class="skill-tag">LLM (llama/qwen)</span><span class="skill-tag m">CV 追蹤</span><span class="skill-tag m">PID</span><span class="skill-tag g">IoT</span>
+                <!-- ① Edge AI → docs.google.com (本地多併發建置 / Edge AI 系統文件) -->
+                <a class="project-link" href="https://docs.google.com/document/d/1JvKEiwZu58XSDgcmF" target="_blank" rel="noopener">
+                    <div class="project-item">
+                        <div class="project-name">⚡ Edge AI 智慧跟隨風扇系統</div>
+                        <div class="project-desc">整合語音辨識、LLM 對話、紅外線鏡頭追蹤及居家 IoT 控制。陣列麥克風搭配輕量語音模型 + CV 追蹤模型，PID 控制 DC 風扇，減少熱流冗餘能耗，架構整合 NLP 裝置。</div>
+                        <div class="skill-tags" style="margin-top:10px">
+                            <span class="skill-tag">ESP32</span><span class="skill-tag">Raspberry Pi5</span><span class="skill-tag">LLM (llama/qwen)</span><span class="skill-tag m">CV 追蹤</span><span class="skill-tag m">PID</span><span class="skill-tag g">IoT</span>
+                        </div>
                     </div>
-                </div>
+                </a>
 
+                <!-- ② Nanoclaw → no external link in PDF -->
                 <div class="project-item">
                     <div class="project-name">🔧 Nanoclaw 自動化編譯燒錄工具</div>
                     <div class="project-desc">以 Claude Code 平台為 Nordic nRF54 系列開發自動化韌體工作流，設計 context management、agent skill 及韌體工作流落地方案，大幅提升固件開發效率。</div>
@@ -785,14 +810,18 @@
                     </div>
                 </div>
 
-                <div class="project-item">
-                    <div class="project-name">🧠 OCR × Transformer 翻譯優化專案</div>
-                    <div class="project-desc">以 BYT5 知識蒸餾產生偽標籤，微調分子生物文獻 OCR 後文字翻譯模型。主流 OCR 翻譯準確率提升至 40%；千萬參數以內小模型搭配清洗小資料達 30% 整體翻譯準確率。</div>
-                    <div class="skill-tags" style="margin-top:10px">
-                        <span class="skill-tag">BYT5</span><span class="skill-tag">Transformer</span><span class="skill-tag">Fine-tuning</span><span class="skill-tag g">OCR</span><span class="skill-tag g">PyTorch</span><span class="skill-tag g">知識蒸餾</span>
+                <!-- ③ OCR × Transformer → drive.google.com (機器學習專案) -->
+                <a class="project-link" href="https://drive.google.com/drive/folders/17lfCUG3l4pKyeh4Tiow" target="_blank" rel="noopener">
+                    <div class="project-item">
+                        <div class="project-name">🧠 OCR × Transformer 翻譯優化專案</div>
+                        <div class="project-desc">以 BYT5 知識蒸餾產生偽標籤，微調分子生物文獻 OCR 後文字翻譯模型。主流 OCR 翻譯準確率提升至 40%；千萬參數以內小模型搭配清洗小資料達 30% 整體翻譯準確率。</div>
+                        <div class="skill-tags" style="margin-top:10px">
+                            <span class="skill-tag">BYT5</span><span class="skill-tag">Transformer</span><span class="skill-tag">Fine-tuning</span><span class="skill-tag g">OCR</span><span class="skill-tag g">PyTorch</span><span class="skill-tag g">知識蒸餾</span>
+                        </div>
                     </div>
-                </div>
+                </a>
 
+                <!-- ④ 交大 → no external link in PDF -->
                 <div class="project-item">
                     <div class="project-name">🏛️ 交大 AI 架構師專案履歷 <span style="color:var(--magenta);font-size:11px">IN PROGRESS</span></div>
                     <div class="project-desc">生命科學背景出身，於交通大學深化 AI 架構設計知識，整合 Cloud / Core / Edge 三層架構，探索 AI 於各產業之落地應用。進行中 (2025/10 ～)。</div>
@@ -800,6 +829,7 @@
                         <span class="skill-tag">Cloud AI</span><span class="skill-tag">Edge AI</span><span class="skill-tag m">Architecture</span><span class="skill-tag m">In Progress</span>
                     </div>
                 </div>
+
             </div>
 
         </div>
