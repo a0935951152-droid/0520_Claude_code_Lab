@@ -1,2 +1,59 @@
 # 0520_Claude_code_Lab
-交大0520教材上課用
+
+交大 0520 課程實作 Lab — 以 Claude Code + GitHub MCP 為核心工具鏈，探索 AI 輔助開發工作流。
+
+---
+
+## 專案結構
+
+```
+0520_Claude_code_Lab/
+├── index.html          # 個人簡歷網頁（賽博龐克風格）
+├── README.md           # 專案說明
+├── CHANGELOG.md        # 版本更新紀錄
+├── TODO.md             # 待辦事項
+└── .claude/
+    └── skills/
+        └── resume-push.md   # 履歷生成→推送 Skill
+```
+
+---
+
+## 功能說明
+
+### index.html — 個人簡歷網頁
+- 賽博龐克視覺風格（霓虹色系、掃描線、Glitch 動畫）
+- 導入 蕭哲安 PDF 履歷資料（技能、學歷、工作經歷、專案）
+- 純 HTML + CSS，無框架依賴，支援 GitHub Pages 部署
+- 響應式排版，桌面 / 行動裝置均可瀏覽
+
+---
+
+## 技術工具鏈
+
+| 工具 | 用途 |
+|------|------|
+| Claude Code CLI | 主要 AI 輔助開發工具 |
+| GitHub MCP Server | 直接從 Claude 操作 GitHub repo |
+| GitHub Pages | 靜態網頁部署 |
+| HTML / CSS | 前端履歷實作 |
+
+---
+
+## 更新歷程
+
+| 版本 | 日期 | 內容 |
+|------|------|------|
+| v0.1 | 2026-05-06 | 初始化 repo，建立課程基礎 |
+| v0.2 | 2026-05-06 | 連接 GitHub MCP Server，設定 GITHUB_PERSONAL_ACCESS_TOKEN |
+| v0.3 | 2026-05-06 | 新增賽博龐克風格個人簡歷 `index.html`，導入 蕭哲安 PDF 履歷 |
+| v0.4 | 2026-05-06 | 新增 CHANGELOG / TODO / resume-push Skill 完整文件體系 |
+
+---
+
+## 快速預覽
+
+啟用 GitHub Pages 後可直接瀏覽：
+`https://a0935951152-droid.github.io/0520_Claude_code_Lab/`
+
+Settings → Pages → Source: `main` branch → Save
