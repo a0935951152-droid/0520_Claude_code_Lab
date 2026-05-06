@@ -28,7 +28,6 @@
 - 純 HTML + CSS，無框架依賴，支援 GitHub Pages 部署
 - 響應式排版，桌面 / 行動裝置均可瀏覽
 - 可點擊元素：Email、GitHub、四張專案卡（各含 `→ DOCS / YOUTUBE / DRIVE` 按鈕）
-- 深色/淺色模式切換、中英多語切換、姓名打字機效果、技能折疊、聯絡表單 modal、訪客計數器
 
 ### CLAUDE.md — Claude 記憶檔
 - 記錄設計規則、連結對照表、歷史決策
