@@ -26,9 +26,9 @@
 - 賽博龐克視覺風格（霓虹色系、掃描線、Glitch 動畫）
 - 導入 蕭哲安 PDF 履歷資料（技能、學歷、工作經歷、專案）
 - 純 HTML + CSS，無框架依賴，支援 GitHub Pages 部署
-- 響應式排版，桌面 / 行動裝置均可瀏覽（Stats Bar 3×2、字體自適應）
-- 右下角 `⬇ EXPORT PDF` 按鈕，列印時保留深色風格
+- 響應式排版，桌面 / 行動裝置均可瀏覽
 - 可點擊元素：Email、GitHub、四張專案卡（各含 `→ DOCS / YOUTUBE / DRIVE` 按鈕）
+- 深色/淺色模式切換、中英多語切換、姓名打字機效果、技能折疊、聯絡表單 modal、訪客計數器
 
 ### CLAUDE.md — Claude 記憶檔
 - 記錄設計規則、連結對照表、歷史決策
@@ -58,6 +58,7 @@
 | v0.5 | 2026-05-06 | 導入 PDF 連結至履歷元素（Email / GitHub / 兩張專案卡可點擊） |
 | v0.6 | 2026-05-07 | 補完四張專案卡連結，改為按鈕物件設計（→ DOCS / YOUTUBE / DRIVE） |
 | v0.7 | 2026-05-07 | PDF 匯出按鈕、列印樣式、行動裝置優化（Stats Bar 3×2、字體自適應） |
+| v0.8 | 2026-05-07 | 深色/淺色切換、中英多語、打字機效果、技能折疊、聯絡表單、訪客計數器、resume-push Skill 升級 |
 
 ---
 
@@ -65,3 +66,5 @@
 
 啟用 GitHub Pages 後可直接瀏覽：
 `https://a0935951152-droid.github.io/0520_Claude_code_Lab/`
+
+Settings → Pages → Source: `main` branch → Save

@@ -22,25 +22,30 @@
 
 ## 中優先度
 
-- [ ] **深色 / 淺色模式切換**
-  - 加入 toggle 按鈕，提供傳統黑白履歷風格作為備選
+- [x] **深色 / 淺色模式切換**（2026-05-07）
+  - 底部左側 `☀ LIGHT / 🌙 DARK` toggle，localStorage 持久化
 
-- [ ] **動態打字效果（Typewriter）**
-  - 頁面載入時對姓名、職稱做逐字顯示效果
+- [x] **動態打字效果（Typewriter）**（2026-05-07）
+  - 頁面載入時對姓名「蕭哲安」逐字顯示，glitch 期間暫隱
 
-- [ ] **技能分組可折疊**
-  - 點擊技能群組標題可展開 / 收合，節省版面空間
+- [x] **技能分組可折疊**（2026-05-07）
+  - 點擊技能群組標題可展開 / 收合；`.skill-content` max-height transition
 
 ---
 
 ## 低優先度 / 探索中
 
-- [ ] **多語言版本**（中文 / 英文切換）
-- [ ] **聯絡表單**（搭配 Formspree 或 Netlify Forms）
-- [ ] **訪客計數器**（GitHub API 或第三方服務）
-- [ ] **自動化更新 Skill 改進**
-  - 讓 `resume-push` skill 支援傳入 PDF 路徑參數
-  - 支援指定目標分支與風格主題
+- [x] **多語言版本**（中文 / 英文切換）（2026-05-07）
+  - `EN / 中` toggle；data-i18n 屬性 + JS translations，覆蓋所有中文內容
+
+- [x] **聯絡表單**（2026-05-07）
+  - `✉ CONTACT` modal；姓名 / Email / 留言欄位；送出呼叫 mailto:
+
+- [x] **訪客計數器**（2026-05-07）
+  - Footer 加入 visitor-badge.laobi.icu badge（自動計數）
+
+- [x] **自動化更新 Skill 改進**（2026-05-07）
+  - `resume-push` skill 支援 `PDF路徑` 參數、`分支` 參數、`minimal` / `classic` 風格主題
 
 ---
 
