@@ -10,6 +10,10 @@
   - Settings → Pages → Source: `main` → Save
   - URL: `https://a0935951152-droid.github.io/0520_Claude_code_Lab/`
 
+- [ ] **補齊 Nanoclaw / 交大 專案外部連結**
+  - PDF 中此兩項目無可擷取 URL（僅圖片附件）
+  - 待使用者提供完整連結後更新
+
 - [ ] **列印 / PDF 匯出版本**
   - 加入 `@media print` CSS，隱藏動畫、調整配色為適合列印的黑白版面
 
@@ -26,9 +30,6 @@
 
 - [ ] **動態打字效果（Typewriter）**
   - 頁面載入時對姓名、職稱做逐字顯示效果
-
-- [ ] **專案區塊連結**
-  - 各專案卡片加入「前往查看」連結，對應 Google Drive / GitHub
 
 - [ ] **技能分組可折疊**
   - 點擊技能群組標題可展開 / 收合，節省版面空間
@@ -52,3 +53,5 @@
 - [x] 建立賽博龐克個人簡歷 `index.html`（2026-05-06）
 - [x] 建立 README / CHANGELOG / TODO 文件體系（2026-05-06）
 - [x] 建立 `resume-push` Skill（2026-05-06）
+- [x] 導入 PDF 連結至履歷元素（Email / GitHub / Edge AI / OCR 專案卡）（2026-05-06）
+- [x] 建立 `CLAUDE.md` 專案記憶檔（2026-05-06）
