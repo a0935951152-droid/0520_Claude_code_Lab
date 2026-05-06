@@ -12,6 +12,7 @@
 ├── README.md           # 專案說明
 ├── CHANGELOG.md        # 版本更新紀錄
 ├── TODO.md             # 待辦事項
+├── CLAUDE.md           # Claude 專案記憶（規則 / 連結對照 / 注意事項）
 └── .claude/
     └── skills/
         └── resume-push.md   # 履歷生成→推送 Skill
@@ -26,6 +27,11 @@
 - 導入 蕭哲安 PDF 履歷資料（技能、學歷、工作經歷、專案）
 - 純 HTML + CSS，無框架依賴，支援 GitHub Pages 部署
 - 響應式排版，桌面 / 行動裝置均可瀏覽
+- 可點擊元素：Email、GitHub、Edge AI 專案卡、OCR 專案卡
+
+### CLAUDE.md — Claude 記憶檔
+- 記錄設計規則、連結對照表、歷史決策
+- 供 Claude Code 在新對話中快速重建專案上下文
 
 ---
 
@@ -48,6 +54,7 @@
 | v0.2 | 2026-05-06 | 連接 GitHub MCP Server，設定 GITHUB_PERSONAL_ACCESS_TOKEN |
 | v0.3 | 2026-05-06 | 新增賽博龐克風格個人簡歷 `index.html`，導入 蕭哲安 PDF 履歷 |
 | v0.4 | 2026-05-06 | 新增 CHANGELOG / TODO / resume-push Skill 完整文件體系 |
+| v0.5 | 2026-05-06 | 導入 PDF 連結至履歷元素（Email / GitHub / 兩張專案卡可點擊） |
 
 ---
 
