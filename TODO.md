@@ -75,7 +75,9 @@
     - [~] **M4** — Content Editor
       - [x] 文字編輯（contenteditable 所有 `[data-i18n]` 元素，含 ESC 退出）（v0.11.0）
       - [x] 區塊排序（drag-drop on exp/project/edu/cert/lang items）（v0.11.0）
+      - [x] **整塊 panel 拖曳跨欄**（panel-title 為 drag handle，2026-05-14，v0.12.0）
       - [ ] 區塊複製 / 刪除（保留）
+      - [ ] PPT-style 自由定位（free position via transform offset，研究中）
     - [ ] **M5** — Responsive Preview（Mobile/Tablet/Desktop/Full）
     - [~] **M6** — History / Undo-Redo + Diff View
       - [x] Undo（history stack 50 步、`⌘Z`、按鈕）（v0.11.0）

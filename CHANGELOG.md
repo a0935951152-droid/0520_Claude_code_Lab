@@ -4,6 +4,41 @@
 
 ---
 
+## [0.12.0] — 2026-05-14
+
+### Added — Studio 改進 + 檔案拆分守則
+- **Studio 側欄可拖移調寬** — 中央 `.resize-handle`（aside 與 preview 之間）拖曳即可調整 sidebar 寬度（240–600px），自動存 localStorage
+- **Move 模式擴充：整塊 panel 跨欄拖曳**
+  - 開啟 Move 模式後 `.panel-title` 變成藍色拖曳區（顯示 `⋮⋮ DRAG PANEL`）
+  - 拖曳 panel 標題可整塊面板上下重排，也可跨左右欄移動（Education ↔ About 互換等）
+  - 對應使用者「挪動的範圍不太理想，希望像 PPT 那樣改」之需求（後續 M5 仍可加 free position）
+- **Patch JSON Schema v2 → v3** — 新增 `panelLayout: { left: [...], right: [...] }`，記錄面板跨欄佈局
+- **LocalStorage key 升級** `studio_state_v2` → `studio_state_v3`，新增 `panelLayout` / `sidebarWidth` 欄位
+
+### Changed — 大規模拆檔（1000 行守則）
+- `index.html` (1152 行) → **拆為 3 檔**：
+  - `index.html` (308 行) — HTML shell
+  - `assets/styles.css` (713 行) — CSS
+  - `assets/scripts.js` (129 行) — JS (i18n table + handlers)
+- `tools/studio.html` (1229 行) → **拆為 3 檔**：
+  - `tools/studio.html` (91 行) — HTML shell
+  - `tools/studio.css` (440 行) — CSS
+  - `tools/studio.js` (898 行) — JS
+- **CLAUDE.md §設計規則第 5 條**：明文 1000 行檔案分拆守則
+- Preset 5 主題按鈕由 5 欄改為 **3 欄 grid**（解決超出側欄框框問題）
+- Token row CSS `grid-template-columns: 26px 1fr 78px` → `26px minmax(0, 1fr) 78px`，防止內容溢出
+- Move / Text Edit 模式互斥（避免衝突）
+- Undo 改為 reload iframe 確保 DOM 還原乾淨
+
+### Technical
+- 所有檔案皆控制在 900 行以內（最大 `tools/studio.js` 898 行）
+- 拆檔後 GitHub Pages 自動 serve `.css` / `.js`，零部署改動
+- `--sidebar-w` CSS variable 用 `:root` 全域定義，方便 JS 跨檔修改
+- Panel 跨欄拖曳：dragSrc 偵測 panel 類別，allowed drop = 任何 `.main-grid` 內的 panel
+- 行動裝置（< 800px）resize handle 自動切為 ns-resize 垂直拖曳
+
+---
+
 ## [0.11.0] — 2026-05-14
 
 ### Added — Design Studio M2 / M4 / M6（部分）整合包

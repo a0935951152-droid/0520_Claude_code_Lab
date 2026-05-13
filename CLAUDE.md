@@ -43,6 +43,14 @@
 2. **禁止修改排版結構**：左右雙欄、Stats Bar、Header / Footer 位置不得變動。
 3. **新增連結**：用 `<a>` 包裹元素，必須加 `text-decoration:none; color:inherit; display:block`，確保視覺完全不變。
 4. **每次更動 `index.html` 後**，必須同步更新 README.md（版本表）、CHANGELOG.md（新增版本條目）、TODO.md（勾選已完成項目）、CLAUDE.md（連結對照表 / 版本記錄）、ARCHITECTURE.md（若涉及結構 / token / JS 模組變更）。
+5. **檔案分拆規則（強制）**：任何單一檔案 **達 1000 行即須拆分**。
+   - HTML 檔：把 `<style>` 抽到 `.css`、`<script>` 抽到 `.js`，用 `<link>` / `<script src="">` 載入。
+   - 大型 JS：分成 modules / 多個 .js 檔。
+   - 大型 CSS：依功能或元件拆檔（如 `tokens.css` / `layout.css` / `components.css`）。
+   - 維持單一檔案在 700–900 行內為佳；提早拆比拖到爆表才動手好。
+   - 範例對照（v0.12 起）：
+     - `index.html` (308) + `assets/styles.css` (713) + `assets/scripts.js` (129)
+     - `tools/studio.html` (91) + `tools/studio.css` (440) + `tools/studio.js` (898)
 
 ---
 
@@ -85,6 +93,7 @@
 | v0.10.0 | 2026-05-13 | **Design Studio M1 上線**（`tools/studio.html`）：視覺化 Token Editor (Colors) + iframe 預覽 + localStorage + Export Patch JSON |
 | v0.10.1 | 2026-05-14 | `index.html` 左下加 🎨 Studio 入口按鈕，完整串接「履歷 → Studio → Export → Claude Code 合併」工作流 |
 | v0.11.0 | 2026-05-14 | **Studio 增強**：Theme Presets (5) + Text Edit + Move + Undo；patch schema v2 含 textPatches / movePatches |
+| v0.12.0 | 2026-05-14 | **檔案拆分**（index / studio 各拆 3 檔）+ 1000 行守則 + Sidebar 可拖移調寬 + Preset 溢出修正 + Move 支援整塊 panel 跨欄拖曳 |
 
 ---
 

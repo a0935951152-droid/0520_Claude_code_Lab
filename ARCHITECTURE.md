@@ -10,15 +10,22 @@
 
 ```
 0520_Claude_code_Lab/
-├── index.html              # 個人簡歷網頁（單一檔案，純 HTML/CSS/JS）
-├── README.md               # 專案說明 + 版本表
-├── CHANGELOG.md            # Keep a Changelog 格式版本紀錄
-├── TODO.md                 # 待辦 / 規劃
-├── CLAUDE.md               # Claude Code 專案記憶（規則 / 連結對照 / token 位置）
-├── ARCHITECTURE.md         # ← 本檔，架構紀錄
+├── index.html              # 履歷網頁 shell（v0.12 起拆檔）
+├── assets/
+│   ├── styles.css          # 履歷 CSS（design tokens / 排版 / 元件 / print）
+│   └── scripts.js          # 履歷 JS（i18n / mode / contact form）
+├── README.md
+├── CHANGELOG.md
+├── TODO.md
+├── CLAUDE.md
+├── ARCHITECTURE.md         # ← 本檔
 └── tools/
-    └── studio.html         # Design Studio（v0.10 起，M1 完成）— 視覺化 token 編輯
+    ├── studio.html         # Design Studio shell（v0.12 起拆檔）
+    ├── studio.css          # Studio CSS
+    └── studio.js           # Studio 邏輯（token / text / move / undo / export）
 ```
+
+**檔案分拆守則（v0.12 起）**：任何單一檔案達 1000 行即拆分。詳見 CLAUDE.md §5。
 
 外部資源：
 - `~/.claude/settings.json` → `env.GITHUB_PERSONAL_ACCESS_TOKEN`（推送認證）
@@ -399,6 +406,10 @@ studio.html → Claude Code 之間的合約。Claude Code 端的 `/studio-merge`
     "experience": ["exp3_title", "exp1_title", "exp2_title", "exp4_title", "exp5_title"],
     "projects": ["proj2_name", "proj1_name", "proj3_name", "proj4_name"]
   },
+  "panelLayout": {                     // 面板跨欄佈局（v0.12+，schema v3）
+    "left": ["About", "Education", "Languages", "Certifications"],
+    "right": ["Skill Matrix", "Work Experience", "Selected Projects"]
+  },
   "elementOverrides": [                // M3 規劃：加 inline style 到指定元素
     {
       "selector": ".panel-title",
@@ -472,6 +483,7 @@ studio.html → Claude Code 之間的合約。Claude Code 端的 `/studio-merge`
 | **v0.9** | **morcept.com 簡約風大改版**（移除霓虹/glitch/clip-path、改 token 系統、本檔建立） |
 | v0.10 | **Design Studio M1 上線** — `tools/studio.html` 視覺化 Token Editor (Colors) + iframe 預覽 + Export Patch JSON |
 | v0.11 | **Studio 增強包**（M2/M4/M6 部分）— Theme Presets (5) / Text Edit / Move / Undo；patch schema v2 |
+| v0.12 | **檔案拆分守則 + Studio panel 跨欄拖曳** — index/studio 各拆 3 檔；sidebar resizable；patch schema v3 含 `panelLayout` |
 
 ---
 

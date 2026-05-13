@@ -8,15 +8,22 @@
 
 ```
 0520_Claude_code_Lab/
-├── index.html          # 個人簡歷網頁（morcept.com 簡約風，v0.9 起）
-├── README.md           # 專案說明
-├── CHANGELOG.md        # 版本更新紀錄
-├── TODO.md             # 待辦事項
-├── CLAUDE.md           # Claude 專案記憶（規則 / 連結對照 / 注意事項）
-├── ARCHITECTURE.md     # 架構紀錄（檔案結構 / 設計 token / JS 模組 / 未來規劃）
+├── index.html              # 個人簡歷網頁 shell（v0.12 起拆檔）
+├── assets/
+│   ├── styles.css          # 履歷網頁 CSS
+│   └── scripts.js          # 履歷網頁 JS（i18n / mode / contact form）
+├── README.md
+├── CHANGELOG.md
+├── TODO.md
+├── CLAUDE.md
+├── ARCHITECTURE.md
 └── tools/
-    └── studio.html     # Design Studio — 視覺化 token 編輯器（M1，v0.10 起）
+    ├── studio.html         # Design Studio shell
+    ├── studio.css          # Studio CSS
+    └── studio.js           # Studio JS（token editor / text edit / move / undo / export）
 ```
+
+> 拆檔守則：單一檔案達 1000 行即拆分（HTML → .css / .js）。詳見 CLAUDE.md §5。
 
 ### Design Studio（額外工具）
 
@@ -77,6 +84,7 @@
 | v0.10.0 | 2026-05-13 | **Design Studio M1 上線**：`tools/studio.html` — 視覺化 Token Editor (Colors)、iframe 預覽、localStorage、Export Patch JSON |
 | v0.10.1 | 2026-05-14 | `index.html` 左下加 🎨 Studio 按鈕，串接「履歷頁 → Studio → Export → Claude Code 合併」完整工作流 |
 | v0.11.0 | 2026-05-14 | **Studio 增強包**：Theme Presets (5 主題) + ✏ Text Edit + ↕ Move + ↶ Undo（`⌘Z`） |
+| v0.12.0 | 2026-05-14 | **拆檔**（index / studio 各拆 3 檔）+ 1000 行守則 + Sidebar 可拖移調寬 + Move 支援整塊 panel 跨欄拖曳 |
 
 ---
 
