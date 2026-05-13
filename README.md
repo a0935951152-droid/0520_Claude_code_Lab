@@ -61,6 +61,7 @@
 | v0.8 | 2026-05-07 | 深色/淺色切換、中英多語、打字機效果、技能折疊、聯絡表單、訪客計數器、resume-push Skill 升級 |
 | v0.9 | 2026-05-13 | 整體風格大改版：賽博龐克 → morcept.com 簡約風（白底深字、圓角卡片、細邊框、留白排版） |
 | v0.9.1 | 2026-05-13 | 新增 `ARCHITECTURE.md` 架構紀錄；規劃未來 HTML Live Editor（不 push 額外工具） |
+| v0.9.2 | 2026-05-13 | 升級 §8.1 規格：HTML Live Editor → **Design Studio**（設計師等級工具，可同時操作 HTML / CSS tokens / 元件樣式） |
 
 ---
 

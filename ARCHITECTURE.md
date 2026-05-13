@@ -154,37 +154,197 @@ https://a0935951152-droid.github.io/0520_Claude_code_Lab/
 
 ## 8. 未來規劃工具
 
-### 8.1 HTML Live Editor（不 push 模式） — **規劃中**
+### 8.1 Design Studio（不 push 模式） — **規劃中**
 
-**目的**：本地快速迭代 / 試做 UI 變更，不污染 main 分支歷史。
+> 設計師等級的本地視覺工具，可同時操作 HTML 內容、CSS tokens、元件樣式；類似 Webflow / Plasmic / Framer 的瀏覽器內編輯體驗，但**完全離線、不觸發 git push**。
 
-**使用情境**：
-- 試做新區塊（如新專案卡、版面 A/B）
-- 微調樣式 / 試色 / 改字型
-- 與設計師對 demo 時即時 hot-reload
-- 確認 OK 後才走正規 commit + push 流程
+#### 8.1.1 目的與定位
 
-**規格草案（待實作時細化）**：
+- 本地快速迭代設計，不污染 `index.html` 與 main 分支歷史
+- 把現有的 design token 系統（§3）暴露成可視化控制，讓非工程角色（自己 / 設計師 / 同學）也能改色、改字、調間距
+- 確認設計 OK 後，再由使用者**手動 export → 覆蓋 `index.html` → commit + push**
+- 屬於「**額外工具**」，與主簡歷 `index.html` **完全解耦**
 
-| 項目 | 說明 |
+#### 8.1.2 形式（已收斂）
+
+採方案 **(B) 獨立 HTML 頁面 + iframe 預覽**：
+
+```
+0520_Claude_code_Lab/
+├── index.html              # 主簡歷（產線）
+└── tools/
+    └── studio.html         # ← Design Studio（額外工具）
+```
+
+- 路徑 `tools/studio.html`，避免被 GitHub Pages 當主頁
+- 雖然檔案 commit 進 repo（讓他人能用），但**它本身不會修改 `index.html`、不會觸發 git**
+- 開啟流程：在瀏覽器直接打開 `tools/studio.html`，左側面板控制、右側 iframe 顯示 `../index.html` 即時預覽
+
+#### 8.1.3 功能模組
+
+**A. Token Editor（核心）** — 視覺化編輯 design system
+
+| 控制項 | 對應 CSS 變數 | UI |
+|--------|--------------|----|
+| 主文字色 | `--text` | color picker + hex 輸入 |
+| 次文字色 | `--text-secondary` / `--text-muted` | color picker |
+| 背景色 | `--bg` / `--bg-soft` / `--bg-section` | color picker |
+| 邊框色 | `--border` / `--border-strong` | color picker |
+| 強調色 | `--accent` / `--accent-hover` | color picker |
+| 主字型 | `--serif` | dropdown（Noto Sans TC / Inter / 自訂） |
+| 等寬字型 | `--mono` | dropdown |
+| 字級基準 | `font-size` base | slider 12 ~ 18px |
+| 間距比例 | padding/margin 倍率 | slider 0.8x ~ 1.4x |
+| 圓角強度 | `border-radius` 倍率 | slider 0 ~ 24px |
+| 陰影強度 | `--shadow-soft` / `--shadow-hover` | preset（none / soft / medium / strong） |
+| 模式 | light / dark toggle | switch |
+
+實作：透過 iframe 的 `contentDocument.documentElement.style.setProperty('--text', value)` 即時注入。
+
+**B. Element Inspector** — 點選元件編輯個別樣式
+
+- 點 iframe 中任一元素 → 高亮 + 顯示路徑（如 `body > .container > .panel > .panel-title`）
+- 右側面板顯示該元素 computed style，可即時編輯：
+  - 字型大小 / 字重 / 行高 / 字距
+  - 顏色 / 背景
+  - padding / margin / gap
+  - border / radius / shadow
+- 編輯結果以 `style=""` 注入該元素（不污染全域 token）
+
+**C. Content Editor** — HTML 內容編輯
+
+- contenteditable 模式：點兩下文字可直接編輯
+- 區塊管理：複製 / 刪除 / 上下移動 panel / project card / exp-item
+- 重新排序：拖拉左右欄區塊順序
+- i18n 對齊：若編輯 `data-i18n` 元素，跳出提示同步更新對應 `T.zh` / `T.en`
+
+**D. Component Library** — 預設元件快取
+
+- 內建：panel 模板、project-item 模板、exp-item 模板、stat-block 模板
+- 使用者可新增自訂元件並存 localStorage
+- 拖拉 / 點選加入到 iframe 內
+
+**E. Responsive Preview** — 視窗尺寸切換
+
+| Preset | 寬度 |
+|--------|------|
+| Mobile | 375px |
+| Tablet | 768px |
+| Desktop | 1180px（max-width） |
+| Full | 100% |
+
+外加自訂寬度滑桿。
+
+**F. History / Undo-Redo**
+
+- 每次變更入 stack
+- `Cmd/Ctrl + Z` / `Cmd/Ctrl + Shift + Z` 操作
+- 顯示變更時間軸（最近 50 步）
+
+**G. Theme Presets**
+
+- 內建 preset：`morcept`（當前）、`cyberpunk`（v0.8 之前的備份）、`mono-paper`（純黑白印刷感）
+- 使用者可儲存自訂 theme 到 localStorage（命名 + 套用 + 刪除）
+- 一鍵切換 preset
+
+**H. Diff View**
+
+- 切換到 diff 分頁，顯示與 `index.html` 原始版本的差異
+- 分組顯示：Token 變更 / HTML 變更 / Inline style 變更
+- 統計：總共修改了幾個 token、幾段 HTML、幾個 inline style
+
+**I. Export**
+
+| 動作 | 輸出 |
 |------|------|
-| 形式 | 額外頁面 / 工具，**不替代 `index.html`** |
-| 路徑建議 | `tools/editor.html` 或 `playground/index.html`（單獨子目錄，避免 GitHub Pages 把它當主頁） |
-| 編輯範圍 | **僅修改 HTML 內容**（DOM 結構 / 文字 / 連結），CSS 仍依現有設計 token |
-| 推送行為 | **完全不觸發 git push**，純本地操作 |
-| 儲存 | 變更存 `localStorage` 或 export 為 `.html` 檔案下載 |
-| 還原 | 一鍵 reset 回 `index.html` 原始狀態 |
-| 預覽 | iframe 即時渲染或 contenteditable 直編 |
+| Export HTML | 下載 `index_<timestamp>.html` — 完整單檔（CSS 內嵌、變更套用） |
+| Export Tokens | 下載 `tokens.css` — 只含 `:root { ... }` 區塊 |
+| Export Diff | 下載 `studio.patch` — unified diff，可手動 apply |
+| Copy to Clipboard | 複製完整 HTML 到剪貼簿 |
 
-**界線（重要）**：
-- 此工具**不可**自動寫入 `index.html`，必須使用者明確 export / copy
-- 此工具**不可**觸碰 `.git/` 或執行任何 git 指令
-- 此工具屬於「**額外工具**」，與主簡歷 `index.html` 解耦
+**完全沒有「直接寫回 `index.html`」按鈕。** 使用者必須自己下載、手動覆蓋、commit、push。
 
-**待決定**：
-- 是否做成 Skill（如 `/html-edit`），由 Claude Code 操作
-- 是否做成獨立 HTML 頁面，瀏覽器內運作
-- 兩者並存？（Claude skill 負責結構性大改、頁面負責微調）
+**J. Reset**
+
+- `Reset to current index.html` — 清空所有修改，重新 fetch `../index.html`
+- `Reset to last save` — 回到最近一次 localStorage 儲存點
+
+#### 8.1.4 資料儲存
+
+- LocalStorage key：`studio_state_v1`
+- 結構：
+  ```json
+  {
+    "tokens": { "--text": "#333", "--bg": "#fff", ... },
+    "elementOverrides": [{ "selector": "...", "styles": {...} }],
+    "htmlPatches": [{ "selector": "...", "innerHTML": "..." }],
+    "history": [...],
+    "currentTheme": "morcept"
+  }
+  ```
+- 自動儲存（debounce 500ms）
+- 提供「清空 localStorage」按鈕
+
+#### 8.1.5 界線（強制）
+
+| 動作 | 允許 |
+|------|------|
+| 讀取 `index.html` 內容 | ✅（透過 `fetch('../index.html')`） |
+| 修改 iframe 內 DOM / style | ✅ |
+| 儲存到 localStorage | ✅ |
+| 下載檔案 / 複製剪貼簿 | ✅ |
+| 寫入 `index.html` | ❌ |
+| 觸碰 `.git/` 或任何 git 指令 | ❌ |
+| 上傳到任何遠端 / API | ❌ |
+| 修改 `tools/studio.html` 自己 | ❌（須走正規 commit 流程） |
+
+#### 8.1.6 技術棧（單檔約束）
+
+- 純 HTML/CSS/Vanilla JS（與主專案一致，**無建置依賴**）
+- 第三方僅用 CDN：
+  - Color picker（建議用原生 `<input type="color">` 即可，避免引外部 lib）
+  - 字型 preview 用 Google Fonts API
+- 必要時引入 `diff` 庫做 Diff View（CDN ESM）
+- iframe sandbox: `sandbox="allow-same-origin allow-scripts"` 確保可注入 style 又可隔離
+
+#### 8.1.7 介面草案
+
+```
+┌──────────────────────────────────────────────────────────────┐
+│  Design Studio — 0520 Resume                  [Reset] [Export ▼]│
+├────────────┬─────────────────────────────────────────────────┤
+│  ▸ Tokens  │                                                 │
+│   • Colors │                                                 │
+│   • Type   │              ┌──────────────────────┐          │
+│   • Space  │              │                      │          │
+│  ▸ Inspect │              │   iframe preview     │          │
+│  ▸ Content │              │   (index.html)       │          │
+│  ▸ Themes  │              │                      │          │
+│  ▸ History │              │                      │          │
+│  ▸ Diff    │              └──────────────────────┘          │
+│            │                                                 │
+│  📱 ☐ 💻 ☑  │  [ Mobile  Tablet  Desktop  Full ]              │
+└────────────┴─────────────────────────────────────────────────┘
+```
+
+左側：tab 切換面板  
+中間：響應式 iframe 預覽  
+頂部：全域操作（reset / export / undo / redo）
+
+#### 8.1.8 開發里程碑
+
+| Milestone | 範圍 | 預估 |
+|-----------|------|------|
+| M1 | 基礎 shell + iframe 預覽 + Token Editor（顏色）| 1 PR |
+| M2 | Token Editor 完整（字型 / 間距 / 圓角）+ localStorage | 1 PR |
+| M3 | Element Inspector + Inline style 編輯 | 1 PR |
+| M4 | Content Editor（contenteditable + 區塊管理） | 1 PR |
+| M5 | Responsive Preview + Theme Presets | 1 PR |
+| M6 | History / Undo-Redo + Diff View | 1 PR |
+| M7 | Export 全套（HTML / tokens / patch / clipboard） | 1 PR |
+| M8 | 文件 + Demo gif，更新 README | 1 PR |
+
+每個 milestone 自成完整可用版本，可獨立 ship。
 
 ### 8.2 其他未來方向（從 TODO.md 引用）
 

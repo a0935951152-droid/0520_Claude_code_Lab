@@ -4,6 +4,33 @@
 
 ---
 
+## [0.9.2] — 2026-05-13
+
+### Changed
+- `ARCHITECTURE.md` §8.1 升級規格：**HTML Live Editor → Design Studio**
+  - 由「只編輯 HTML」擴充為**設計師等級工具**，可同時操作 HTML 內容、CSS tokens、元件樣式
+  - 形式收斂為 (B) 獨立頁面 `tools/studio.html` + iframe 預覽 + 左側控制面板（類 Webflow / Plasmic）
+  - 9 大功能模組：
+    - **A. Token Editor**（顏色 / 字型 / 間距 / 圓角 / 陰影 / 模式）→ 視覺化編輯 design system
+    - **B. Element Inspector** → 點選元件編輯個別樣式
+    - **C. Content Editor** → contenteditable + 區塊管理 + i18n 對齊提示
+    - **D. Component Library** → 內建元件模板 + 自訂存 localStorage
+    - **E. Responsive Preview** → Mobile / Tablet / Desktop / Full + 自訂寬度
+    - **F. History / Undo-Redo** → 變更 stack + 時間軸
+    - **G. Theme Presets** → morcept / cyberpunk / mono-paper + 自訂
+    - **H. Diff View** → vs `index.html` 原版差異
+    - **I. Export** → HTML / tokens.css / patch / clipboard
+  - 規劃 8 個開發里程碑（M1–M8），每個可獨立 ship
+- `TODO.md` 同步：將 HTML Live Editor 條目改為 Design Studio + 拆分 M1–M8 子待辦
+- `README.md` 同步版本表 v0.9.2
+
+### Technical
+- 維持「**完全不 push、不觸碰 git、不寫回 `index.html`**」核心邊界
+- 單檔約束、無建置依賴；第三方僅用 CDN
+- LocalStorage 結構規格化：`studio_state_v1`（tokens / elementOverrides / htmlPatches / history / currentTheme）
+
+---
+
 ## [0.9.1] — 2026-05-13
 
 ### Added

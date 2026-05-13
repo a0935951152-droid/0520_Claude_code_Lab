@@ -62,17 +62,23 @@
 
 ## 規劃中（未開工）
 
-- [ ] **HTML Live Editor — 不 push 額外工具**
-  - 屬性：**額外工具**，與主簡歷 `index.html` 解耦；**不觸發 git push**
-  - 目的：本地快速試做 UI / 版面 A/B，不污染 main 分支歷史
-  - 編輯範圍：僅修改 HTML 內容（DOM 結構 / 文字 / 連結），CSS 沿用現有 token
-  - 形式（待決）：
-    - (A) 獨立 HTML 頁面 `tools/editor.html`（瀏覽器內 contenteditable + iframe 預覽 + export 下載）
-    - (B) Claude Code Skill（如 `/html-edit`，產生 diff 等使用者確認後才 commit）
-    - (C) 兩者並存
-  - 儲存：localStorage 或 export `.html` 下載
-  - 還原：一鍵 reset 回 `index.html` 原始狀態
-  - 邊界：禁止自動寫入 `index.html`、禁止觸碰 `.git/`、禁止執行任何 git 指令
+- [ ] **Design Studio — 設計師等級的本地工具**（不 push 額外工具）
+  - 路徑：`tools/studio.html`，與主 `index.html` 完全解耦
+  - 形式：獨立 HTML 頁面 + iframe 預覽 + 左側控制面板（類 Webflow / Plasmic 體驗）
+  - **同時編輯 HTML 內容 + CSS tokens + 元件樣式**（非僅 HTML）
+  - 9 大功能模組：
+    - [ ] **M1** — 基礎 shell + iframe 預覽 + Token Editor (Colors)
+    - [ ] **M2** — Token Editor 完整（字型 / 間距 / 圓角 / 陰影）+ localStorage 自動儲存
+    - [ ] **M3** — Element Inspector（點選元件編輯個別 style）
+    - [ ] **M4** — Content Editor（contenteditable + 區塊複製/刪除/排序）
+    - [ ] **M5** — Responsive Preview（Mobile/Tablet/Desktop/Full）+ Theme Presets（morcept / cyberpunk / mono-paper）
+    - [ ] **M6** — History / Undo-Redo + Diff View（vs `index.html` 原版）
+    - [ ] **M7** — Export 全套（HTML / tokens.css / patch / clipboard）
+    - [ ] **M8** — 文件 + Demo gif，更新 README
+  - 邊界（強制）：
+    - 禁止自動寫入 `index.html`（使用者必須自己 export → 手動覆蓋 → commit）
+    - 禁止觸碰 `.git/`、禁止執行 git 指令
+    - 禁止上傳到任何遠端 / API（純本地）
   - 詳細規格：見 `ARCHITECTURE.md` §8.1
 
 ---
