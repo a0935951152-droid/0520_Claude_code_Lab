@@ -4,6 +4,52 @@
 
 ---
 
+## [0.11.0] — 2026-05-14
+
+### Added — Design Studio M2 / M4 / M6（部分）整合包
+- `tools/studio.html` — 重大升級，新增 4 大功能：
+
+  **1. Theme Presets（5 主題快速套用）**
+  - Morcept（預設）/ Mono / Paper / Ocean / Forest
+  - 點擊 preset 按鈕 → 一鍵套用全套 20 個 tokens（light + dark）
+  - 對應「顏色應該有表可選擇」需求
+
+  **2. ✏ Text Edit Mode**
+  - 開啟後所有 `[data-i18n]` 元素變成 contenteditable
+  - 視覺提示：藍色虛線外框 + hover 高亮
+  - 失焦自動儲存到 `state.textPatches[i18n-key]`
+  - `Esc` 退出編輯模式
+  - 對應「文字也可改」需求
+
+  **3. ↕ Move Mode**
+  - 開啟後 `.exp-item / .project-item / .edu-item / .cert-item / .lang-item` 可拖曳排序
+  - 視覺提示：左側拖曳手柄 `⋮⋮` + hover 虛線框 + drop 指示線
+  - 只能在同容器內重排（防 cross-container 拖錯）
+  - 儲存到 `state.movePatches[container-key] = [id, id, ...]`
+  - `Esc` 退出
+  - 對應「元件可挪動」需求
+
+  **4. ↶ Undo（History Stack）**
+  - 每次修改自動快照（最多 50 步）
+  - `⌘Z` 或按鈕還原
+  - Token 連續拖色盤算「一個 session」，避免 history 爆炸
+  - 對應「回上一步」需求
+
+### Changed
+- LocalStorage key 升級 `studio_state_v1` → `studio_state_v2`（新增 textPatches / movePatches / history / currentPreset / textEditMode / moveMode 欄位）
+- Patch JSON Schema 升級 `studio_patch_v1` → `studio_patch_v2`（新增 `textPatches` / `movePatches` / `themePreset` 區段）
+- Reset 改為 reload iframe（確保 DOM mutation 完全清除）
+- Header 按鈕排版調整：mode / text / move / undo / reset / export 六顆並列
+
+### Technical
+- 拖曳排序用原生 HTML5 Drag and Drop API，無第三方 lib
+- 文字編輯狀態追蹤：用元素 `data-studio-default` 屬性記錄首次值，刪除 patch 時可清掉
+- Iframe listener 用 capture 階段監聽 blur（contenteditable 失焦） + 拖曳事件
+- ESC 鍵在 iframe 內也能退出模式（attach 到 iframe document）
+- 變更計數涵蓋 token + textPatches + movePatches，藍色高亮 `has-changes`
+
+---
+
 ## [0.10.1] — 2026-05-14
 
 ### Added

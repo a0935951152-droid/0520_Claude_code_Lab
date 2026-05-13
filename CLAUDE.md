@@ -84,6 +84,7 @@
 | v0.9.3 | 2026-05-13 | §8.1 加入「Demo → Patch → Claude Code merge」工作流；新增 Patch JSON Schema 與 `/studio-merge` Skill 規格 |
 | v0.10.0 | 2026-05-13 | **Design Studio M1 上線**（`tools/studio.html`）：視覺化 Token Editor (Colors) + iframe 預覽 + localStorage + Export Patch JSON |
 | v0.10.1 | 2026-05-14 | `index.html` 左下加 🎨 Studio 入口按鈕，完整串接「履歷 → Studio → Export → Claude Code 合併」工作流 |
+| v0.11.0 | 2026-05-14 | **Studio 增強**：Theme Presets (5) + Text Edit + Move + Undo；patch schema v2 含 textPatches / movePatches |
 
 ---
 

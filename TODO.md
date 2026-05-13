@@ -68,11 +68,19 @@
   - **同時編輯 HTML 內容 + CSS tokens + 元件樣式**（非僅 HTML）
   - 9 大功能模組：
     - [x] **M1** — 基礎 shell + iframe 預覽 + Token Editor (Colors)（2026-05-13，v0.10.0）
-    - [ ] **M2** — Token Editor 完整（字型 / 間距 / 圓角 / 陰影）+ localStorage 自動儲存
+    - [~] **M2** — Token Editor 完整（字型 / 間距 / 圓角 / 陰影）+ localStorage 自動儲存
+      - [x] Theme Presets（Morcept / Mono / Paper / Ocean / Forest）（v0.11.0）
+      - [ ] 字型 / 間距 / 圓角 / 陰影 控制（保留下個 iteration）
     - [ ] **M3** — Element Inspector（點選元件編輯個別 style）
-    - [ ] **M4** — Content Editor（contenteditable + 區塊複製/刪除/排序）
-    - [ ] **M5** — Responsive Preview（Mobile/Tablet/Desktop/Full）+ Theme Presets（morcept / cyberpunk / mono-paper）
-    - [ ] **M6** — History / Undo-Redo + Diff View（vs `index.html` 原版）
+    - [~] **M4** — Content Editor
+      - [x] 文字編輯（contenteditable 所有 `[data-i18n]` 元素，含 ESC 退出）（v0.11.0）
+      - [x] 區塊排序（drag-drop on exp/project/edu/cert/lang items）（v0.11.0）
+      - [ ] 區塊複製 / 刪除（保留）
+    - [ ] **M5** — Responsive Preview（Mobile/Tablet/Desktop/Full）
+    - [~] **M6** — History / Undo-Redo + Diff View
+      - [x] Undo（history stack 50 步、`⌘Z`、按鈕）（v0.11.0）
+      - [ ] Redo（`⌘⇧Z`）
+      - [ ] Diff View（保留 / 視需求）
     - [ ] **M7** — Export 全套（HTML / tokens.css / patch JSON / clipboard）+ 對接 patch JSON schema
     - [ ] **M8** — `/studio-merge` Claude Code Skill（讀 patch.json → 套用到 index.html → 自動 commit + push）
     - [ ] **M9** — 文件 + Demo 截圖、更新 README、開放線上版

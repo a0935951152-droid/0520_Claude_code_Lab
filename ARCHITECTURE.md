@@ -377,34 +377,47 @@ studio.html → Claude Code 之間的合約。Claude Code 端的 `/studio-merge`
 
 ```json
 {
-  "version": "studio_patch_v1",
-  "createdAt": "2026-05-13T15:42:00Z",
+  "version": "studio_patch_v2",
+  "createdAt": "2026-05-14T15:42:00Z",
   "basedOn": {
     "indexHtmlSha": "abc123...",     // 從 index.html 算 hash，merge 時驗證未變
-    "studioVersion": "0.9.x"
+    "studioVersion": "0.11.x"
   },
-  "tokens": {                         // 修改 :root { } 內 CSS 變數
+  "themePreset": "morcept",            // 套用的 preset key（morcept / mono / paper / ocean / forest / custom）
+  "tokens": {                          // diff vs Morcept 預設 — `:root { }` 變數
     "--text": "#1a1a1a",
     "--accent": "#4a90e2"
   },
-  "tokensDark": {                     // 修改 body.dark-mode { } 內 CSS 變數
+  "tokensDark": {                      // diff vs Morcept 預設 — `body.dark-mode { }` 變數
     "--text": "#fafafa"
   },
-  "elementOverrides": [               // 加 inline style 到指定元素
+  "textPatches": {                     // [data-i18n] 元素的 innerHTML 改寫（v0.11+）
+    "exp1_desc": "改過的描述...",
+    "proj1_name": "新標題"
+  },
+  "movePatches": {                     // 容器子元素新順序（v0.11+）
+    "experience": ["exp3_title", "exp1_title", "exp2_title", "exp4_title", "exp5_title"],
+    "projects": ["proj2_name", "proj1_name", "proj3_name", "proj4_name"]
+  },
+  "elementOverrides": [                // M3 規劃：加 inline style 到指定元素
     {
       "selector": ".panel-title",
-      "styles": { "letter-spacing": "3px", "color": "var(--accent)" }
+      "styles": { "letter-spacing": "3px" }
     }
   ],
-  "htmlPatches": [                    // 替換指定元素的 innerHTML
-    {
-      "selector": "h1.name-glitch",
-      "innerHTML": "新的姓名"
-    }
-  ],
-  "themePreset": "morcept-custom"     // 命名儲存，optional
+  "htmlPatches": []                    // M5+ 規劃：generic 選擇器 + innerHTML 替換
 }
 ```
+
+**容器 key 對照表（movePatches）**：
+
+| key | childSelector | 識別子（child id） |
+|-----|---------------|--------------------|
+| `experience` | `.exp-item` | `.exp-title` 的 `data-i18n` |
+| `projects` | `.project-item` | `.project-name` 的 `data-i18n` |
+| `education` | `.edu-item` | `.edu-school` 的 `data-i18n` |
+| `certifications` | `.cert-item` | `.cert-name` 的 `data-i18n` |
+| `languages` | `.lang-item` | `.lang-name` 的 textContent |
 
 合併規則：
 1. `tokens` / `tokensDark` → 直接替換 `index.html` 內 `:root { }` 與 `body.dark-mode { }` 區塊內對應變數
@@ -458,6 +471,7 @@ studio.html → Claude Code 之間的合約。Claude Code 端的 `/studio-merge`
 | v0.8 | i18n 模組、深淺模式、Contact modal、訪客計數器 |
 | **v0.9** | **morcept.com 簡約風大改版**（移除霓虹/glitch/clip-path、改 token 系統、本檔建立） |
 | v0.10 | **Design Studio M1 上線** — `tools/studio.html` 視覺化 Token Editor (Colors) + iframe 預覽 + Export Patch JSON |
+| v0.11 | **Studio 增強包**（M2/M4/M6 部分）— Theme Presets (5) / Text Edit / Move / Undo；patch schema v2 |
 
 ---
 

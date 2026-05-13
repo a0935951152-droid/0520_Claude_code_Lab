@@ -17,6 +17,8 @@
             --s-border-strong: #d1d5db;
             --s-accent: #2563eb;
             --s-accent-soft: #eff6ff;
+            --s-success: #10b981;
+            --s-danger: #ef4444;
         }
         * { margin: 0; padding: 0; box-sizing: border-box; }
         html, body { height: 100%; overflow: hidden; }
@@ -35,13 +37,14 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
-            padding: 10px 18px;
+            padding: 10px 16px;
             border-bottom: 1px solid var(--s-border);
             background: var(--s-bg);
             flex-shrink: 0;
             min-height: 52px;
+            gap: 16px;
         }
-        .brand { display: flex; align-items: center; gap: 10px; }
+        .brand { display: flex; align-items: center; gap: 10px; flex-shrink: 0; }
         .brand-name { font-weight: 700; font-size: 14px; letter-spacing: -0.2px; }
         .brand-tag {
             font-family: 'JetBrains Mono', monospace;
@@ -52,12 +55,12 @@
             border-radius: 4px;
             background: var(--s-panel);
         }
-        .actions { display: flex; gap: 8px; align-items: center; }
+        .actions { display: flex; gap: 6px; align-items: center; flex-wrap: wrap; justify-content: flex-end; }
         .btn {
             font-family: inherit;
             font-size: 12px;
             font-weight: 500;
-            padding: 6px 12px;
+            padding: 6px 11px;
             border-radius: 6px;
             border: 1px solid var(--s-border);
             background: var(--s-bg);
@@ -67,14 +70,30 @@
             display: inline-flex;
             align-items: center;
             gap: 5px;
+            white-space: nowrap;
         }
         .btn:hover { background: var(--s-panel); border-color: var(--s-border-strong); }
+        .btn:disabled { opacity: 0.4; cursor: not-allowed; }
+        .btn:disabled:hover { background: var(--s-bg); border-color: var(--s-border); }
         .btn.primary {
             background: var(--s-text);
             color: var(--s-bg);
             border-color: var(--s-text);
         }
         .btn.primary:hover { background: #000; }
+        .btn.toggle.active {
+            background: var(--s-accent);
+            color: white;
+            border-color: var(--s-accent);
+        }
+        .btn.toggle.active:hover { background: #1d4ed8; }
+        .btn .dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: var(--s-success);
+            display: inline-block;
+        }
 
         /* MAIN LAYOUT */
         main {
@@ -90,12 +109,63 @@
             border-right: 1px solid var(--s-border);
             background: var(--s-panel);
             overflow-y: auto;
-            padding: 18px 16px 40px;
+            padding: 16px 14px 40px;
         }
         aside::-webkit-scrollbar { width: 8px; }
         aside::-webkit-scrollbar-thumb { background: var(--s-border-strong); border-radius: 4px; }
         aside::-webkit-scrollbar-track { background: transparent; }
 
+        /* THEME PRESETS */
+        .presets-section {
+            background: var(--s-bg);
+            border: 1px solid var(--s-border);
+            border-radius: 10px;
+            padding: 12px;
+            margin-bottom: 14px;
+        }
+        .preset-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 6px;
+        }
+        .preset-btn {
+            background: var(--s-bg);
+            border: 1px solid var(--s-border);
+            border-radius: 8px;
+            padding: 8px 4px;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 6px;
+            transition: all 0.15s;
+            font-family: inherit;
+        }
+        .preset-btn:hover { border-color: var(--s-accent); transform: translateY(-1px); }
+        .preset-btn.active {
+            border-color: var(--s-accent);
+            background: var(--s-accent-soft);
+            box-shadow: 0 0 0 2px var(--s-accent-soft);
+        }
+        .preset-swatches {
+            display: flex;
+            gap: 2px;
+        }
+        .preset-swatches span {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            border: 1px solid var(--s-border-strong);
+        }
+        .preset-name {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 9px;
+            letter-spacing: 0.5px;
+            color: var(--s-text);
+            text-transform: uppercase;
+        }
+
+        /* MODE SECTION (token editors) */
         .mode-section {
             background: var(--s-bg);
             border: 1px solid var(--s-border);
@@ -127,6 +197,15 @@
             border-radius: 100px;
             letter-spacing: 1px;
         }
+        .section-title {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 10px;
+            font-weight: 600;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            color: var(--s-text-dim);
+            margin-bottom: 10px;
+        }
 
         .token-group { margin-bottom: 10px; }
         .token-group:last-child { margin-bottom: 0; }
@@ -139,7 +218,6 @@
             margin-bottom: 6px;
             padding-left: 2px;
         }
-
         .token-row {
             display: grid;
             grid-template-columns: 26px 1fr 78px;
@@ -206,8 +284,31 @@
             box-shadow: 0 0 0 3px var(--s-accent-soft);
         }
         .token-hex.invalid {
-            border-color: #ef4444;
+            border-color: var(--s-danger);
             background: #fef2f2;
+        }
+
+        /* MODE INFO panel */
+        .mode-info {
+            background: var(--s-accent-soft);
+            border: 1px solid var(--s-accent);
+            border-radius: 8px;
+            padding: 10px 12px;
+            margin-bottom: 14px;
+            font-size: 11px;
+            color: #1d4ed8;
+            line-height: 1.5;
+            display: none;
+        }
+        .mode-info.show { display: block; }
+        .mode-info strong { font-weight: 600; }
+        .mode-info kbd {
+            font-family: 'JetBrains Mono', monospace;
+            background: white;
+            border: 1px solid var(--s-border-strong);
+            padding: 1px 5px;
+            border-radius: 3px;
+            font-size: 10px;
         }
 
         /* PREVIEW */
@@ -232,8 +333,23 @@
             flex-shrink: 0;
         }
         .preview-bar .path { display: flex; align-items: center; gap: 6px; }
-        .preview-bar .dot { width: 6px; height: 6px; border-radius: 50%; background: #10b981; }
+        .preview-bar .dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: var(--s-success);
+        }
         .preview-bar .meta { display: flex; gap: 12px; }
+        .preview-bar .meta .mode-badge {
+            padding: 1px 6px;
+            border-radius: 100px;
+            background: var(--s-bg);
+            border: 1px solid var(--s-border);
+        }
+        .preview-bar .meta .changes-badge.has-changes {
+            color: var(--s-accent);
+            font-weight: 600;
+        }
         .preview-frame-wrap {
             flex: 1;
             overflow: auto;
@@ -273,7 +389,6 @@
             transform: translateX(-50%) translateY(0);
         }
 
-        /* HELP overlay */
         .help-tip {
             position: fixed;
             bottom: 16px;
@@ -286,12 +401,15 @@
             border: 1px solid var(--s-border);
             border-radius: 6px;
             letter-spacing: 0.5px;
+            pointer-events: none;
         }
 
         @media (max-width: 800px) {
             main { grid-template-columns: 1fr; grid-template-rows: auto 1fr; }
-            aside { border-right: none; border-bottom: 1px solid var(--s-border); max-height: 40vh; }
-            .actions .btn span.lbl { display: none; }
+            aside { border-right: none; border-bottom: 1px solid var(--s-border); max-height: 50vh; }
+            .actions .btn .lbl { display: none; }
+            .preset-grid { grid-template-columns: repeat(5, 1fr); }
+            .preset-name { display: none; }
         }
     </style>
 </head>
@@ -300,17 +418,39 @@
 <header>
     <div class="brand">
         <div class="brand-name">Design Studio</div>
-        <div class="brand-tag">M1 · v0.10.0</div>
+        <div class="brand-tag">M2 · v0.11.0</div>
     </div>
     <div class="actions">
         <button class="btn" id="mode-toggle"><span>◐</span><span class="lbl">Light</span></button>
+        <button class="btn toggle" id="text-edit-toggle"><span>✏</span><span class="lbl">Text</span></button>
+        <button class="btn toggle" id="move-toggle"><span>↕</span><span class="lbl">Move</span></button>
+        <button class="btn" id="undo-btn" disabled><span>↶</span><span class="lbl">Undo</span></button>
         <button class="btn" id="reset-btn"><span>↺</span><span class="lbl">Reset</span></button>
-        <button class="btn primary" id="export-btn"><span>↓</span><span class="lbl">Export Patch</span></button>
+        <button class="btn primary" id="export-btn"><span>↓</span><span class="lbl">Export</span></button>
     </div>
 </header>
 
 <main>
     <aside>
+        <!-- THEME PRESETS -->
+        <div class="presets-section">
+            <div class="section-title">Theme Presets</div>
+            <div class="preset-grid" id="preset-grid"></div>
+        </div>
+
+        <!-- MODE INFO (text edit / move hints) -->
+        <div class="mode-info" id="info-text">
+            <strong>✏ Text Edit Mode</strong><br>
+            點擊履歷上任何文字直接編輯。完成後點別處離開（自動儲存）。<br>
+            <kbd>Esc</kbd> 退出編輯　·　<kbd>⌘Z</kbd> 還原
+        </div>
+        <div class="mode-info" id="info-move">
+            <strong>↕ Move Mode</strong><br>
+            拖曳工作經歷 / 專案 / 學歷 / 證照 / 語言項目重新排序。<br>
+            <kbd>Esc</kbd> 退出　·　<kbd>⌘Z</kbd> 還原
+        </div>
+
+        <!-- LIGHT TOKENS -->
         <div class="mode-section" id="section-light">
             <div class="mode-title">
                 <span>Light Mode Tokens</span>
@@ -318,6 +458,8 @@
             </div>
             <div id="light-tokens"></div>
         </div>
+
+        <!-- DARK TOKENS -->
         <div class="mode-section" id="section-dark">
             <div class="mode-title">
                 <span>Dark Mode Tokens</span>
@@ -326,6 +468,7 @@
             <div id="dark-tokens"></div>
         </div>
     </aside>
+
     <div class="preview-area">
         <div class="preview-bar">
             <div class="path">
@@ -333,8 +476,8 @@
                 <span>../index.html</span>
             </div>
             <div class="meta">
-                <span id="meta-mode">light</span>
-                <span id="meta-changes">0 changes</span>
+                <span class="mode-badge" id="meta-mode">light</span>
+                <span class="changes-badge" id="meta-changes">0 changes</span>
             </div>
         </div>
         <div class="preview-frame-wrap">
@@ -344,11 +487,14 @@
 </main>
 
 <div class="toast" id="toast"></div>
-<div class="help-tip">Click swatch to pick · Type hex directly</div>
+<div class="help-tip">Click swatch · ⌘Z undo · ⌘E export</div>
 
 <script>
 'use strict';
 
+// ============================================================
+// DEFAULT TOKENS (matches index.html v0.9 morcept theme)
+// ============================================================
 const DEFAULT_TOKENS = {
     light: {
         '--bg':            { value: '#ffffff', group: 'Backgrounds' },
@@ -375,10 +521,75 @@ const DEFAULT_TOKENS = {
         '--accent-hover':  { value: '#ffffff', group: 'Accent' },
     }
 };
-
 const GROUPS = ['Backgrounds', 'Text', 'Borders', 'Accent'];
-const STORAGE_KEY = 'studio_state_v1';
-const STUDIO_VERSION = '0.10.0-M1';
+
+// ============================================================
+// THEME PRESETS
+// ============================================================
+const PRESETS = {
+    morcept: {
+        name: 'Morcept',
+        swatches: ['#ffffff', '#222222', '#999999'],
+        light: {'--bg':'#ffffff','--bg-soft':'#fafafa','--bg-section':'#f5f5f5','--text':'#222222','--text-secondary':'#555555','--text-muted':'#999999','--border':'#e8e8e8','--border-strong':'#d4d4d4','--accent':'#222222','--accent-hover':'#000000'},
+        dark:  {'--bg':'#0e0e10','--bg-soft':'#161618','--bg-section':'#1c1c1f','--text':'#f0f0f0','--text-secondary':'#b0b0b0','--text-muted':'#707070','--border':'#2a2a2e','--border-strong':'#3a3a3f','--accent':'#f0f0f0','--accent-hover':'#ffffff'}
+    },
+    mono: {
+        name: 'Mono',
+        swatches: ['#ffffff', '#000000', '#888888'],
+        light: {'--bg':'#ffffff','--bg-soft':'#f5f5f5','--bg-section':'#eeeeee','--text':'#000000','--text-secondary':'#444444','--text-muted':'#888888','--border':'#dddddd','--border-strong':'#bbbbbb','--accent':'#000000','--accent-hover':'#222222'},
+        dark:  {'--bg':'#000000','--bg-soft':'#0a0a0a','--bg-section':'#141414','--text':'#ffffff','--text-secondary':'#cccccc','--text-muted':'#888888','--border':'#2a2a2a','--border-strong':'#444444','--accent':'#ffffff','--accent-hover':'#eeeeee'}
+    },
+    paper: {
+        name: 'Paper',
+        swatches: ['#fbf8f3', '#3d2f1f', '#8b4513'],
+        light: {'--bg':'#fbf8f3','--bg-soft':'#f5f0e5','--bg-section':'#eee7d8','--text':'#3d2f1f','--text-secondary':'#6b5742','--text-muted':'#9a8970','--border':'#d9cdb6','--border-strong':'#b8a78a','--accent':'#8b4513','--accent-hover':'#6b3410'},
+        dark:  {'--bg':'#1a1410','--bg-soft':'#211a14','--bg-section':'#2a2218','--text':'#f0e5d0','--text-secondary':'#c5b89e','--text-muted':'#8a7960','--border':'#3a2f24','--border-strong':'#54462f','--accent':'#d4a574','--accent-hover':'#e8b884'}
+    },
+    ocean: {
+        name: 'Ocean',
+        swatches: ['#f7fbfd', '#0c2a3d', '#0369a1'],
+        light: {'--bg':'#f7fbfd','--bg-soft':'#eef6fa','--bg-section':'#e0eef4','--text':'#0c2a3d','--text-secondary':'#3a5e7a','--text-muted':'#7a98aa','--border':'#c5dde8','--border-strong':'#9ec0d4','--accent':'#0369a1','--accent-hover':'#024c75'},
+        dark:  {'--bg':'#0a1922','--bg-soft':'#0f2230','--bg-section':'#15303f','--text':'#e0eef5','--text-secondary':'#a8c4d4','--text-muted':'#647e8e','--border':'#1f3a4b','--border-strong':'#2f5165','--accent':'#38bdf8','--accent-hover':'#56cef9'}
+    },
+    forest: {
+        name: 'Forest',
+        swatches: ['#fafdf9', '#1a2e1a', '#2d6a3a'],
+        light: {'--bg':'#fafdf9','--bg-soft':'#f1f7ed','--bg-section':'#e2efdc','--text':'#1a2e1a','--text-secondary':'#3d5a3d','--text-muted':'#7a907a','--border':'#c4d6c0','--border-strong':'#9bb89b','--accent':'#2d6a3a','--accent-hover':'#1f5028'},
+        dark:  {'--bg':'#0c1410','--bg-soft':'#11201a','--bg-section':'#1a2e22','--text':'#e0ebd9','--text-secondary':'#b5c8a8','--text-muted':'#677a5e','--border':'#243024','--border-strong':'#3a4a34','--accent':'#4ade80','--accent-hover':'#65e495'}
+    }
+};
+
+// ============================================================
+// MOVABLE CONTAINERS
+// ============================================================
+const CONTAINERS = {
+    experience: {
+        childSelector: '.exp-item',
+        getId: el => el.querySelector('.exp-title')?.dataset.i18n || el.querySelector('.exp-title')?.textContent.trim()
+    },
+    projects: {
+        childSelector: '.project-item',
+        getId: el => el.querySelector('.project-name')?.dataset.i18n || el.querySelector('.project-name')?.textContent.trim().split(' ')[0]
+    },
+    education: {
+        childSelector: '.edu-item',
+        getId: el => el.querySelector('.edu-school')?.dataset.i18n
+    },
+    certifications: {
+        childSelector: '.cert-item',
+        getId: el => el.querySelector('.cert-name')?.dataset.i18n
+    },
+    languages: {
+        childSelector: '.lang-item',
+        getId: el => el.querySelector('.lang-name')?.textContent.trim()
+    }
+};
+
+// ============================================================
+// STATE
+// ============================================================
+const STORAGE_KEY = 'studio_state_v2';
+const STUDIO_VERSION = '0.11.0-M2';
 
 function defaultTokensFlat() {
     const out = { light: {}, dark: {} };
@@ -391,18 +602,82 @@ function defaultTokensFlat() {
 function loadState() {
     try {
         const s = JSON.parse(localStorage.getItem(STORAGE_KEY));
-        if (s && s.tokens && s.tokens.light && s.tokens.dark) return s;
+        if (s && s.tokens && s.tokens.light && s.tokens.dark) {
+            s.textPatches ??= {};
+            s.movePatches ??= {};
+            s.history ??= [];
+            s.currentPreset ??= 'morcept';
+            s.textEditMode ??= false;
+            s.moveMode ??= false;
+            return s;
+        }
     } catch (e) {}
-    return { tokens: defaultTokensFlat(), darkMode: false };
+    return {
+        tokens: defaultTokensFlat(),
+        darkMode: false,
+        textPatches: {},
+        movePatches: {},
+        history: [],
+        currentPreset: 'morcept',
+        textEditMode: false,
+        moveMode: false
+    };
 }
 
 function saveState() {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+    const toSave = { ...state };
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(toSave));
 }
 
 const state = loadState();
 const iframe = document.getElementById('preview');
+let dragSrc = null;
 
+// ============================================================
+// HISTORY (Undo)
+// ============================================================
+function snapshotState() {
+    return {
+        tokens: structuredClone(state.tokens),
+        textPatches: structuredClone(state.textPatches),
+        movePatches: structuredClone(state.movePatches),
+        darkMode: state.darkMode,
+        currentPreset: state.currentPreset
+    };
+}
+
+function pushHistory(label) {
+    state.history.push({ snapshot: snapshotState(), label, time: Date.now() });
+    if (state.history.length > 50) state.history.shift();
+    updateUndoBtn();
+}
+
+function undo() {
+    if (state.history.length === 0) {
+        toast('沒有可還原的步驟');
+        return;
+    }
+    const entry = state.history.pop();
+    state.tokens = entry.snapshot.tokens;
+    state.textPatches = entry.snapshot.textPatches;
+    state.movePatches = entry.snapshot.movePatches;
+    state.darkMode = entry.snapshot.darkMode;
+    state.currentPreset = entry.snapshot.currentPreset;
+    saveState();
+    renderControls();
+    applyToIframe();
+    updateChangeCount();
+    updateUndoBtn();
+    toast('↶ 已還原：' + entry.label);
+}
+
+function updateUndoBtn() {
+    document.getElementById('undo-btn').disabled = state.history.length === 0;
+}
+
+// ============================================================
+// TOKEN ROW RENDERING
+// ============================================================
 function isValidHex(v) {
     return /^#[0-9a-fA-F]{6}$/.test(v);
 }
@@ -410,8 +685,6 @@ function isValidHex(v) {
 function buildTokenRow(mode, varName, value) {
     const row = document.createElement('div');
     row.className = 'token-row';
-    row.dataset.mode = mode;
-    row.dataset.var = varName;
     row.innerHTML = `
         <div class="swatch" style="--c:${value}">
             <input type="color" value="${value}" data-mode="${mode}" data-var="${varName}" data-kind="color">
@@ -440,8 +713,29 @@ function renderControls() {
             container.appendChild(groupDiv);
         }
     }
+    renderPresets();
     updateActiveSection();
     updateChangeCount();
+    updateUndoBtn();
+    updateToggleStates();
+}
+
+function renderPresets() {
+    const grid = document.getElementById('preset-grid');
+    grid.innerHTML = '';
+    for (const [key, preset] of Object.entries(PRESETS)) {
+        const btn = document.createElement('button');
+        btn.className = 'preset-btn' + (state.currentPreset === key ? ' active' : '');
+        btn.dataset.preset = key;
+        btn.innerHTML = `
+            <div class="preset-swatches">
+                ${preset.swatches.map(c => `<span style="background:${c}"></span>`).join('')}
+            </div>
+            <span class="preset-name">${preset.name}</span>
+        `;
+        btn.addEventListener('click', () => applyPreset(key));
+        grid.appendChild(btn);
+    }
 }
 
 function updateActiveSection() {
@@ -454,6 +748,13 @@ function updateActiveSection() {
     btn.innerHTML = state.darkMode ? '<span>◑</span><span class="lbl">Dark</span>' : '<span>◐</span><span class="lbl">Light</span>';
 }
 
+function updateToggleStates() {
+    document.getElementById('text-edit-toggle').classList.toggle('active', state.textEditMode);
+    document.getElementById('move-toggle').classList.toggle('active', state.moveMode);
+    document.getElementById('info-text').classList.toggle('show', state.textEditMode);
+    document.getElementById('info-move').classList.toggle('show', state.moveMode);
+}
+
 function countChanges() {
     const defaults = defaultTokensFlat();
     let n = 0;
@@ -462,23 +763,28 @@ function countChanges() {
             if (defaults[m][k].toLowerCase() !== v.toLowerCase()) n++;
         }
     }
+    n += Object.keys(state.textPatches).length;
+    n += Object.keys(state.movePatches).length;
     return n;
 }
 
 function updateChangeCount() {
     const n = countChanges();
-    document.getElementById('meta-changes').textContent = n === 1 ? '1 change' : `${n} changes`;
+    const el = document.getElementById('meta-changes');
+    el.textContent = n === 1 ? '1 change' : `${n} changes`;
+    el.classList.toggle('has-changes', n > 0);
 }
 
+// ============================================================
+// IFRAME OVERRIDES
+// ============================================================
 function buildOverridesCss() {
     const lightCss = Object.entries(state.tokens.light).map(([k, v]) => `${k}: ${v};`).join(' ');
     const darkCss = Object.entries(state.tokens.dark).map(([k, v]) => `${k}: ${v};`).join(' ');
     return `:root { ${lightCss} } body.dark-mode { ${darkCss} } .ctrl-btns, .export-btn { display: none !important; }`;
 }
 
-function applyToIframe() {
-    const doc = iframe.contentDocument;
-    if (!doc || !doc.body) return;
+function injectOverrideStyle(doc) {
     let style = doc.getElementById('studio-overrides');
     if (!style) {
         style = doc.createElement('style');
@@ -486,9 +792,241 @@ function applyToIframe() {
         doc.head.appendChild(style);
     }
     style.textContent = buildOverridesCss();
-    doc.body.classList.toggle('dark-mode', state.darkMode);
 }
 
+function applyTextPatches(doc) {
+    for (const [key, html] of Object.entries(state.textPatches)) {
+        const el = doc.querySelector(`[data-i18n="${CSS.escape(key)}"]`);
+        if (el) el.innerHTML = html;
+    }
+}
+
+function applyMovePatches(doc) {
+    for (const [key, order] of Object.entries(state.movePatches)) {
+        const cfg = CONTAINERS[key];
+        if (!cfg) continue;
+        const sample = doc.querySelector(cfg.childSelector);
+        if (!sample) continue;
+        const parent = sample.parentElement;
+        const children = Array.from(parent.querySelectorAll(`:scope > ${cfg.childSelector}`));
+        const byId = new Map();
+        children.forEach(el => byId.set(cfg.getId(el), el));
+        for (const id of order) {
+            const el = byId.get(id);
+            if (el) parent.appendChild(el);
+        }
+        for (const el of children) {
+            if (!order.includes(cfg.getId(el))) parent.appendChild(el);
+        }
+    }
+}
+
+function applyToIframe() {
+    const doc = iframe.contentDocument;
+    if (!doc || !doc.body) return;
+    injectOverrideStyle(doc);
+    applyTextPatches(doc);
+    applyMovePatches(doc);
+    doc.body.classList.toggle('dark-mode', state.darkMode);
+    // Re-apply edit/move modes if toggled
+    setTextEditMode(state.textEditMode);
+    setMoveMode(state.moveMode);
+}
+
+// ============================================================
+// TEXT EDIT MODE
+// ============================================================
+function setTextEditMode(on) {
+    state.textEditMode = on;
+    const doc = iframe.contentDocument;
+    if (!doc) return;
+    const editables = doc.querySelectorAll('[data-i18n]');
+    editables.forEach(el => {
+        if (on) {
+            el.contentEditable = 'true';
+            el.classList.add('studio-editable');
+        } else {
+            el.removeAttribute('contenteditable');
+            el.classList.remove('studio-editable');
+        }
+    });
+    let style = doc.getElementById('studio-text-edit-style');
+    if (on && !style) {
+        style = doc.createElement('style');
+        style.id = 'studio-text-edit-style';
+        style.textContent = `
+            .studio-editable {
+                outline: 2px dashed #2563eb !important;
+                outline-offset: 3px;
+                cursor: text !important;
+                min-height: 1em;
+                border-radius: 2px;
+                transition: outline-color 0.15s, background 0.15s;
+            }
+            .studio-editable:hover { outline-color: #1d4ed8 !important; background: rgba(37,99,235,0.04); }
+            .studio-editable:focus { outline-color: #1d4ed8 !important; background: rgba(37,99,235,0.08); }
+        `;
+        doc.head.appendChild(style);
+    } else if (!on && style) {
+        style.remove();
+    }
+    updateToggleStates();
+}
+
+function handleTextEditBlur(e) {
+    if (!e.target.matches?.('.studio-editable')) return;
+    const key = e.target.dataset.i18n;
+    if (!key) return;
+    const html = e.target.innerHTML.trim();
+    const defaultHtml = e.target.dataset.studioDefault;
+    if (defaultHtml === undefined) {
+        e.target.dataset.studioDefault = html;
+        return;
+    }
+    if (state.textPatches[key] === html) return;
+    pushHistory('text:' + key);
+    if (html === defaultHtml) {
+        delete state.textPatches[key];
+    } else {
+        state.textPatches[key] = html;
+    }
+    saveState();
+    updateChangeCount();
+}
+
+// ============================================================
+// MOVE MODE
+// ============================================================
+function setMoveMode(on) {
+    state.moveMode = on;
+    const doc = iframe.contentDocument;
+    if (!doc) return;
+    const movables = doc.querySelectorAll('.exp-item, .project-item, .edu-item, .cert-item, .lang-item');
+    movables.forEach(el => {
+        if (on) {
+            el.draggable = true;
+            el.classList.add('studio-movable');
+        } else {
+            el.draggable = false;
+            el.classList.remove('studio-movable');
+        }
+    });
+    let style = doc.getElementById('studio-move-style');
+    if (on && !style) {
+        style = doc.createElement('style');
+        style.id = 'studio-move-style';
+        style.textContent = `
+            .studio-movable {
+                cursor: move !important;
+                position: relative;
+                transition: transform 0.15s, opacity 0.15s;
+            }
+            .studio-movable:hover {
+                outline: 2px dashed #2563eb !important;
+                outline-offset: 2px;
+                border-radius: 4px;
+            }
+            .studio-movable::before {
+                content: '⋮⋮';
+                position: absolute;
+                left: -16px;
+                top: 50%;
+                transform: translateY(-50%);
+                color: #2563eb;
+                font-size: 14px;
+                letter-spacing: -3px;
+                font-weight: 900;
+                opacity: 0.8;
+                pointer-events: none;
+            }
+            .studio-movable.dragging { opacity: 0.4; }
+            .studio-movable.drag-over-top { box-shadow: 0 -3px 0 #2563eb; }
+            .studio-movable.drag-over-bottom { box-shadow: 0 3px 0 #2563eb; }
+        `;
+        doc.head.appendChild(style);
+    } else if (!on && style) {
+        style.remove();
+    }
+    updateToggleStates();
+}
+
+function attachIframeListeners() {
+    const doc = iframe.contentDocument;
+    if (!doc || doc._studioListenersAttached) return;
+    doc._studioListenersAttached = true;
+
+    // Text edit blur
+    doc.addEventListener('blur', handleTextEditBlur, true);
+
+    // Move: drag & drop
+    doc.addEventListener('dragstart', (e) => {
+        const t = e.target.classList?.contains('studio-movable') ? e.target : null;
+        if (!t) return;
+        dragSrc = t;
+        t.classList.add('dragging');
+        e.dataTransfer.effectAllowed = 'move';
+        try { e.dataTransfer.setData('text/plain', ''); } catch {}
+    });
+    doc.addEventListener('dragend', (e) => {
+        if (e.target.classList?.contains('studio-movable')) e.target.classList.remove('dragging');
+        doc.querySelectorAll('.drag-over-top, .drag-over-bottom').forEach(el => el.classList.remove('drag-over-top', 'drag-over-bottom'));
+        dragSrc = null;
+    });
+    doc.addEventListener('dragover', (e) => {
+        if (!dragSrc) return;
+        const target = e.target.closest?.('.studio-movable');
+        if (!target || target === dragSrc || target.parentNode !== dragSrc.parentNode) return;
+        e.preventDefault();
+        doc.querySelectorAll('.drag-over-top, .drag-over-bottom').forEach(el => el.classList.remove('drag-over-top', 'drag-over-bottom'));
+        const rect = target.getBoundingClientRect();
+        const before = e.clientY < rect.top + rect.height / 2;
+        target.classList.add(before ? 'drag-over-top' : 'drag-over-bottom');
+    });
+    doc.addEventListener('drop', (e) => {
+        if (!dragSrc) return;
+        const target = e.target.closest?.('.studio-movable');
+        if (!target || target === dragSrc || target.parentNode !== dragSrc.parentNode) return;
+        e.preventDefault();
+        const parent = target.parentNode;
+        const rect = target.getBoundingClientRect();
+        const before = e.clientY < rect.top + rect.height / 2;
+        pushHistory('move:' + identifyContainer(parent));
+        parent.insertBefore(dragSrc, before ? target : target.nextSibling);
+        captureContainerOrder(parent);
+        target.classList.remove('drag-over-top', 'drag-over-bottom');
+        saveState();
+        updateChangeCount();
+    });
+
+    // ESC to exit modes
+    doc.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') {
+            if (state.textEditMode) { setTextEditMode(false); saveState(); toast('已退出文字編輯'); }
+            else if (state.moveMode) { setMoveMode(false); saveState(); toast('已退出排序模式'); }
+        }
+    });
+}
+
+function identifyContainer(parent) {
+    for (const [key, cfg] of Object.entries(CONTAINERS)) {
+        if (parent.querySelector(cfg.childSelector)?.parentElement === parent) return key;
+    }
+    return 'unknown';
+}
+
+function captureContainerOrder(parent) {
+    for (const [key, cfg] of Object.entries(CONTAINERS)) {
+        const sample = parent.querySelector(cfg.childSelector);
+        if (!sample || sample.parentElement !== parent) continue;
+        const order = Array.from(parent.querySelectorAll(`:scope > ${cfg.childSelector}`)).map(el => cfg.getId(el)).filter(Boolean);
+        state.movePatches[key] = order;
+        return;
+    }
+}
+
+// ============================================================
+// TOAST / UI
+// ============================================================
 function toast(msg) {
     const t = document.getElementById('toast');
     t.textContent = msg;
@@ -497,6 +1035,9 @@ function toast(msg) {
     toast._timer = setTimeout(() => t.classList.remove('show'), 1900);
 }
 
+// ============================================================
+// PATCH JSON BUILD / EXPORT
+// ============================================================
 function buildPatch() {
     const defaults = defaultTokensFlat();
     const tokens = {};
@@ -508,11 +1049,14 @@ function buildPatch() {
         if (defaults.dark[k].toLowerCase() !== v.toLowerCase()) tokensDark[k] = v;
     }
     return {
-        version: 'studio_patch_v1',
+        version: 'studio_patch_v2',
         createdAt: new Date().toISOString(),
         basedOn: { studioVersion: STUDIO_VERSION },
+        themePreset: state.currentPreset,
         tokens,
         tokensDark,
+        textPatches: { ...state.textPatches },
+        movePatches: { ...state.movePatches },
         elementOverrides: [],
         htmlPatches: []
     };
@@ -520,7 +1064,10 @@ function buildPatch() {
 
 async function exportPatch() {
     const patch = buildPatch();
-    const isEmpty = Object.keys(patch.tokens).length === 0 && Object.keys(patch.tokensDark).length === 0;
+    const isEmpty = Object.keys(patch.tokens).length === 0
+        && Object.keys(patch.tokensDark).length === 0
+        && Object.keys(patch.textPatches).length === 0
+        && Object.keys(patch.movePatches).length === 0;
     if (isEmpty) {
         toast('沒有修改可匯出');
         return;
@@ -540,12 +1087,37 @@ async function exportPatch() {
         await navigator.clipboard?.writeText(json);
         copied = true;
     } catch (e) {}
-    toast(copied ? '✓ Patch 下載 + 已複製剪貼簿' : '✓ Patch 已下載');
+    toast(copied ? '✓ Patch 已下載 + 複製剪貼簿' : '✓ Patch 已下載');
 }
+
+// ============================================================
+// PRESET APPLY
+// ============================================================
+function applyPreset(key) {
+    const preset = PRESETS[key];
+    if (!preset) return;
+    pushHistory('preset:' + key);
+    state.tokens = {
+        light: structuredClone(preset.light),
+        dark: structuredClone(preset.dark)
+    };
+    state.currentPreset = key;
+    saveState();
+    renderControls();
+    applyToIframe();
+    updateChangeCount();
+    toast(`套用 ${preset.name} 主題`);
+}
+
+// ============================================================
+// TOKEN CHANGE HANDLER
+// ============================================================
+let activeTokenSession = null;
+let tokenSessionTimer = null;
 
 function handleTokenChange(e) {
     const t = e.target;
-    if (!t.dataset.var) return;
+    if (!t.dataset?.var) return;
     const mode = t.dataset.mode;
     const varName = t.dataset.var;
     let val = t.value.trim();
@@ -558,11 +1130,21 @@ function handleTokenChange(e) {
         t.classList.remove('invalid');
     }
     val = val.toLowerCase();
+    if (state.tokens[mode][varName] === val) return;
+    // Push history once per "session" (continuous drag = one undo entry)
+    const sessionKey = mode + ':' + varName;
+    if (activeTokenSession !== sessionKey) {
+        pushHistory('token:' + varName);
+        activeTokenSession = sessionKey;
+    }
+    clearTimeout(tokenSessionTimer);
+    tokenSessionTimer = setTimeout(() => { activeTokenSession = null; }, 800);
+
     state.tokens[mode][varName] = val;
     const row = t.closest('.token-row');
     if (row) {
         row.querySelector('.swatch').style.setProperty('--c', val);
-        row.querySelectorAll(`input[data-var="${varName}"]`).forEach(inp => {
+        row.querySelectorAll(`input[data-var="${varName}"][data-mode="${mode}"]`).forEach(inp => {
             if (inp !== t) inp.value = val;
         });
     }
@@ -571,7 +1153,11 @@ function handleTokenChange(e) {
     updateChangeCount();
 }
 
+// ============================================================
+// MODE / RESET / TOGGLES
+// ============================================================
 function toggleMode() {
+    pushHistory('mode-toggle');
     state.darkMode = !state.darkMode;
     updateActiveSection();
     applyToIframe();
@@ -579,36 +1165,65 @@ function toggleMode() {
 }
 
 function resetAll() {
-    if (countChanges() > 0 && !confirm('清空所有 token 修改回到原始 morcept 風格？\n（不影響當前 light/dark 模式選擇）')) return;
+    if (countChanges() > 0 && !confirm('清空所有修改回到 Morcept 預設？\n（包含 token、文字編輯、排序）')) return;
+    pushHistory('reset');
     state.tokens = defaultTokensFlat();
-    renderControls();
-    applyToIframe();
+    state.textPatches = {};
+    state.movePatches = {};
+    state.currentPreset = 'morcept';
+    // Reload iframe to clear DOM mutations
     saveState();
-    toast('已重置為預設 tokens');
+    renderControls();
+    iframe.src = '../index.html';
+    toast('已重置為 Morcept 預設');
 }
 
-// Wire events
+function toggleTextEdit() {
+    setTextEditMode(!state.textEditMode);
+    saveState();
+}
+
+function toggleMoveMode() {
+    setMoveMode(!state.moveMode);
+    saveState();
+}
+
+// ============================================================
+// WIRE EVENTS
+// ============================================================
 document.addEventListener('input', handleTokenChange);
 document.addEventListener('change', handleTokenChange);
+
 document.getElementById('mode-toggle').addEventListener('click', toggleMode);
+document.getElementById('text-edit-toggle').addEventListener('click', toggleTextEdit);
+document.getElementById('move-toggle').addEventListener('click', toggleMoveMode);
+document.getElementById('undo-btn').addEventListener('click', undo);
 document.getElementById('reset-btn').addEventListener('click', resetAll);
 document.getElementById('export-btn').addEventListener('click', exportPatch);
 
-iframe.addEventListener('load', applyToIframe);
+iframe.addEventListener('load', () => {
+    applyToIframe();
+    attachIframeListeners();
+});
 
-renderControls();
-
-// Tip: keyboard shortcut
+// Keyboard shortcuts
 document.addEventListener('keydown', (e) => {
-    if ((e.metaKey || e.ctrlKey) && e.key === 'e') {
+    if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'z' && !e.shiftKey) {
+        e.preventDefault();
+        undo();
+    }
+    if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'e') {
         e.preventDefault();
         exportPatch();
     }
-    if ((e.metaKey || e.ctrlKey) && e.key === 'd') {
+    if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'd') {
         e.preventDefault();
         toggleMode();
     }
 });
+
+// Initial render
+renderControls();
 </script>
 </body>
 </html>
