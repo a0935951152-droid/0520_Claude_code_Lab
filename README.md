@@ -8,19 +8,21 @@
 
 ```
 0520_Claude_code_Lab/
-├── index.html              # 個人簡歷網頁 shell（v0.12 起拆檔）
+├── index.html              # 履歷網頁 shell（v0.12 起拆檔）
 ├── assets/
-│   ├── styles.css          # 履歷網頁 CSS
-│   └── scripts.js          # 履歷網頁 JS（i18n / mode / contact form）
-├── README.md
-├── CHANGELOG.md
-├── TODO.md
-├── CLAUDE.md
-├── ARCHITECTURE.md
+│   ├── styles.css          # 履歷 CSS
+│   └── scripts.js          # 履歷 JS（i18n / mode / contact form）
+├── README.md               # 專案說明 + 完整版本歷程
+├── CHANGELOG.md            # Keep a Changelog 格式版本紀錄
+├── TODO.md                 # 待辦 / 規劃中功能
+├── CLAUDE.md               # Claude Code 專案守則（精簡版，v0.12.1 起）
+├── ARCHITECTURE.md         # 架構紀錄（檔案結構 / token / JS 模組 / Studio 規格）
+├── RESUME.md               # 蕭哲安履歷資料摘要（v0.12.1 起，從 CLAUDE.md 抽出）
+├── LINKS.md                # index.html 可點擊元素 / 外部連結對照（v0.12.1 起，從 CLAUDE.md 抽出）
 └── tools/
     ├── studio.html         # Design Studio shell
     ├── studio.css          # Studio CSS
-    └── studio.js           # Studio JS（token editor / text edit / move / undo / export）
+    └── studio.js           # Studio JS（token / text edit / move / undo / export）
 ```
 
 > 拆檔守則：單一檔案達 1000 行即拆分（HTML → .css / .js）。詳見 CLAUDE.md §5。
@@ -48,9 +50,17 @@
 - 深 / 淺色雙模式（預設淺色 minimalist，深色採低調優雅而非賽博龐克）
 - 可點擊元素：Email、GitHub、四張專案卡（各含 `View Docs / Watch Demo / View Drive` 按鈕）
 
-### CLAUDE.md — Claude 記憶檔
-- 記錄設計規則、連結對照表、歷史決策
-- 供 Claude Code 在新對話中快速重建專案上下文
+### 文件分工（v0.12.1 起重整）
+
+| 檔案 | 內容 | 何時讀 |
+|------|------|--------|
+| `CLAUDE.md` | 設計守則 + 環境參數 + 文件導覽 | 每次對話開頭自動載入 |
+| `RESUME.md` | 蕭哲安履歷文字摘要（基本 / 學歷 / 經歷 / 技能 / 證照 / 專案） | 需要編輯履歷內容時 |
+| `LINKS.md` | `index.html` 可點擊元素 / 連結對照表 | 連結變動或新增互動元素時 |
+| `ARCHITECTURE.md` | 設計 token / JS 模組 / 部署流程 / Studio 規格 / Patch schema | 做結構性改動時 |
+| `README.md` | 專案總覽 + 完整版本表 | 想看歷史脈絡時 |
+| `CHANGELOG.md` | 詳細版本變更紀錄（Keep a Changelog 格式） | 想看特定版本細節時 |
+| `TODO.md` | 待辦 / 規劃中功能 / 里程碑進度 | 規劃新功能時 |
 
 ---
 
@@ -85,6 +95,7 @@
 | v0.10.1 | 2026-05-14 | `index.html` 左下加 🎨 Studio 按鈕，串接「履歷頁 → Studio → Export → Claude Code 合併」完整工作流 |
 | v0.11.0 | 2026-05-14 | **Studio 增強包**：Theme Presets (5 主題) + ✏ Text Edit + ↕ Move + ↶ Undo（`⌘Z`） |
 | v0.12.0 | 2026-05-14 | **拆檔**（index / studio 各拆 3 檔）+ 1000 行守則 + Sidebar 可拖移調寬 + Move 支援整塊 panel 跨欄拖曳 |
+| v0.12.1 | 2026-05-14 | **文件重整**：CLAUDE.md 瘦身（129→76 行）；履歷摘要 → `RESUME.md`、連結對照表 → `LINKS.md`、版本歷程留在 README |
 
 ---
 

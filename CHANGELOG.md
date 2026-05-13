@@ -4,6 +4,29 @@
 
 ---
 
+## [0.12.1] — 2026-05-14
+
+### Changed — 文件結構重整
+- **`CLAUDE.md` 瘦身**（129 → 76 行）：只保留守則 + 環境參數 + 文件導覽
+  - 移除：履歷資料摘要、可點擊元素對照表、版本歷程
+  - 保留：專案基本資訊、MCP/Token 設定、設計規則、注意事項
+  - 新增：「文件導覽（按需讀取）」段落，列表指向 RESUME / LINKS / README / CHANGELOG / ARCHITECTURE / TODO
+- **新增 `RESUME.md`**（142 行）：蕭哲安履歷資料摘要
+  - 基本資料、求職目標、學歷、工作經歷、核心技能、證照、語言能力、自我介紹（中英）、專案經歷、Stats 快照
+  - 用途：Claude 在編輯履歷內容、做 i18n 翻譯、新增專案 / 經歷時讀取
+- **新增 `LINKS.md`**（94 行）：可點擊元素 / 外部連結對照表
+  - 聯絡資訊區、專案卡按鈕、ctrl-btns、Export PDF、內部互動、Footer、i18n keys 對照、維護規則
+  - 用途：Claude 在處理連結變動或新增互動元素時讀取
+- **`README.md` 補強**：版本表保留完整 v0.1 → v0.12.1；新增「文件分工」說明表
+- 「每次更動同步守則」改寫為依變更性質分流（連結→LINKS / 履歷→RESUME / 結構→ARCHITECTURE / 待辦→TODO / 版本→CHANGELOG+README），**不再寫 CLAUDE.md**
+
+### Technical
+- CLAUDE.md 變成「always-loaded 核心」，其他 .md 變成「按需讀取分檔」
+- 降低每次新對話的初始 context 負擔
+- 內容分檔減少同步檔案數量壓力
+
+---
+
 ## [0.12.0] — 2026-05-14
 
 ### Added — Studio 改進 + 檔案拆分守則
