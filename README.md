@@ -8,11 +8,12 @@
 
 ```
 0520_Claude_code_Lab/
-├── index.html          # 個人簡歷網頁（賽博龐克風格）
+├── index.html          # 個人簡歷網頁（morcept.com 簡約風，v0.9 起）
 ├── README.md           # 專案說明
 ├── CHANGELOG.md        # 版本更新紀錄
 ├── TODO.md             # 待辦事項
-└── CLAUDE.md           # Claude 專案記憶（規則 / 連結對照 / 注意事項）
+├── CLAUDE.md           # Claude 專案記憶（規則 / 連結對照 / 注意事項）
+└── ARCHITECTURE.md     # 架構紀錄（檔案結構 / 設計 token / JS 模組 / 未來規劃）
 ```
 
 > 註：`/resume-push` Skill 屬使用者層級（`~/.claude/skills/resume-push.md`），不歸屬本 repo。
@@ -59,6 +60,7 @@
 | v0.7 | 2026-05-07 | PDF 匯出按鈕、列印樣式、行動裝置優化（Stats Bar 3×2、字體自適應） |
 | v0.8 | 2026-05-07 | 深色/淺色切換、中英多語、打字機效果、技能折疊、聯絡表單、訪客計數器、resume-push Skill 升級 |
 | v0.9 | 2026-05-13 | 整體風格大改版：賽博龐克 → morcept.com 簡約風（白底深字、圓角卡片、細邊框、留白排版） |
+| v0.9.1 | 2026-05-13 | 新增 `ARCHITECTURE.md` 架構紀錄；規劃未來 HTML Live Editor（不 push 額外工具） |
 
 ---
 

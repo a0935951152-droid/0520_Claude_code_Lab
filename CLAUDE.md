@@ -12,6 +12,7 @@
 | Repo | `a0935951152-droid/0520_Claude_code_Lab` |
 | 主分支 | `main` |
 | 主要檔案 | `index.html`（個人簡歷網頁） |
+| 架構文件 | `ARCHITECTURE.md`（**結構性變更須先讀此檔**） |
 | GitHub Pages | `https://a0935951152-droid.github.io/0520_Claude_code_Lab/` |
 | 本地工作目錄 | `/home/test/0520/` |
 | 原始履歷 PDF | `/home/test/0520/蕭哲安.pdf` |
@@ -41,7 +42,7 @@
    - 任何「賽博龐克」相關元素（霓虹色、clip-path 切角、glitch、scanline）一律不得加回，除非使用者明確要求復古
 2. **禁止修改排版結構**：左右雙欄、Stats Bar、Header / Footer 位置不得變動。
 3. **新增連結**：用 `<a>` 包裹元素，必須加 `text-decoration:none; color:inherit; display:block`，確保視覺完全不變。
-4. **每次更動 `index.html` 後**，必須同步更新 README.md（版本表）、CHANGELOG.md（新增版本條目）、TODO.md（勾選已完成項目）、CLAUDE.md（連結對照表 / 版本記錄）。
+4. **每次更動 `index.html` 後**，必須同步更新 README.md（版本表）、CHANGELOG.md（新增版本條目）、TODO.md（勾選已完成項目）、CLAUDE.md（連結對照表 / 版本記錄）、ARCHITECTURE.md（若涉及結構 / token / JS 模組變更）。
 
 ---
 
@@ -77,6 +78,7 @@
 | v0.7 | 2026-05-07 | PDF 匯出按鈕、`@media print`、行動裝置優化 |
 | v0.8 | 2026-05-07 | 深色/淺色切換、中英多語、打字機效果、技能折疊、聯絡表單、訪客計數器、Skill 升級 |
 | v0.9 | 2026-05-13 | 整體風格大改版：賽博龐克 → morcept.com 簡約風（白底深字、圓角卡片、細邊框、留白） |
+| v0.9.1 | 2026-05-13 | 新增 `ARCHITECTURE.md` 架構紀錄檔；記錄未來「HTML Live Editor（不 push）」規劃 |
 
 ---
 

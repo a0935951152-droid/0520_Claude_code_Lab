@@ -4,6 +4,25 @@
 
 ---
 
+## [0.9.1] — 2026-05-13
+
+### Added
+- `ARCHITECTURE.md` — 新增專案架構紀錄檔，內容包含：
+  - §1 檔案結構、§2 技術棧、§3 設計 token（CSS variables）、§4 排版結構
+  - §5 JavaScript 模組對照、§6 可點擊元素對照表、§7 部署流程
+  - §8 **未來規劃工具**：「HTML Live Editor — 不 push 模式」規格草案
+    - 額外工具，與主 `index.html` 解耦
+    - 僅編輯 HTML 內容（DOM / 文字 / 連結），CSS 沿用現有 token
+    - 完全不觸發 git push，純本地操作（localStorage / export 下載）
+  - §9 版本對應、§10 維護規則
+- `CLAUDE.md` — 維護規則加入「結構性變更須同步更新 ARCHITECTURE.md」
+- `TODO.md` — 新增「規劃中（未開工）」段落，列出 HTML Live Editor 詳細待辦
+
+### Changed
+- 無 `index.html` 變更（純文件版本）
+
+---
+
 ## [0.9] — 2026-05-13
 
 ### Changed

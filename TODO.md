@@ -54,6 +54,27 @@
   - 預設模式由 dark cyberpunk 改為 light minimalist
   - 保留所有可點擊元素、i18n、PDF 匯出、Contact modal、訪客計數器等功能
 
+- [x] **建立 `ARCHITECTURE.md` 架構紀錄檔**（2026-05-13）
+  - 記錄檔案結構、設計 token、JS 模組、可點擊元素、部署流程
+  - 列出未來工具規劃段落
+
+---
+
+## 規劃中（未開工）
+
+- [ ] **HTML Live Editor — 不 push 額外工具**
+  - 屬性：**額外工具**，與主簡歷 `index.html` 解耦；**不觸發 git push**
+  - 目的：本地快速試做 UI / 版面 A/B，不污染 main 分支歷史
+  - 編輯範圍：僅修改 HTML 內容（DOM 結構 / 文字 / 連結），CSS 沿用現有 token
+  - 形式（待決）：
+    - (A) 獨立 HTML 頁面 `tools/editor.html`（瀏覽器內 contenteditable + iframe 預覽 + export 下載）
+    - (B) Claude Code Skill（如 `/html-edit`，產生 diff 等使用者確認後才 commit）
+    - (C) 兩者並存
+  - 儲存：localStorage 或 export `.html` 下載
+  - 還原：一鍵 reset 回 `index.html` 原始狀態
+  - 邊界：禁止自動寫入 `index.html`、禁止觸碰 `.git/`、禁止執行任何 git 指令
+  - 詳細規格：見 `ARCHITECTURE.md` §8.1
+
 ---
 
 ## 已完成
