@@ -4,329 +4,307 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>蕭哲安 | AI & Firmware Engineer</title>
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Share+Tech+Mono&family=Noto+Sans+TC:wght@300;400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;900&family=Noto+Sans+TC:wght@300;400;500;700;900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
     <style>
         :root {
-            --cyan: #00f5ff;
-            --magenta: #ff00cc;
-            --green: #39ff14;
-            --yellow: #ffd700;
-            --dark: #0a0a0f;
-            --dark2: #0f0f1a;
-            --dark3: #141428;
-            --text: #c8d6e5;
-            --text-dim: #6c7a89;
-            --border: rgba(0, 245, 255, 0.3);
+            --bg: #ffffff;
+            --bg-soft: #fafafa;
+            --bg-section: #f5f5f5;
+            --text: #222222;
+            --text-secondary: #555555;
+            --text-muted: #999999;
+            --border: #e8e8e8;
+            --border-strong: #d4d4d4;
+            --accent: #222222;
+            --accent-hover: #000000;
+            --shadow-soft: 0 1px 3px rgba(0,0,0,0.04), 0 1px 2px rgba(0,0,0,0.03);
+            --shadow-hover: 0 8px 24px rgba(0,0,0,0.08), 0 4px 8px rgba(0,0,0,0.04);
+            --serif: 'Noto Sans TC', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            --mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, monospace;
         }
+
+        body.dark-mode {
+            --bg: #0e0e10;
+            --bg-soft: #161618;
+            --bg-section: #1c1c1f;
+            --text: #f0f0f0;
+            --text-secondary: #b0b0b0;
+            --text-muted: #707070;
+            --border: #2a2a2e;
+            --border-strong: #3a3a3f;
+            --accent: #f0f0f0;
+            --accent-hover: #ffffff;
+            --shadow-soft: 0 1px 3px rgba(0,0,0,0.3);
+            --shadow-hover: 0 8px 24px rgba(0,0,0,0.4);
+        }
+
         * { margin: 0; padding: 0; box-sizing: border-box; }
 
-        body {
-            background-color: var(--dark);
-            color: var(--text);
-            font-family: 'Noto Sans TC', sans-serif;
-            min-height: 100vh;
-            position: relative;
-            overflow-x: hidden;
-        }
+        html { scroll-behavior: smooth; }
 
-        body::after {
-            content: '';
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,0.04) 2px, rgba(0,0,0,0.04) 4px);
-            pointer-events: none;
-            z-index: 9999;
+        body {
+            background-color: var(--bg);
+            color: var(--text);
+            font-family: var(--serif);
+            font-weight: 400;
+            min-height: 100vh;
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            transition: background-color 0.3s ease, color 0.3s ease;
         }
 
         body::before {
             content: '';
             position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background-image:
-                linear-gradient(rgba(0,245,255,0.025) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(0,245,255,0.025) 1px, transparent 1px);
-            background-size: 40px 40px;
+            top: -300px;
+            right: -300px;
+            width: 700px;
+            height: 700px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(0,0,0,0.03) 0%, transparent 70%);
             pointer-events: none;
             z-index: 0;
         }
 
+        body.dark-mode::before {
+            background: radial-gradient(circle, rgba(255,255,255,0.04) 0%, transparent 70%);
+        }
+
         .container {
-            max-width: 1120px;
+            max-width: 1180px;
             margin: 0 auto;
-            padding: 24px 20px;
+            padding: 64px 32px 80px;
             position: relative;
             z-index: 1;
         }
 
         /* ── HEADER ── */
         .header {
-            border: 1px solid var(--border);
-            background: linear-gradient(135deg, rgba(0,245,255,0.04) 0%, rgba(255,0,204,0.04) 100%);
-            padding: 36px 40px;
-            margin-bottom: 16px;
+            padding-bottom: 48px;
+            margin-bottom: 48px;
+            border-bottom: 1px solid var(--border);
             position: relative;
-            overflow: hidden;
-            clip-path: polygon(0 0, calc(100% - 24px) 0, 100% 24px, 100% 100%, 24px 100%, 0 calc(100% - 24px));
-            animation: flicker 10s infinite;
         }
-
-        .header::before {
-            content: '';
-            position: absolute;
-            top: 0; left: -100%; right: 0;
-            height: 2px;
-            background: linear-gradient(90deg, transparent, var(--cyan), var(--magenta), transparent);
-            animation: scanline 4s linear infinite;
-        }
-
-        .header::after {
-            content: 'SYS://RESUME_v2026.05';
-            position: absolute;
-            top: 10px; right: 16px;
-            font-family: 'Share Tech Mono', monospace;
-            font-size: 10px;
-            color: rgba(0,245,255,0.3);
-            letter-spacing: 2px;
-        }
-
-        @keyframes scanline { 0% { left: -100%; } 100% { left: 100%; } }
-        @keyframes flicker { 0%,97%,100% { opacity:1; } 98% { opacity:0.85; } 99% { opacity:1; } }
 
         .header-inner {
             display: flex;
             align-items: center;
-            gap: 36px;
+            gap: 40px;
             flex-wrap: wrap;
         }
 
-        .avatar-hex {
-            width: 110px; height: 110px;
+        .avatar-circle {
+            width: 120px;
+            height: 120px;
             flex-shrink: 0;
-            border: 2px solid var(--cyan);
-            box-shadow: 0 0 24px var(--cyan), inset 0 0 24px rgba(0,245,255,0.08);
-            background: linear-gradient(135deg, var(--dark2), var(--dark3));
+            border-radius: 50%;
+            background: var(--text);
+            color: var(--bg);
             display: flex;
             align-items: center;
             justify-content: center;
-            font-family: 'Orbitron', monospace;
-            font-size: 38px;
-            font-weight: 900;
-            color: var(--cyan);
-            text-shadow: 0 0 20px var(--cyan);
-            clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+            font-family: var(--serif);
+            font-size: 52px;
+            font-weight: 700;
+            letter-spacing: -2px;
+            transition: transform 0.4s ease, box-shadow 0.4s ease;
+        }
+
+        .avatar-circle:hover {
+            transform: scale(1.04);
+            box-shadow: var(--shadow-hover);
         }
 
         .header-info { flex: 1; min-width: 260px; }
 
         .name-glitch {
-            font-family: 'Orbitron', monospace;
-            font-size: clamp(30px, 5vw, 54px);
+            font-family: var(--serif);
+            font-size: clamp(40px, 6vw, 64px);
             font-weight: 900;
-            color: var(--cyan);
-            text-shadow: 0 0 10px var(--cyan), 0 0 40px rgba(0,245,255,0.4);
-            letter-spacing: 5px;
-            position: relative;
-            display: inline-block;
+            color: var(--text);
+            letter-spacing: -1.5px;
+            line-height: 1.1;
+            margin-bottom: 8px;
         }
-
-        .name-glitch::before,
-        .name-glitch::after {
-            content: attr(data-text);
-            position: absolute;
-            top: 0; left: 0;
-            width: 100%; height: 100%;
-        }
-
-        .name-glitch::before {
-            color: var(--magenta);
-            text-shadow: 0 0 10px var(--magenta);
-            animation: glitch1 6s infinite;
-        }
-
-        .name-glitch::after {
-            color: var(--green);
-            text-shadow: 0 0 10px var(--green);
-            animation: glitch2 6s infinite;
-        }
-
-        @keyframes glitch1 {
-            0%,89%,100% { clip-path:inset(0 100% 0 0); transform:translate(0); }
-            91% { clip-path:inset(15% 0 65% 0); transform:translate(-3px, 2px); }
-            93% { clip-path:inset(65% 0 15% 0); transform:translate(3px,-2px); }
-            95% { clip-path:inset(40% 0 40% 0); transform:translate(-2px,1px); }
-        }
-
-        @keyframes glitch2 {
-            0%,85%,100% { clip-path:inset(0 100% 0 0); transform:translate(0); }
-            87% { clip-path:inset(45% 0 35% 0); transform:translate(3px,-1px); }
-            89% { clip-path:inset(10% 0 70% 0); transform:translate(-3px,2px); }
-        }
-
-        .name-glitch.typing::before,
-        .name-glitch.typing::after { display: none !important; }
 
         .eng-name {
-            font-family: 'Share Tech Mono', monospace;
-            color: var(--text-dim);
-            font-size: 13px;
-            letter-spacing: 4px;
-            margin-top: 4px;
+            font-family: var(--mono);
+            color: var(--text-muted);
+            font-size: 12px;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            margin-bottom: 16px;
         }
 
         .title-tag {
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            margin-top: 10px;
-            font-family: 'Share Tech Mono', monospace;
-            color: var(--magenta);
-            font-size: 13px;
+            display: inline-block;
+            font-family: var(--mono);
+            color: var(--text);
+            font-size: 11px;
             letter-spacing: 2px;
-            border: 1px solid var(--magenta);
-            padding: 4px 14px;
-            text-shadow: 0 0 10px var(--magenta);
-            box-shadow: 0 0 12px rgba(255,0,204,0.25), inset 0 0 12px rgba(255,0,204,0.05);
+            border: 1px solid var(--border-strong);
+            padding: 7px 16px;
+            border-radius: 100px;
+            text-transform: uppercase;
+            font-weight: 500;
         }
-
-        .title-tag::before { content: '>'; color: var(--cyan); }
 
         .contact-row {
             display: flex;
             flex-wrap: wrap;
-            gap: 12px;
-            margin-top: 18px;
+            gap: 24px;
+            margin-top: 24px;
         }
 
         .contact-item {
-            font-family: 'Share Tech Mono', monospace;
-            font-size: 11px;
-            color: var(--text-dim);
+            font-family: var(--serif);
+            font-size: 13px;
+            color: var(--text-secondary);
             display: flex;
-            align-items: center;
-            gap: 6px;
-            border-left: 2px solid var(--cyan);
-            padding-left: 8px;
-            transition: color 0.3s, text-shadow 0.3s;
+            flex-direction: column;
+            gap: 2px;
+            transition: color 0.2s;
             text-decoration: none;
         }
 
-        .contact-item:hover { color: var(--cyan); text-shadow: 0 0 8px var(--cyan); }
-        .contact-item .lbl { color: var(--cyan); font-size: 9px; letter-spacing: 1px; }
+        .contact-item:hover { color: var(--text); }
+
+        .contact-item .lbl {
+            font-family: var(--mono);
+            color: var(--text-muted);
+            font-size: 10px;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+        }
 
         /* ── STATS BAR ── */
         .stats-bar {
-            display: flex;
-            gap: 2px;
-            margin-bottom: 16px;
+            display: grid;
+            grid-template-columns: repeat(6, 1fr);
+            gap: 1px;
+            background: var(--border);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            overflow: hidden;
+            margin-bottom: 48px;
         }
 
         .stat-block {
-            flex: 1;
-            background: var(--dark2);
-            border: 1px solid var(--border);
-            padding: 14px 10px;
+            background: var(--bg);
+            padding: 24px 16px;
             text-align: center;
-            clip-path: polygon(12px 0, 100% 0, calc(100% - 12px) 100%, 0 100%);
-            transition: background 0.3s;
+            transition: background 0.2s;
             cursor: default;
         }
 
-        .stat-block:hover { background: rgba(0,245,255,0.07); }
+        .stat-block:hover { background: var(--bg-soft); }
 
         .stat-num {
-            font-family: 'Orbitron', monospace;
-            font-size: 20px;
+            font-family: var(--serif);
+            font-size: 28px;
             font-weight: 700;
-            color: var(--cyan);
-            text-shadow: 0 0 10px var(--cyan);
+            color: var(--text);
+            letter-spacing: -0.5px;
         }
 
         .stat-label {
-            font-family: 'Share Tech Mono', monospace;
-            font-size: 9px;
-            color: var(--text-dim);
-            margin-top: 4px;
-            letter-spacing: 1px;
+            font-family: var(--mono);
+            font-size: 10px;
+            color: var(--text-muted);
+            margin-top: 6px;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
         }
 
         /* ── MAIN GRID ── */
         .main-grid {
             display: grid;
-            grid-template-columns: 310px 1fr;
-            gap: 16px;
+            grid-template-columns: 340px 1fr;
+            gap: 32px;
         }
 
-        @media (max-width: 800px) { .main-grid { grid-template-columns: 1fr; } }
+        @media (max-width: 860px) {
+            .main-grid { grid-template-columns: 1fr; gap: 24px; }
+        }
 
         /* ── PANEL ── */
         .panel {
-            background: var(--dark2);
+            background: var(--bg);
             border: 1px solid var(--border);
-            padding: 22px;
-            margin-bottom: 16px;
-            position: relative;
-            clip-path: polygon(0 0, calc(100% - 12px) 0, 100% 12px, 100% 100%, 12px 100%, 0 calc(100% - 12px));
+            border-radius: 12px;
+            padding: 32px;
+            margin-bottom: 24px;
+            transition: box-shadow 0.3s ease, border-color 0.3s ease;
+        }
+
+        .panel:hover {
+            box-shadow: var(--shadow-soft);
         }
 
         .panel-title {
-            font-family: 'Orbitron', monospace;
-            font-size: 10px;
-            font-weight: 700;
-            letter-spacing: 3px;
-            color: var(--cyan);
-            text-shadow: 0 0 8px var(--cyan);
-            margin-bottom: 18px;
-            padding-bottom: 10px;
-            border-bottom: 1px solid rgba(0,245,255,0.15);
+            font-family: var(--mono);
+            font-size: 11px;
+            font-weight: 600;
+            letter-spacing: 2.5px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            margin-bottom: 24px;
+            padding-bottom: 14px;
+            border-bottom: 1px solid var(--border);
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 10px;
         }
 
-        .panel-title::before { content: '//'; color: var(--magenta); text-shadow: 0 0 8px var(--magenta); }
-
-        .panel::before, .panel::after {
+        .panel-title::before {
             content: '';
-            position: absolute;
-            width: 10px; height: 10px;
-            border-style: solid;
-            border-color: var(--cyan);
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: var(--text);
+            flex-shrink: 0;
         }
-        .panel::before { top: 5px; left: 5px; border-width: 2px 0 0 2px; }
-        .panel::after  { bottom: 5px; right: 5px; border-width: 0 2px 2px 0; }
 
         /* ── SKILLS ── */
-        .skill-group { margin-bottom: 18px; }
+        .skill-group { margin-bottom: 24px; }
+        .skill-group:last-child { margin-bottom: 0; }
 
         .skill-group-title {
-            font-family: 'Share Tech Mono', monospace;
-            font-size: 10px;
-            color: var(--magenta);
+            font-family: var(--mono);
+            font-size: 11px;
+            color: var(--text);
+            font-weight: 600;
             letter-spacing: 2px;
-            margin-bottom: 10px;
-            text-shadow: 0 0 6px var(--magenta);
+            text-transform: uppercase;
+            margin-bottom: 14px;
             cursor: pointer;
             user-select: none;
             display: flex;
             align-items: center;
             justify-content: space-between;
+            transition: color 0.2s;
         }
 
+        .skill-group-title:hover { color: var(--text-muted); }
+
         .skill-group-title::after {
-            content: '▼';
-            font-size: 8px;
+            content: '+';
+            font-size: 16px;
+            font-weight: 300;
             opacity: 0.6;
-            transition: transform 0.3s;
+            transition: transform 0.3s, opacity 0.3s;
             flex-shrink: 0;
         }
 
-        .skill-group.collapsed .skill-group-title::after {
-            transform: rotate(-90deg);
+        .skill-group:not(.collapsed) .skill-group-title::after {
+            transform: rotate(45deg);
+            opacity: 1;
         }
 
         .skill-content {
             overflow: hidden;
-            max-height: 600px;
+            max-height: 800px;
             transition: max-height 0.4s cubic-bezier(0.4,0,0.2,1), opacity 0.3s;
         }
 
@@ -335,208 +313,411 @@
             opacity: 0;
         }
 
-        .skill-bar { margin-bottom: 9px; }
+        .skill-bar { margin-bottom: 12px; }
+        .skill-bar:last-child { margin-bottom: 0; }
 
         .skill-name {
-            font-family: 'Share Tech Mono', monospace;
-            font-size: 11px;
+            font-family: var(--serif);
+            font-size: 13px;
             color: var(--text);
             display: flex;
             justify-content: space-between;
-            margin-bottom: 4px;
+            margin-bottom: 6px;
+            font-weight: 500;
+        }
+
+        .skill-name span:last-child {
+            font-family: var(--mono);
+            font-size: 11px;
+            color: var(--text-muted);
+            font-weight: 400;
         }
 
         .skill-track {
-            height: 3px;
-            background: rgba(255,255,255,0.04);
+            height: 4px;
+            background: var(--bg-section);
+            border-radius: 100px;
             overflow: hidden;
         }
 
         .skill-fill {
             height: 100%;
-            background: linear-gradient(90deg, var(--cyan), var(--magenta));
-            box-shadow: 0 0 8px var(--cyan);
+            background: var(--text);
+            border-radius: 100px;
             animation: fillBar 1.8s cubic-bezier(.4,0,.2,1) forwards;
             width: 0;
         }
 
-        .skill-fill.hw { background: linear-gradient(90deg, var(--magenta), #7700ff); box-shadow: 0 0 8px var(--magenta); }
+        .skill-fill.hw { background: var(--text-secondary); }
 
         @keyframes fillBar { to { width: var(--w); } }
 
-        .neon-sep {
-            height: 1px;
-            background: linear-gradient(90deg, transparent, var(--cyan), transparent);
-            margin: 14px 0;
-            opacity: 0.3;
-        }
-
-        .skill-tags { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 8px; }
+        .skill-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 12px; }
 
         .skill-tag {
-            font-family: 'Share Tech Mono', monospace;
+            font-family: var(--mono);
             font-size: 10px;
-            color: var(--cyan);
-            border: 1px solid rgba(0,245,255,0.35);
-            padding: 2px 7px;
-            background: rgba(0,245,255,0.04);
+            color: var(--text-secondary);
+            border: 1px solid var(--border-strong);
+            padding: 4px 10px;
+            border-radius: 100px;
+            background: var(--bg);
             transition: all 0.2s;
+            letter-spacing: 0.5px;
         }
-        .skill-tag:hover { background: rgba(0,245,255,0.14); box-shadow: 0 0 8px rgba(0,245,255,0.4); }
-        .skill-tag.m { color: var(--magenta); border-color: rgba(255,0,204,0.35); background: rgba(255,0,204,0.04); }
-        .skill-tag.g { color: var(--green); border-color: rgba(57,255,20,0.35); background: rgba(57,255,20,0.04); }
+        .skill-tag:hover {
+            background: var(--text);
+            color: var(--bg);
+            border-color: var(--text);
+        }
 
         /* ── EDUCATION ── */
-        .edu-item { padding: 12px 0; border-bottom: 1px solid rgba(255,255,255,0.05); }
+        .edu-item { padding: 16px 0; border-bottom: 1px solid var(--border); }
         .edu-item:last-child { border-bottom: none; padding-bottom: 0; }
-        .edu-school { font-family: 'Share Tech Mono', monospace; font-size: 13px; color: var(--cyan); text-shadow: 0 0 6px rgba(0,245,255,0.4); }
-        .edu-dept { font-size: 12px; color: var(--text); margin-top: 2px; }
-        .edu-date { font-family: 'Share Tech Mono', monospace; font-size: 10px; color: var(--text-dim); margin-top: 4px; }
+        .edu-item:first-child { padding-top: 0; }
+        .edu-school { font-family: var(--serif); font-size: 14px; color: var(--text); font-weight: 600; }
+        .edu-dept { font-size: 12px; color: var(--text-secondary); margin-top: 4px; }
+        .edu-date { font-family: var(--mono); font-size: 10px; color: var(--text-muted); margin-top: 6px; letter-spacing: 1px; }
 
         /* ── LANGUAGE ── */
-        .lang-item { display: flex; justify-content: space-between; align-items: center; padding: 8px 0; border-bottom: 1px solid rgba(255,255,255,0.04); }
-        .lang-name { font-family: 'Share Tech Mono', monospace; font-size: 12px; color: var(--text); }
-        .lang-col { display: flex; flex-direction: column; align-items: flex-end; gap: 3px; }
-        .lang-dots { display: flex; gap: 4px; }
-        .dot { width: 7px; height: 7px; border-radius: 50%; border: 1px solid rgba(0,245,255,0.4); }
-        .dot.on { background: var(--cyan); box-shadow: 0 0 6px var(--cyan); border-color: var(--cyan); }
-        .lang-note { font-family: 'Share Tech Mono', monospace; font-size: 9px; color: var(--text-dim); }
+        .lang-item { display: flex; justify-content: space-between; align-items: center; padding: 12px 0; border-bottom: 1px solid var(--border); }
+        .lang-item:last-child { border-bottom: none; padding-bottom: 0; }
+        .lang-item:first-child { padding-top: 0; }
+        .lang-name { font-family: var(--serif); font-size: 13px; color: var(--text); font-weight: 500; }
+        .lang-col { display: flex; flex-direction: column; align-items: flex-end; gap: 4px; }
+        .lang-dots { display: flex; gap: 5px; }
+        .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--border-strong); }
+        .dot.on { background: var(--text); }
+        .lang-note { font-family: var(--mono); font-size: 9px; color: var(--text-muted); letter-spacing: 1px; }
 
         /* ── CERT ── */
-        .cert-item { display: flex; align-items: center; gap: 12px; padding: 12px; border: 1px solid rgba(255,215,0,0.25); background: rgba(255,215,0,0.02); margin-bottom: 8px; transition: all 0.3s; }
-        .cert-item:hover { border-color: var(--yellow); box-shadow: 0 0 12px rgba(255,215,0,0.2); }
-        .cert-icon { font-size: 22px; }
-        .cert-name { font-family: 'Share Tech Mono', monospace; font-size: 12px; color: var(--yellow); text-shadow: 0 0 8px rgba(255,215,0,0.4); }
-        .cert-org { font-size: 11px; color: var(--text-dim); margin-top: 2px; }
+        .cert-item { display: flex; align-items: center; gap: 14px; padding: 14px; border: 1px solid var(--border); border-radius: 8px; background: var(--bg-soft); margin-bottom: 10px; transition: all 0.25s; }
+        .cert-item:last-child { margin-bottom: 0; }
+        .cert-item:hover { border-color: var(--border-strong); background: var(--bg); transform: translateY(-1px); box-shadow: var(--shadow-soft); }
+        .cert-icon { font-size: 10px; flex-shrink: 0; color: var(--text); }
+        .cert-name { font-family: var(--serif); font-size: 13px; color: var(--text); font-weight: 600; }
+        .cert-org { font-family: var(--mono); font-size: 10px; color: var(--text-muted); margin-top: 4px; letter-spacing: 0.5px; }
 
         /* ── EXPERIENCE ── */
-        .exp-item { padding: 18px 0 18px 20px; border-left: 2px solid rgba(0,245,255,0.25); margin-bottom: 2px; position: relative; transition: border-color 0.3s; }
-        .exp-item:hover { border-color: var(--cyan); }
-        .exp-item::before { content: ''; position: absolute; left: -5px; top: 22px; width: 8px; height: 8px; background: var(--cyan); box-shadow: 0 0 10px var(--cyan); clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%); }
-        .exp-title { font-family: 'Share Tech Mono', monospace; font-size: 15px; color: var(--cyan); text-shadow: 0 0 8px rgba(0,245,255,0.4); }
-        .exp-company { font-size: 13px; color: var(--magenta); text-shadow: 0 0 6px rgba(255,0,204,0.3); margin-top: 2px; }
-        .exp-date { font-family: 'Share Tech Mono', monospace; font-size: 10px; color: var(--text-dim); margin-top: 4px; margin-bottom: 8px; }
-        .exp-desc { font-size: 12px; color: var(--text); line-height: 1.7; }
+        .exp-item { padding: 20px 0 20px 28px; border-left: 1px solid var(--border); margin-left: 6px; position: relative; transition: border-color 0.3s; }
+        .exp-item:first-child { padding-top: 0; }
+        .exp-item:last-child { padding-bottom: 0; }
+        .exp-item:hover { border-color: var(--text); }
+        .exp-item::before {
+            content: '';
+            position: absolute;
+            left: -6px;
+            top: 24px;
+            width: 11px;
+            height: 11px;
+            border-radius: 50%;
+            background: var(--bg);
+            border: 2px solid var(--text);
+            transition: transform 0.3s;
+        }
+        .exp-item:first-child::before { top: 4px; }
+        .exp-item:hover::before { transform: scale(1.2); }
+        .exp-title { font-family: var(--serif); font-size: 16px; color: var(--text); font-weight: 700; }
+        .exp-company { font-size: 13px; color: var(--text-secondary); margin-top: 3px; font-weight: 500; }
+        .exp-date { font-family: var(--mono); font-size: 11px; color: var(--text-muted); margin-top: 6px; margin-bottom: 10px; letter-spacing: 0.5px; }
+        .exp-desc { font-size: 13px; color: var(--text-secondary); line-height: 1.75; }
 
         /* ── SUMMARY ── */
-        .summary-text { font-size: 13px; color: var(--text); line-height: 1.9; border-left: 3px solid var(--magenta); padding-left: 16px; box-shadow: -3px 0 12px rgba(255,0,204,0.2); }
-        .badge-row { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px; }
-        .badge { font-family: 'Share Tech Mono', monospace; font-size: 10px; padding: 3px 10px; border: 1px solid; }
-        .badge.g { color: var(--green); border-color: rgba(57,255,20,0.4); background: rgba(57,255,20,0.05); }
-        .badge.y { color: var(--yellow); border-color: rgba(255,215,0,0.4); background: rgba(255,215,0,0.05); }
+        .summary-text {
+            font-size: 15px;
+            color: var(--text-secondary);
+            line-height: 1.9;
+            padding: 4px 0;
+        }
+        .summary-text::first-letter {
+            font-size: 1.5em;
+            font-weight: 700;
+            color: var(--text);
+        }
+        .badge-row { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 20px; }
+        .badge { font-family: var(--mono); font-size: 10px; padding: 5px 12px; border: 1px solid var(--border-strong); border-radius: 100px; color: var(--text-secondary); letter-spacing: 0.5px; background: var(--bg); }
+        .badge.y { background: var(--text); color: var(--bg); border-color: var(--text); }
 
         /* ── PROJECTS ── */
-        .project-item { border: 1px solid rgba(0,245,255,0.15); padding: 16px; margin-bottom: 12px; background: rgba(0,245,255,0.02); position: relative; transition: all 0.3s; clip-path: polygon(0 0, calc(100% - 8px) 0, 100% 8px, 100% 100%, 8px 100%, 0 calc(100% - 8px)); }
-        .project-item:hover { border-color: var(--cyan); background: rgba(0,245,255,0.06); box-shadow: 0 0 20px rgba(0,245,255,0.08); }
-        .project-name { font-family: 'Share Tech Mono', monospace; font-size: 14px; color: var(--cyan); text-shadow: 0 0 8px rgba(0,245,255,0.4); }
-        .project-desc { font-size: 12px; color: var(--text); margin-top: 8px; line-height: 1.65; }
+        .project-item {
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 24px;
+            margin-bottom: 16px;
+            background: var(--bg);
+            position: relative;
+            transition: all 0.3s ease;
+        }
+        .project-item:last-child { margin-bottom: 0; }
+        .project-item:hover {
+            border-color: var(--border-strong);
+            box-shadow: var(--shadow-hover);
+            transform: translateY(-2px);
+        }
+        .project-name { font-family: var(--serif); font-size: 16px; color: var(--text); font-weight: 700; letter-spacing: -0.3px; }
+        .project-desc { font-size: 13px; color: var(--text-secondary); margin-top: 10px; line-height: 1.75; }
 
-        .proj-btn { display: inline-flex; align-items: center; gap: 5px; margin-top: 12px; font-family: 'Share Tech Mono', monospace; font-size: 10px; color: var(--cyan); border: 1px solid rgba(0,245,255,0.45); padding: 3px 12px; text-decoration: none; background: rgba(0,245,255,0.04); letter-spacing: 1px; transition: all 0.2s; }
-        .proj-btn:hover { background: rgba(0,245,255,0.15); box-shadow: 0 0 10px rgba(0,245,255,0.35); }
+        .proj-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            margin-top: 16px;
+            font-family: var(--mono);
+            font-size: 11px;
+            color: var(--bg);
+            background: var(--text);
+            padding: 8px 16px;
+            text-decoration: none;
+            border-radius: 100px;
+            letter-spacing: 1px;
+            transition: all 0.2s;
+            font-weight: 500;
+            text-transform: uppercase;
+        }
+        .proj-btn:hover {
+            background: var(--accent-hover);
+        }
+        .proj-btn::after { content: '→'; transition: transform 0.2s; }
+        .proj-btn:hover::after { transform: translateX(3px); }
 
         /* ── FOOTER ── */
-        .footer { text-align: center; padding: 18px; font-family: 'Share Tech Mono', monospace; font-size: 10px; color: var(--text-dim); letter-spacing: 2px; border-top: 1px solid var(--border); margin-top: 8px; }
+        .footer {
+            text-align: center;
+            padding: 32px 0;
+            font-family: var(--mono);
+            font-size: 11px;
+            color: var(--text-muted);
+            letter-spacing: 1px;
+            border-top: 1px solid var(--border);
+            margin-top: 48px;
+        }
+        .footer span { margin: 0 8px; }
 
         /* ── EXPORT BUTTON ── */
-        .export-btn { position: fixed; bottom: 24px; right: 24px; font-family: 'Share Tech Mono', monospace; font-size: 11px; color: var(--magenta); border: 1px solid rgba(255,0,204,0.5); padding: 8px 18px; background: rgba(15,15,26,0.92); cursor: pointer; letter-spacing: 1px; z-index: 1000; transition: all 0.2s; backdrop-filter: blur(4px); }
-        .export-btn:hover { background: rgba(255,0,204,0.12); box-shadow: 0 0 14px rgba(255,0,204,0.35); }
-
-        /* ── LIGHT MODE ── */
-        body.light-mode {
-            --cyan: #0070c8;
-            --magenta: #c80070;
-            --green: #1a8a00;
-            --yellow: #b87800;
-            --dark: #ffffff;
-            --dark2: #f0f0f8;
-            --dark3: #e0e0ec;
-            --text: #1a1a2e;
-            --text-dim: #5a5a80;
-            --border: rgba(0, 112, 200, 0.2);
+        .export-btn {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            font-family: var(--mono);
+            font-size: 11px;
+            color: var(--bg);
+            background: var(--text);
+            border: none;
+            padding: 12px 20px;
+            cursor: pointer;
+            border-radius: 100px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            font-weight: 500;
+            z-index: 1000;
+            transition: all 0.2s;
+            box-shadow: var(--shadow-soft);
         }
-        body.light-mode::before,
-        body.light-mode::after { display: none !important; }
-        body.light-mode .name-glitch::before,
-        body.light-mode .name-glitch::after { display: none !important; }
-        body.light-mode .header { animation: none; }
-        body.light-mode .header::before { display: none; }
-        body.light-mode .export-btn,
-        body.light-mode .ctrl-btn { background: rgba(230,230,245,0.95) !important; }
+        .export-btn:hover {
+            background: var(--accent-hover);
+            box-shadow: var(--shadow-hover);
+            transform: translateY(-1px);
+        }
 
         /* ── CONTROL BUTTONS ── */
-        .ctrl-btns { position: fixed; bottom: 24px; left: 24px; display: flex; flex-direction: column; gap: 8px; z-index: 1000; }
-        .ctrl-btn { font-family: 'Share Tech Mono', monospace; font-size: 11px; padding: 8px 14px; cursor: pointer; letter-spacing: 1px; transition: all 0.2s; backdrop-filter: blur(4px); border: none; text-align: center; }
-        .mode-btn { color: var(--yellow); border: 1px solid rgba(255,215,0,0.5) !important; background: rgba(15,15,26,0.92); }
-        .mode-btn:hover { background: rgba(255,215,0,0.12) !important; box-shadow: 0 0 12px rgba(255,215,0,0.3); }
-        .lang-btn { color: var(--green); border: 1px solid rgba(57,255,20,0.5) !important; background: rgba(15,15,26,0.92); }
-        .lang-btn:hover { background: rgba(57,255,20,0.1) !important; box-shadow: 0 0 12px rgba(57,255,20,0.3); }
-        .contact-btn { color: var(--cyan); border: 1px solid rgba(0,245,255,0.5) !important; background: rgba(15,15,26,0.92); }
-        .contact-btn:hover { background: rgba(0,245,255,0.1) !important; box-shadow: 0 0 12px rgba(0,245,255,0.3); }
+        .ctrl-btns {
+            position: fixed;
+            bottom: 24px;
+            left: 24px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            z-index: 1000;
+        }
+        .ctrl-btn {
+            font-family: var(--mono);
+            font-size: 11px;
+            padding: 10px 16px;
+            cursor: pointer;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            border-radius: 100px;
+            border: 1px solid var(--border-strong);
+            background: var(--bg);
+            color: var(--text);
+            transition: all 0.2s;
+            font-weight: 500;
+            box-shadow: var(--shadow-soft);
+        }
+        .ctrl-btn:hover {
+            background: var(--text);
+            color: var(--bg);
+            border-color: var(--text);
+            transform: translateY(-1px);
+            box-shadow: var(--shadow-hover);
+        }
 
         /* ── CONTACT MODAL ── */
-        .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.65); z-index: 2000; backdrop-filter: blur(4px); align-items: center; justify-content: center; }
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.45);
+            z-index: 2000;
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            align-items: center;
+            justify-content: center;
+            animation: fadeIn 0.25s ease;
+        }
         .modal-overlay.open { display: flex; }
-        .modal-box { background: var(--dark2); border: 1px solid var(--border); padding: 28px 32px; width: min(460px, 90vw); position: relative; clip-path: polygon(0 0, calc(100% - 16px) 0, 100% 16px, 100% 100%, 16px 100%, 0 calc(100% - 16px)); }
-        .modal-title { font-family: 'Orbitron', monospace; font-size: 11px; color: var(--cyan); letter-spacing: 3px; margin-bottom: 20px; padding-bottom: 10px; border-bottom: 1px solid rgba(0,245,255,0.15); }
-        .modal-title::before { content: '// '; color: var(--magenta); }
-        .modal-close { position: absolute; top: 10px; right: 14px; font-family: 'Share Tech Mono', monospace; font-size: 18px; color: var(--text-dim); cursor: pointer; background: none; border: none; line-height: 1; transition: color 0.2s; }
-        .modal-close:hover { color: var(--magenta); }
-        .cf-group { margin-bottom: 14px; }
-        .cf-label { font-family: 'Share Tech Mono', monospace; font-size: 10px; color: var(--text-dim); letter-spacing: 1px; margin-bottom: 6px; display: block; }
-        .cf-input { width: 100%; background: var(--dark); border: 1px solid var(--border); color: var(--text); font-family: 'Share Tech Mono', monospace; font-size: 12px; padding: 8px 12px; outline: none; transition: border-color 0.2s, box-shadow 0.2s; }
-        .cf-input:focus { border-color: var(--cyan); box-shadow: 0 0 8px rgba(0,245,255,0.2); }
-        textarea.cf-input { resize: vertical; min-height: 90px; }
-        .cf-submit { width: 100%; font-family: 'Share Tech Mono', monospace; font-size: 11px; color: var(--cyan); border: 1px solid rgba(0,245,255,0.5); padding: 10px; background: rgba(0,245,255,0.06); cursor: pointer; letter-spacing: 2px; transition: all 0.2s; margin-top: 6px; }
-        .cf-submit:hover { background: rgba(0,245,255,0.15); box-shadow: 0 0 12px rgba(0,245,255,0.3); }
-        .cf-status { font-family: 'Share Tech Mono', monospace; font-size: 10px; color: var(--green); text-align: center; margin-top: 10px; min-height: 14px; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+        .modal-box {
+            background: var(--bg);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 36px;
+            width: min(480px, 90vw);
+            position: relative;
+            box-shadow: 0 24px 64px rgba(0,0,0,0.18);
+            animation: slideUp 0.3s ease;
+        }
+        @keyframes slideUp { from { transform: translateY(20px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+
+        .modal-title {
+            font-family: var(--serif);
+            font-size: 20px;
+            color: var(--text);
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+        .modal-subtitle {
+            font-family: var(--mono);
+            font-size: 11px;
+            color: var(--text-muted);
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            margin-bottom: 24px;
+            padding-bottom: 16px;
+            border-bottom: 1px solid var(--border);
+        }
+        .modal-close {
+            position: absolute;
+            top: 18px;
+            right: 22px;
+            font-size: 22px;
+            color: var(--text-muted);
+            cursor: pointer;
+            background: none;
+            border: none;
+            line-height: 1;
+            transition: color 0.2s;
+            font-weight: 300;
+        }
+        .modal-close:hover { color: var(--text); }
+        .cf-group { margin-bottom: 16px; }
+        .cf-label {
+            font-family: var(--mono);
+            font-size: 10px;
+            color: var(--text-muted);
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            margin-bottom: 6px;
+            display: block;
+            font-weight: 500;
+        }
+        .cf-input {
+            width: 100%;
+            background: var(--bg-soft);
+            border: 1px solid var(--border);
+            color: var(--text);
+            font-family: var(--serif);
+            font-size: 14px;
+            padding: 12px 14px;
+            outline: none;
+            border-radius: 8px;
+            transition: border-color 0.2s, background 0.2s;
+        }
+        .cf-input:focus {
+            border-color: var(--text);
+            background: var(--bg);
+        }
+        textarea.cf-input { resize: vertical; min-height: 100px; font-family: var(--serif); }
+        .cf-submit {
+            width: 100%;
+            font-family: var(--mono);
+            font-size: 12px;
+            color: var(--bg);
+            background: var(--text);
+            border: none;
+            padding: 14px;
+            cursor: pointer;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            border-radius: 100px;
+            transition: all 0.2s;
+            margin-top: 8px;
+            font-weight: 500;
+        }
+        .cf-submit:hover {
+            background: var(--accent-hover);
+            transform: translateY(-1px);
+        }
+        .cf-status {
+            font-family: var(--mono);
+            font-size: 11px;
+            color: var(--text-secondary);
+            text-align: center;
+            margin-top: 12px;
+            min-height: 14px;
+            letter-spacing: 0.5px;
+        }
 
         /* ── VISITOR BADGE ── */
-        .visitor-badge { display: block; margin-top: 8px; opacity: 0.7; }
+        .visitor-badge { display: block; margin-top: 12px; opacity: 0.7; transition: opacity 0.2s; }
+        .visitor-badge:hover { opacity: 1; }
         .visitor-badge img { height: 18px; }
 
         /* ── MOBILE ── */
         @media (max-width: 600px) {
-            .header { padding: 20px 16px; }
-            .header-inner { gap: 14px; }
-            .avatar-hex { width: clamp(68px, 18vw, 90px); height: clamp(68px, 18vw, 90px); font-size: clamp(22px, 6vw, 34px); }
-            .name-glitch { font-size: clamp(22px, 7vw, 38px); letter-spacing: 3px; }
-            .title-tag { font-size: 11px; padding: 3px 10px; }
-            .contact-item { font-size: 10px; }
-            .stats-bar { display: grid; grid-template-columns: repeat(3, 1fr); }
-            .stat-block { clip-path: none; padding: 10px 6px; }
-            .stat-num { font-size: 16px; }
-            .panel { padding: 16px 14px; }
-            .panel-title { font-size: 9px; letter-spacing: 2px; }
-            .exp-title { font-size: 13px; }
+            .container { padding: 32px 20px 60px; }
+            .header { padding-bottom: 32px; margin-bottom: 32px; }
+            .header-inner { gap: 20px; }
+            .avatar-circle { width: 84px; height: 84px; font-size: 38px; }
+            .name-glitch { font-size: clamp(30px, 8vw, 44px); letter-spacing: -1px; }
+            .eng-name { font-size: 11px; letter-spacing: 2px; margin-bottom: 12px; }
+            .title-tag { font-size: 10px; padding: 5px 12px; }
+            .contact-row { gap: 16px; margin-top: 18px; }
+            .contact-item { font-size: 12px; }
+            .stats-bar { grid-template-columns: repeat(3, 1fr); margin-bottom: 32px; }
+            .stat-num { font-size: 22px; }
+            .panel { padding: 22px; }
+            .panel-title { font-size: 10px; letter-spacing: 2px; margin-bottom: 18px; }
+            .exp-title { font-size: 14px; }
             .exp-company { font-size: 12px; }
-            .project-name { font-size: 13px; }
-            .project-desc { font-size: 11px; }
-            .summary-text { font-size: 12px; }
-            .footer { font-size: 9px; letter-spacing: 1px; }
-            .export-btn { bottom: 16px; right: 16px; font-size: 10px; padding: 6px 14px; }
-            .ctrl-btns { bottom: 16px; left: 16px; gap: 6px; }
-            .ctrl-btn { font-size: 10px; padding: 6px 12px; }
+            .exp-desc { font-size: 12px; }
+            .project-name { font-size: 15px; }
+            .project-desc { font-size: 12px; }
+            .summary-text { font-size: 13px; }
+            .footer { font-size: 10px; padding: 24px 0; }
+            .footer span { display: block; margin: 4px 0; }
+            .export-btn { bottom: 16px; right: 16px; font-size: 10px; padding: 10px 16px; }
+            .ctrl-btns { bottom: 16px; left: 16px; gap: 8px; }
+            .ctrl-btn { font-size: 10px; padding: 8px 14px; }
         }
 
         /* ── PRINT / PDF EXPORT ── */
         @media print {
-            @page { margin: 10mm 12mm; size: A4; }
+            @page { margin: 12mm 14mm; size: A4; }
             * { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
             *, *::before, *::after { animation: none !important; transition: none !important; }
-            body::before, body::after { display: none !important; }
-            .export-btn, .proj-btn, .ctrl-btns, .modal-overlay { display: none !important; }
-            * { box-shadow: none !important; text-shadow: none !important; }
-            .header, .panel, .project-item, .stat-block { clip-path: none !important; border-radius: 0; }
-            .header::before { display: none; }
-            .name-glitch::before, .name-glitch::after { display: none; }
-            .skill-group-title::after { display: none !important; }
+            body::before { display: none !important; }
+            body { background: #ffffff !important; color: #222222 !important; }
+            .export-btn, .ctrl-btns, .modal-overlay, .proj-btn { display: none !important; }
+            * { box-shadow: none !important; }
+            .container { max-width: 100%; padding: 0; }
+            .panel, .project-item, .stat-block, .cert-item, .modal-box { box-shadow: none !important; }
+            .panel { padding: 18px; margin-bottom: 14px; page-break-inside: avoid; }
+            .exp-item, .project-item { page-break-inside: avoid; }
             .skill-fill { width: var(--w) !important; }
             .skill-content { max-height: none !important; opacity: 1 !important; }
-            .panel, .exp-item, .project-item { page-break-inside: avoid; }
-            .container { max-width: 100%; padding: 0; }
-            .panel { border-color: rgba(0,245,255,0.4) !important; }
-            .project-item { border-color: rgba(0,245,255,0.35) !important; }
-            .exp-item { border-left-color: rgba(0,245,255,0.5) !important; }
+            .header { padding-bottom: 24px; margin-bottom: 24px; }
         }
     </style>
 </head>
@@ -546,19 +727,19 @@
     <!-- HEADER -->
     <header class="header">
         <div class="header-inner">
-            <div class="avatar-hex">蕭</div>
+            <div class="avatar-circle">蕭</div>
             <div class="header-info">
                 <div class="name-glitch" data-text="蕭哲安">蕭哲安</div>
-                <div class="eng-name">ZHE_AN_XIAO &nbsp;//&nbsp; SYSTEM_ONLINE</div>
-                <div class="title-tag">AI ENGINEER &nbsp;/&nbsp; FIRMWARE &nbsp;/&nbsp; ML RESEARCHER</div>
+                <div class="eng-name">ZHE-AN XIAO &nbsp;·&nbsp; AI &amp; FIRMWARE ENGINEER</div>
+                <div class="title-tag">AI ENGINEER · FIRMWARE · ML RESEARCHER</div>
                 <div class="contact-row">
                     <a class="contact-item" href="mailto:a0935951152@gmail.com">
-                        <span class="lbl">MAIL</span>a0935951152@gmail.com
+                        <span class="lbl">Mail</span>a0935951152@gmail.com
                     </a>
-                    <div class="contact-item"><span class="lbl">TEL</span>0935-951-152</div>
-                    <div class="contact-item"><span class="lbl">LOC</span><span data-i18n="contact_loc">新竹市東區</span></div>
+                    <div class="contact-item"><span class="lbl">Tel</span>0935-951-152</div>
+                    <div class="contact-item"><span class="lbl">Location</span><span data-i18n="contact_loc">新竹市東區</span></div>
                     <a class="contact-item" href="https://github.com/a0935951152-droid" target="_blank" rel="noopener">
-                        <span class="lbl">GIT</span>github.com/a0935951152-droid
+                        <span class="lbl">GitHub</span>github.com/a0935951152-droid
                     </a>
                 </div>
             </div>
@@ -567,12 +748,12 @@
 
     <!-- STATS BAR -->
     <div class="stats-bar">
-        <div class="stat-block"><div class="stat-num">2~3</div><div class="stat-label">YRS EXP</div></div>
-        <div class="stat-block"><div class="stat-num">790</div><div class="stat-label">TOEIC</div></div>
+        <div class="stat-block"><div class="stat-num">2~3</div><div class="stat-label">Yrs Exp</div></div>
+        <div class="stat-block"><div class="stat-num">790</div><div class="stat-label">Toeic</div></div>
         <div class="stat-block"><div class="stat-num">MSc</div><div class="stat-label">NSYSU</div></div>
-        <div class="stat-block"><div class="stat-num">AI-900</div><div class="stat-label">MS CERT</div></div>
-        <div class="stat-block"><div class="stat-num">4+</div><div class="stat-label">PROJECTS</div></div>
-        <div class="stat-block"><div class="stat-num">OPEN</div><div class="stat-label">REMOTE OK</div></div>
+        <div class="stat-block"><div class="stat-num">AI-900</div><div class="stat-label">MS Cert</div></div>
+        <div class="stat-block"><div class="stat-num">4+</div><div class="stat-label">Projects</div></div>
+        <div class="stat-block"><div class="stat-num">Open</div><div class="stat-label">Remote OK</div></div>
     </div>
 
     <!-- MAIN GRID -->
@@ -583,45 +764,44 @@
 
             <!-- SKILLS -->
             <div class="panel">
-                <div class="panel-title">SKILL_MATRIX</div>
+                <div class="panel-title">Skill Matrix</div>
 
                 <div class="skill-group">
-                    <div class="skill-group-title" data-i18n="sg_sw">// SOFTWARE &amp; AI</div>
+                    <div class="skill-group-title" data-i18n="sg_sw">Software &amp; AI</div>
                     <div class="skill-content">
-                        <div class="skill-bar"><div class="skill-name"><span>Python</span><span style="color:var(--cyan)">95%</span></div><div class="skill-track"><div class="skill-fill" style="--w:95%"></div></div></div>
-                        <div class="skill-bar"><div class="skill-name"><span>C / C++</span><span style="color:var(--cyan)">80%</span></div><div class="skill-track"><div class="skill-fill" style="--w:80%"></div></div></div>
-                        <div class="skill-bar"><div class="skill-name"><span>LLM / RAG / Fine-tuning</span><span style="color:var(--cyan)">85%</span></div><div class="skill-track"><div class="skill-fill" style="--w:85%"></div></div></div>
-                        <div class="skill-bar"><div class="skill-name"><span>Computer Vision / YOLO</span><span style="color:var(--cyan)">82%</span></div><div class="skill-track"><div class="skill-fill" style="--w:82%"></div></div></div>
-                        <div class="skill-bar"><div class="skill-name"><span>PyTorch / Transformer</span><span style="color:var(--cyan)">78%</span></div><div class="skill-track"><div class="skill-fill" style="--w:78%"></div></div></div>
-                        <div class="skill-bar"><div class="skill-name"><span>Docker / Linux / VMware</span><span style="color:var(--cyan)">75%</span></div><div class="skill-track"><div class="skill-fill" style="--w:75%"></div></div></div>
-                        <div class="skill-bar"><div class="skill-name"><span>Claude Code / Agents</span><span style="color:var(--cyan)">88%</span></div><div class="skill-track"><div class="skill-fill" style="--w:88%"></div></div></div>
+                        <div class="skill-bar"><div class="skill-name"><span>Python</span><span>95%</span></div><div class="skill-track"><div class="skill-fill" style="--w:95%"></div></div></div>
+                        <div class="skill-bar"><div class="skill-name"><span>C / C++</span><span>80%</span></div><div class="skill-track"><div class="skill-fill" style="--w:80%"></div></div></div>
+                        <div class="skill-bar"><div class="skill-name"><span>LLM / RAG / Fine-tuning</span><span>85%</span></div><div class="skill-track"><div class="skill-fill" style="--w:85%"></div></div></div>
+                        <div class="skill-bar"><div class="skill-name"><span>Computer Vision / YOLO</span><span>82%</span></div><div class="skill-track"><div class="skill-fill" style="--w:82%"></div></div></div>
+                        <div class="skill-bar"><div class="skill-name"><span>PyTorch / Transformer</span><span>78%</span></div><div class="skill-track"><div class="skill-fill" style="--w:78%"></div></div></div>
+                        <div class="skill-bar"><div class="skill-name"><span>Docker / Linux / VMware</span><span>75%</span></div><div class="skill-track"><div class="skill-fill" style="--w:75%"></div></div></div>
+                        <div class="skill-bar"><div class="skill-name"><span>Claude Code / Agents</span><span>88%</span></div><div class="skill-track"><div class="skill-fill" style="--w:88%"></div></div></div>
                     </div>
                 </div>
 
                 <div class="skill-group">
-                    <div class="skill-group-title" data-i18n="sg_hw">// HARDWARE &amp; MCU</div>
+                    <div class="skill-group-title" data-i18n="sg_hw">Hardware &amp; MCU</div>
                     <div class="skill-content">
-                        <div class="skill-bar"><div class="skill-name"><span>STM32 / ESP32</span><span style="color:var(--magenta)">80%</span></div><div class="skill-track"><div class="skill-fill hw" style="--w:80%"></div></div></div>
-                        <div class="skill-bar"><div class="skill-name"><span>Raspberry Pi / nRF52/54</span><span style="color:var(--magenta)">75%</span></div><div class="skill-track"><div class="skill-fill hw" style="--w:75%"></div></div></div>
-                        <div class="skill-bar"><div class="skill-name"><span>Edge AI Implementation</span><span style="color:var(--magenta)">80%</span></div><div class="skill-track"><div class="skill-fill hw" style="--w:80%"></div></div></div>
+                        <div class="skill-bar"><div class="skill-name"><span>STM32 / ESP32</span><span>80%</span></div><div class="skill-track"><div class="skill-fill hw" style="--w:80%"></div></div></div>
+                        <div class="skill-bar"><div class="skill-name"><span>Raspberry Pi / nRF52/54</span><span>75%</span></div><div class="skill-track"><div class="skill-fill hw" style="--w:75%"></div></div></div>
+                        <div class="skill-bar"><div class="skill-name"><span>Edge AI Implementation</span><span>80%</span></div><div class="skill-track"><div class="skill-fill hw" style="--w:80%"></div></div></div>
                     </div>
                 </div>
 
                 <div class="skill-group">
-                    <div class="skill-group-title" data-i18n="sg_tools">// TOOLS &amp; TAGS</div>
+                    <div class="skill-group-title" data-i18n="sg_tools">Tools &amp; Tags</div>
                     <div class="skill-content">
-                        <div class="neon-sep"></div>
                         <div class="skill-tags">
                             <span class="skill-tag">CNN</span>
                             <span class="skill-tag">RNN</span>
                             <span class="skill-tag">YOLO v8/26</span>
                             <span class="skill-tag">Transformer</span>
-                            <span class="skill-tag m">RAG</span>
-                            <span class="skill-tag m">Docker</span>
-                            <span class="skill-tag m">Prompt Eng.</span>
-                            <span class="skill-tag g">mySQL</span>
-                            <span class="skill-tag g">QGIS / R</span>
-                            <span class="skill-tag g">NAS / WSL</span>
+                            <span class="skill-tag">RAG</span>
+                            <span class="skill-tag">Docker</span>
+                            <span class="skill-tag">Prompt Eng.</span>
+                            <span class="skill-tag">MySQL</span>
+                            <span class="skill-tag">QGIS / R</span>
+                            <span class="skill-tag">NAS / WSL</span>
                             <span class="skill-tag">Bluetooth</span>
                             <span class="skill-tag">PID Control</span>
                         </div>
@@ -631,27 +811,27 @@
 
             <!-- EDUCATION -->
             <div class="panel">
-                <div class="panel-title">EDUCATION_LOG</div>
+                <div class="panel-title">Education</div>
                 <div class="edu-item">
                     <div class="edu-school" data-i18n="edu1_school">國立中山大學</div>
                     <div class="edu-dept" data-i18n="edu1_dept">生物科學碩士班 | 碩士</div>
-                    <div class="edu-date" data-i18n="edu1_date">2023/09 ──▶ 2025/09</div>
+                    <div class="edu-date" data-i18n="edu1_date">2023/09 — 2025/09</div>
                 </div>
                 <div class="edu-item">
                     <div class="edu-school" data-i18n="edu2_school">國立中山大學</div>
                     <div class="edu-dept" data-i18n="edu2_dept">生物科學系 | 學士</div>
-                    <div class="edu-date" data-i18n="edu2_date">2016/09 ──▶ 2021/09</div>
+                    <div class="edu-date" data-i18n="edu2_date">2016/09 — 2021/09</div>
                 </div>
                 <div class="edu-item">
                     <div class="edu-school" data-i18n="edu3_school">國立陽明交通大學</div>
                     <div class="edu-dept" data-i18n="edu3_dept">Extension Program（AI 架構師）</div>
-                    <div class="edu-date" data-i18n="edu3_date">2025/10 ──▶ 2026/06</div>
+                    <div class="edu-date" data-i18n="edu3_date">2025/10 — 2026/06</div>
                 </div>
             </div>
 
             <!-- LANGUAGE -->
             <div class="panel">
-                <div class="panel-title">LANGUAGE_MODULES</div>
+                <div class="panel-title">Languages</div>
                 <div class="lang-item">
                     <span class="lang-name">English</span>
                     <div class="lang-col">
@@ -667,18 +847,18 @@
 
             <!-- CERTIFICATIONS -->
             <div class="panel">
-                <div class="panel-title">CERTIFICATIONS</div>
+                <div class="panel-title">Certifications</div>
                 <div class="cert-item">
-                    <div class="cert-icon">🏆</div>
+                    <div class="cert-icon">●</div>
                     <div>
                         <div class="cert-name" data-i18n="cert1_name">AI-900 AI 人工智慧基礎認證</div>
                         <div class="cert-org" data-i18n="cert1_org">Microsoft Certified</div>
                     </div>
                 </div>
-                <div class="cert-item" style="border-color:rgba(57,255,20,0.25);background:rgba(57,255,20,0.02)">
-                    <div class="cert-icon">🚗</div>
+                <div class="cert-item">
+                    <div class="cert-icon">●</div>
                     <div>
-                        <div class="cert-name" data-i18n="cert2_name" style="color:var(--green);text-shadow:0 0 8px rgba(57,255,20,0.4)">普通小型車 / 重型機車</div>
+                        <div class="cert-name" data-i18n="cert2_name">普通小型車 / 重型機車</div>
                         <div class="cert-org" data-i18n="cert2_org">駕駛執照 | 普通 + 大型重型</div>
                     </div>
                 </div>
@@ -691,12 +871,12 @@
 
             <!-- SYSTEM PROFILE -->
             <div class="panel">
-                <div class="panel-title">SYSTEM_PROFILE</div>
+                <div class="panel-title">About</div>
                 <p class="summary-text" data-i18n="summary">有 LLM 及 CV 專案實戰經驗，擅長雲端 AI 協作開發。具備 Transformer 競賽經歷、生醫影像辨識比賽成績及嵌入式裝置專案落地成果。熟悉 C、Python，可獨立完成從研究到部署的完整 AI 工作流，涵蓋 LLM 微調、RAG 架構設計、Docker 容器化部署，以及 MCU 韌體整合。生命科學背景，跨域整合 AI × 生醫 × 硬體開發，具政府研究計畫執行與論文撰寫經驗。</p>
                 <div class="badge-row">
-                    <span class="badge g" data-i18n="badge_fulltime">全職工作</span>
-                    <span class="badge g" data-i18n="badge_remote">遠端可配合</span>
-                    <span class="badge g" data-i18n="badge_loc">新竹 / 台北 / 新北</span>
+                    <span class="badge" data-i18n="badge_fulltime">全職工作</span>
+                    <span class="badge" data-i18n="badge_remote">遠端可配合</span>
+                    <span class="badge" data-i18n="badge_loc">新竹 / 台北 / 新北</span>
                     <span class="badge y" data-i18n="badge_notice">錄取後一個月可報到</span>
                     <span class="badge y" data-i18n="badge_salary">薪資面議</span>
                 </div>
@@ -704,82 +884,82 @@
 
             <!-- WORK EXPERIENCE -->
             <div class="panel">
-                <div class="panel-title">WORK_EXPERIENCE</div>
+                <div class="panel-title">Work Experience</div>
 
                 <div class="exp-item">
                     <div class="exp-title" data-i18n="exp1_title">學生研究員</div>
                     <div class="exp-company" data-i18n="exp1_company">國立交通大學</div>
-                    <div class="exp-date" data-i18n="exp1_date">2025/10 ──▶ 2026/05 &nbsp;|&nbsp; 8個月 &nbsp;|&nbsp; 新竹市</div>
+                    <div class="exp-date" data-i18n="exp1_date">2025/10 — 2026/05  ·  8 個月  ·  新竹市</div>
                     <div class="exp-desc" data-i18n="exp1_desc">AI 架構師實習專案，學習並實作 Cloud / Core / Edge AI 架構設計，整合 LLM 推論與嵌入式系統，參與前沿 AI 研究工作。</div>
                 </div>
 
                 <div class="exp-item">
                     <div class="exp-title" data-i18n="exp2_title">專任研究助理</div>
                     <div class="exp-company" data-i18n="exp2_company">國立台灣海洋大學</div>
-                    <div class="exp-date" data-i18n="exp2_date">2025/08 ──▶ 2025/11 &nbsp;|&nbsp; 4個月 &nbsp;|&nbsp; 基隆市</div>
+                    <div class="exp-date" data-i18n="exp2_date">2025/08 — 2025/11  ·  4 個月  ·  基隆市</div>
                     <div class="exp-desc" data-i18n="exp2_desc">數據分析師，負責研究資料清理、統計分析與可視化，協助研究計畫推進。</div>
                 </div>
 
                 <div class="exp-item">
                     <div class="exp-title" data-i18n="exp3_title">講師</div>
                     <div class="exp-company" data-i18n="exp3_company">薪哲文教股份有限公司</div>
-                    <div class="exp-date" data-i18n="exp3_date">2024/03 ──▶ 2025/01 &nbsp;|&nbsp; 11個月 &nbsp;|&nbsp; 高雄市鼓山區</div>
+                    <div class="exp-date" data-i18n="exp3_date">2024/03 — 2025/01  ·  11 個月  ·  高雄市鼓山區</div>
                     <div class="exp-desc" data-i18n="exp3_desc">數理補習班老師，負責課程規劃、教學授課及學生學習輔導。</div>
                 </div>
 
                 <div class="exp-item">
                     <div class="exp-title" data-i18n="exp4_title">行政管理</div>
                     <div class="exp-company" data-i18n="exp4_company">國防部陸軍司令部</div>
-                    <div class="exp-date" data-i18n="exp4_date">2022/04 ──▶ 2023/08 &nbsp;|&nbsp; 1年5個月</div>
+                    <div class="exp-date" data-i18n="exp4_date">2022/04 — 2023/08  ·  1 年 5 個月</div>
                     <div class="exp-desc" data-i18n="exp4_desc">行政人員，負責文書處理、行政事務協調與執行。役畢退伍 (2023/08)。</div>
                 </div>
 
                 <div class="exp-item">
                     <div class="exp-title" data-i18n="exp5_title">講師</div>
                     <div class="exp-company" data-i18n="exp5_company">明光文教事業股份有限公司</div>
-                    <div class="exp-date" data-i18n="exp5_date">2019/09 ──▶ 2020/06 &nbsp;|&nbsp; 10個月 &nbsp;|&nbsp; 高雄市三民區</div>
+                    <div class="exp-date" data-i18n="exp5_date">2019/09 — 2020/06  ·  10 個月  ·  高雄市三民區</div>
                     <div class="exp-desc" data-i18n="exp5_desc">補習班老師，負責理工科目教學，培養邏輯表達與知識傳授能力。</div>
                 </div>
             </div>
 
             <!-- PROJECTS -->
             <div class="panel">
-                <div class="panel-title">PROJECT_REGISTRY</div>
+                <div class="panel-title">Selected Projects</div>
 
                 <div class="project-item">
-                    <div class="project-name" data-i18n="proj1_name">⚡ Edge AI 智慧跟隨風扇系統</div>
+                    <div class="project-name" data-i18n="proj1_name">Edge AI 智慧跟隨風扇系統</div>
                     <div class="project-desc" data-i18n="proj1_desc">整合語音辨識、LLM 對話、紅外線鏡頭追蹤及居家 IoT 控制。陣列麥克風搭配輕量語音模型 + CV 追蹤模型，PID 控制 DC 風扇，減少熱流冗餘能耗，架構整合 NLP 裝置。</div>
-                    <div class="skill-tags" style="margin-top:10px">
-                        <span class="skill-tag">ESP32</span><span class="skill-tag">Raspberry Pi5</span><span class="skill-tag">LLM (llama/qwen)</span><span class="skill-tag m">CV 追蹤</span><span class="skill-tag m">PID</span><span class="skill-tag g">IoT</span>
+                    <div class="skill-tags" style="margin-top:14px">
+                        <span class="skill-tag">ESP32</span><span class="skill-tag">Raspberry Pi 5</span><span class="skill-tag">LLM (llama/qwen)</span><span class="skill-tag">CV 追蹤</span><span class="skill-tag">PID</span><span class="skill-tag">IoT</span>
                     </div>
-                    <a class="proj-btn" href="https://docs.google.com/document/d/1JvKEiwZu58XSDgcmFgQtnCNYhsKCS4BXV0aUHWvVqfQ/edit?usp=sharing" target="_blank" rel="noopener">→ DOCS</a>
+                    <a class="proj-btn" href="https://docs.google.com/document/d/1JvKEiwZu58XSDgcmFgQtnCNYhsKCS4BXV0aUHWvVqfQ/edit?usp=sharing" target="_blank" rel="noopener">View Docs</a>
                 </div>
 
                 <div class="project-item">
-                    <div class="project-name" data-i18n="proj2_name">🔧 Nanoclaw 自動化編譯燒錄工具</div>
+                    <div class="project-name" data-i18n="proj2_name">Nanoclaw 自動化編譯燒錄工具</div>
                     <div class="project-desc" data-i18n="proj2_desc">以 Claude Code 平台為 Nordic nRF54 系列開發自動化韌體工作流，設計 context management、agent skill 及韌體工作流落地方案，大幅提升固件開發效率。</div>
-                    <div class="skill-tags" style="margin-top:10px">
-                        <span class="skill-tag">nRF52/54</span><span class="skill-tag">Nordic SDK</span><span class="skill-tag m">Claude Code</span><span class="skill-tag m">Agentic AI</span><span class="skill-tag">C / Firmware</span>
+                    <div class="skill-tags" style="margin-top:14px">
+                        <span class="skill-tag">nRF52/54</span><span class="skill-tag">Nordic SDK</span><span class="skill-tag">Claude Code</span><span class="skill-tag">Agentic AI</span><span class="skill-tag">C / Firmware</span>
                     </div>
-                    <a class="proj-btn" href="https://www.youtube.com/watch?si=GWQhakzTJZB3ECQC&v=q3xqWqy11ho&feature=youtu.be" target="_blank" rel="noopener">→ YOUTUBE</a>
+                    <a class="proj-btn" href="https://www.youtube.com/watch?si=GWQhakzTJZB3ECQC&v=q3xqWqy11ho&feature=youtu.be" target="_blank" rel="noopener">Watch Demo</a>
                 </div>
 
                 <div class="project-item">
-                    <div class="project-name" data-i18n="proj3_name">🧠 OCR × Transformer 翻譯優化專案</div>
+                    <div class="project-name" data-i18n="proj3_name">OCR × Transformer 翻譯優化專案</div>
                     <div class="project-desc" data-i18n="proj3_desc">以 BYT5 知識蒸餾產生偽標籤，微調分子生物文獻 OCR 後文字翻譯模型。主流 OCR 翻譯準確率提升至 40%；千萬參數以內小模型搭配清洗小資料達 30% 整體翻譯準確率。</div>
-                    <div class="skill-tags" style="margin-top:10px">
-                        <span class="skill-tag">BYT5</span><span class="skill-tag">Transformer</span><span class="skill-tag">Fine-tuning</span><span class="skill-tag g">OCR</span><span class="skill-tag g">PyTorch</span><span class="skill-tag g">知識蒸餾</span>
+                    <div class="skill-tags" style="margin-top:14px">
+                        <span class="skill-tag">BYT5</span><span class="skill-tag">Transformer</span><span class="skill-tag">Fine-tuning</span><span class="skill-tag">OCR</span><span class="skill-tag">PyTorch</span><span class="skill-tag">知識蒸餾</span>
                     </div>
-                    <a class="proj-btn" href="https://drive.google.com/drive/folders/17lfCUG3l4pKyeh4Tiow0iKpoI6pt31J9?usp=drive_link" target="_blank" rel="noopener">→ DRIVE</a>
+                    <a class="proj-btn" href="https://drive.google.com/drive/folders/17lfCUG3l4pKyeh4Tiow0iKpoI6pt31J9?usp=drive_link" target="_blank" rel="noopener">View Drive</a>
                 </div>
 
                 <div class="project-item">
-                    <div class="project-name" data-i18n="proj4_name">🏛️ 交大 AI 架構師專案履歷 <span style="color:var(--magenta);font-size:11px">IN PROGRESS</span></div>
+                    <div class="project-name" data-i18n="proj4_name">交大 AI 架構師專案履歷 <span style="font-family:var(--mono);font-size:10px;color:var(--text-muted);font-weight:500;letter-spacing:1px;margin-left:8px">IN PROGRESS</span></div>
                     <div class="project-desc" data-i18n="proj4_desc">生命科學背景出身，於交通大學深化 AI 架構設計知識，整合 Cloud / Core / Edge 三層架構，探索 AI 於各產業之落地應用。進行中 (2025/10 ～)。</div>
-                    <div class="skill-tags" style="margin-top:10px">
-                        <span class="skill-tag">Cloud AI</span><span class="skill-tag">Edge AI</span><span class="skill-tag m">Architecture</span><span class="skill-tag m">In Progress</span>
+                    <div class="skill-tags" style="margin-top:14px">
+                        <span class="skill-tag">Cloud AI</span><span class="skill-tag">Edge AI</span><span class="skill-tag">Architecture</span><span class="skill-tag">In Progress</span>
                     </div>
-                    <a class="proj-btn" href="https://drive.google.com/file/d/19aE9BpgaeGVXs9VHT1B1IDvQBwjYg0N0/view" target="_blank" rel="noopener">→ DRIVE</a>
+                    <a class="proj-btn" href="https://drive.google.com/file/d/19aE9BpgaeGVXs9VHT1B1IDvQBwjYg0N0/view" target="_blank" rel="noopener">View Drive</a>
                 </div>
 
             </div>
@@ -789,10 +969,11 @@
 
     <!-- FOOTER -->
     <div class="footer">
-        <span style="color:var(--cyan)" data-i18n="footer_name">蕭哲安 // ZHE AN XIAO</span>
-        &nbsp;|&nbsp; LAST_UPDATED: 2026.05
-        &nbsp;|&nbsp; <span style="color:var(--magenta)" data-i18n="footer_status">STATUS: SEEKING_NEW_MISSION</span>
-        &nbsp;|&nbsp; <span style="color:var(--green)">SYSTEM_READY</span>
+        <span data-i18n="footer_name">蕭哲安 · ZHE-AN XIAO</span>
+        <span>·</span>
+        <span>Last Updated: 2026.05</span>
+        <span>·</span>
+        <span data-i18n="footer_status">Status: Seeking New Mission</span>
         <div class="visitor-badge">
             <img src="https://visitor-badge.laobi.icu/badge?page_id=a0935951152-droid.0520_Claude_code_Lab" alt="visitors" loading="lazy">
         </div>
@@ -802,33 +983,34 @@
 
 <!-- CONTROL BUTTONS (bottom-left) -->
 <div class="ctrl-btns">
-    <button class="ctrl-btn contact-btn" id="contact-btn" onclick="openContact()">✉ CONTACT</button>
-    <button class="ctrl-btn lang-btn" id="lang-btn">EN</button>
-    <button class="ctrl-btn mode-btn" id="mode-btn">☀ LIGHT</button>
+    <button class="ctrl-btn" id="contact-btn" onclick="openContact()">✉ Contact</button>
+    <button class="ctrl-btn" id="lang-btn">EN</button>
+    <button class="ctrl-btn" id="mode-btn">◐ Dark</button>
 </div>
 
 <!-- EXPORT PDF BUTTON -->
-<button class="export-btn" onclick="window.print()">⬇ EXPORT PDF</button>
+<button class="export-btn" onclick="window.print()">↓ Export PDF</button>
 
 <!-- CONTACT MODAL -->
 <div class="modal-overlay" id="contact-modal" onclick="handleOverlayClick(event)">
     <div class="modal-box">
-        <button class="modal-close" onclick="closeContact()">✕</button>
-        <div class="modal-title">SEND_MESSAGE</div>
+        <button class="modal-close" onclick="closeContact()">×</button>
+        <div class="modal-title">Send a Message</div>
+        <div class="modal-subtitle">無聲勝有聲 — Let your message speak</div>
         <form onsubmit="submitContact(event)">
             <div class="cf-group">
-                <label class="cf-label" for="cf-name">// NAME</label>
+                <label class="cf-label" for="cf-name">Name</label>
                 <input class="cf-input" id="cf-name" type="text" required placeholder="你的名字 / Your name">
             </div>
             <div class="cf-group">
-                <label class="cf-label" for="cf-email">// EMAIL</label>
+                <label class="cf-label" for="cf-email">Email</label>
                 <input class="cf-input" id="cf-email" type="email" required placeholder="your@email.com">
             </div>
             <div class="cf-group">
-                <label class="cf-label" for="cf-msg">// MESSAGE</label>
+                <label class="cf-label" for="cf-msg">Message</label>
                 <textarea class="cf-input" id="cf-msg" required placeholder="留言 / Message..."></textarea>
             </div>
-            <button type="submit" class="cf-submit">[ TRANSMIT → ]</button>
+            <button type="submit" class="cf-submit">Send Message</button>
             <div class="cf-status" id="cf-status"></div>
         </form>
     </div>
@@ -840,82 +1022,82 @@
     const T = {
         zh: {
             contact_loc: '新竹市東區',
-            sg_sw: '// SOFTWARE &amp; AI', sg_hw: '// HARDWARE &amp; MCU', sg_tools: '// TOOLS &amp; TAGS',
-            edu1_school: '國立中山大學', edu1_dept: '生物科學碩士班 | 碩士', edu1_date: '2023/09 ──▶ 2025/09',
-            edu2_school: '國立中山大學', edu2_dept: '生物科學系 | 學士', edu2_date: '2016/09 ──▶ 2021/09',
-            edu3_school: '國立陽明交通大學', edu3_dept: 'Extension Program（AI 架構師）', edu3_date: '2025/10 ──▶ 2026/06',
+            sg_sw: 'Software & AI', sg_hw: 'Hardware & MCU', sg_tools: 'Tools & Tags',
+            edu1_school: '國立中山大學', edu1_dept: '生物科學碩士班 | 碩士', edu1_date: '2023/09 — 2025/09',
+            edu2_school: '國立中山大學', edu2_dept: '生物科學系 | 學士', edu2_date: '2016/09 — 2021/09',
+            edu3_school: '國立陽明交通大學', edu3_dept: 'Extension Program（AI 架構師）', edu3_date: '2025/10 — 2026/06',
             cert1_name: 'AI-900 AI 人工智慧基礎認證', cert1_org: 'Microsoft Certified',
             cert2_name: '普通小型車 / 重型機車', cert2_org: '駕駛執照 | 普通 + 大型重型',
             summary: '有 LLM 及 CV 專案實戰經驗，擅長雲端 AI 協作開發。具備 Transformer 競賽經歷、生醫影像辨識比賽成績及嵌入式裝置專案落地成果。熟悉 C、Python，可獨立完成從研究到部署的完整 AI 工作流，涵蓋 LLM 微調、RAG 架構設計、Docker 容器化部署，以及 MCU 韌體整合。生命科學背景，跨域整合 AI × 生醫 × 硬體開發，具政府研究計畫執行與論文撰寫經驗。',
             badge_fulltime: '全職工作', badge_remote: '遠端可配合', badge_loc: '新竹 / 台北 / 新北',
             badge_notice: '錄取後一個月可報到', badge_salary: '薪資面議',
             exp1_title: '學生研究員', exp1_company: '國立交通大學',
-            exp1_date: '2025/10 ──▶ 2026/05 &nbsp;|&nbsp; 8個月 &nbsp;|&nbsp; 新竹市',
+            exp1_date: '2025/10 — 2026/05  ·  8 個月  ·  新竹市',
             exp1_desc: 'AI 架構師實習專案，學習並實作 Cloud / Core / Edge AI 架構設計，整合 LLM 推論與嵌入式系統，參與前沿 AI 研究工作。',
             exp2_title: '專任研究助理', exp2_company: '國立台灣海洋大學',
-            exp2_date: '2025/08 ──▶ 2025/11 &nbsp;|&nbsp; 4個月 &nbsp;|&nbsp; 基隆市',
+            exp2_date: '2025/08 — 2025/11  ·  4 個月  ·  基隆市',
             exp2_desc: '數據分析師，負責研究資料清理、統計分析與可視化，協助研究計畫推進。',
             exp3_title: '講師', exp3_company: '薪哲文教股份有限公司',
-            exp3_date: '2024/03 ──▶ 2025/01 &nbsp;|&nbsp; 11個月 &nbsp;|&nbsp; 高雄市鼓山區',
+            exp3_date: '2024/03 — 2025/01  ·  11 個月  ·  高雄市鼓山區',
             exp3_desc: '數理補習班老師，負責課程規劃、教學授課及學生學習輔導。',
             exp4_title: '行政管理', exp4_company: '國防部陸軍司令部',
-            exp4_date: '2022/04 ──▶ 2023/08 &nbsp;|&nbsp; 1年5個月',
+            exp4_date: '2022/04 — 2023/08  ·  1 年 5 個月',
             exp4_desc: '行政人員，負責文書處理、行政事務協調與執行。役畢退伍 (2023/08)。',
             exp5_title: '講師', exp5_company: '明光文教事業股份有限公司',
-            exp5_date: '2019/09 ──▶ 2020/06 &nbsp;|&nbsp; 10個月 &nbsp;|&nbsp; 高雄市三民區',
+            exp5_date: '2019/09 — 2020/06  ·  10 個月  ·  高雄市三民區',
             exp5_desc: '補習班老師，負責理工科目教學，培養邏輯表達與知識傳授能力。',
-            proj1_name: '⚡ Edge AI 智慧跟隨風扇系統',
+            proj1_name: 'Edge AI 智慧跟隨風扇系統',
             proj1_desc: '整合語音辨識、LLM 對話、紅外線鏡頭追蹤及居家 IoT 控制。陣列麥克風搭配輕量語音模型 + CV 追蹤模型，PID 控制 DC 風扇，減少熱流冗餘能耗，架構整合 NLP 裝置。',
-            proj2_name: '🔧 Nanoclaw 自動化編譯燒錄工具',
+            proj2_name: 'Nanoclaw 自動化編譯燒錄工具',
             proj2_desc: '以 Claude Code 平台為 Nordic nRF54 系列開發自動化韌體工作流，設計 context management、agent skill 及韌體工作流落地方案，大幅提升固件開發效率。',
-            proj3_name: '🧠 OCR × Transformer 翻譯優化專案',
+            proj3_name: 'OCR × Transformer 翻譯優化專案',
             proj3_desc: '以 BYT5 知識蒸餾產生偽標籤，微調分子生物文獻 OCR 後文字翻譯模型。主流 OCR 翻譯準確率提升至 40%；千萬參數以內小模型搭配清洗小資料達 30% 整體翻譯準確率。',
-            proj4_name: '🏛️ 交大 AI 架構師專案履歷 <span style="color:var(--magenta);font-size:11px">IN PROGRESS</span>',
+            proj4_name: '交大 AI 架構師專案履歷 <span style="font-family:var(--mono);font-size:10px;color:var(--text-muted);font-weight:500;letter-spacing:1px;margin-left:8px">IN PROGRESS</span>',
             proj4_desc: '生命科學背景出身，於交通大學深化 AI 架構設計知識，整合 Cloud / Core / Edge 三層架構，探索 AI 於各產業之落地應用。進行中 (2025/10 ～)。',
-            footer_name: '蕭哲安 // ZHE AN XIAO',
-            footer_status: 'STATUS: SEEKING_NEW_MISSION',
+            footer_name: '蕭哲安 · ZHE-AN XIAO',
+            footer_status: 'Status: Seeking New Mission',
         },
         en: {
             contact_loc: 'Hsinchu City, East District',
-            sg_sw: '// SOFTWARE &amp; AI', sg_hw: '// HARDWARE &amp; MCU', sg_tools: '// TOOLS &amp; TAGS',
-            edu1_school: 'National Sun Yat-sen University', edu1_dept: 'M.Sc. in Biological Sciences', edu1_date: '2023/09 ──▶ 2025/09',
-            edu2_school: 'National Sun Yat-sen University', edu2_dept: 'B.Sc. in Biological Sciences', edu2_date: '2016/09 ──▶ 2021/09',
-            edu3_school: 'Nat\'l Yang Ming Chiao Tung Univ.', edu3_dept: 'Extension Program (AI Architect)', edu3_date: '2025/10 ──▶ 2026/06',
+            sg_sw: 'Software & AI', sg_hw: 'Hardware & MCU', sg_tools: 'Tools & Tags',
+            edu1_school: 'National Sun Yat-sen University', edu1_dept: 'M.Sc. in Biological Sciences', edu1_date: '2023/09 — 2025/09',
+            edu2_school: 'National Sun Yat-sen University', edu2_dept: 'B.Sc. in Biological Sciences', edu2_date: '2016/09 — 2021/09',
+            edu3_school: 'Nat\'l Yang Ming Chiao Tung Univ.', edu3_dept: 'Extension Program (AI Architect)', edu3_date: '2025/10 — 2026/06',
             cert1_name: 'AI-900 Azure AI Fundamentals', cert1_org: 'Microsoft Certified',
-            cert2_name: 'Driver\'s License (Car &amp; Motorcycle)', cert2_org: 'Class B + Heavy Motorcycle',
+            cert2_name: 'Driver\'s License (Car & Motorcycle)', cert2_org: 'Class B + Heavy Motorcycle',
             summary: 'Experienced in LLM and CV projects with hands-on research background, proficient in cloud-based AI collaborative development. Participated in Transformer competitions, biomedical image recognition contests, and embedded AI deployment projects. Proficient in C and Python — independently capable of the full AI workflow from research to deployment: LLM fine-tuning, RAG architecture, Docker containerization, and MCU firmware integration. Life sciences background enabling cross-domain AI × Biomedical × Hardware development.',
             badge_fulltime: 'Full-time', badge_remote: 'Remote OK', badge_loc: 'Hsinchu / Taipei / New Taipei',
             badge_notice: 'Available within 1 month', badge_salary: 'Open to Negotiation',
             exp1_title: 'Student Researcher', exp1_company: 'Nat\'l Yang Ming Chiao Tung Univ.',
-            exp1_date: '2025/10 ──▶ 2026/05 &nbsp;|&nbsp; 8 months &nbsp;|&nbsp; Hsinchu',
+            exp1_date: '2025/10 — 2026/05  ·  8 months  ·  Hsinchu',
             exp1_desc: 'AI Architect internship: learning and implementing Cloud/Core/Edge AI architecture design, integrating LLM inference with embedded systems, participating in frontier AI research.',
             exp2_title: 'Research Assistant', exp2_company: 'National Taiwan Ocean University',
-            exp2_date: '2025/08 ──▶ 2025/11 &nbsp;|&nbsp; 4 months &nbsp;|&nbsp; Keelung',
+            exp2_date: '2025/08 — 2025/11  ·  4 months  ·  Keelung',
             exp2_desc: 'Data analyst responsible for research data cleaning, statistical analysis, and visualization.',
             exp3_title: 'Instructor', exp3_company: 'Hsin-Zhe Education Co.',
-            exp3_date: '2024/03 ──▶ 2025/01 &nbsp;|&nbsp; 11 months &nbsp;|&nbsp; Kaohsiung',
+            exp3_date: '2024/03 — 2025/01  ·  11 months  ·  Kaohsiung',
             exp3_desc: 'Math and science tutor responsible for curriculum planning, teaching, and student academic guidance.',
             exp4_title: 'Administrative Staff', exp4_company: 'Republic of China Army HQ',
-            exp4_date: '2022/04 ──▶ 2023/08 &nbsp;|&nbsp; 1 yr 5 mo',
+            exp4_date: '2022/04 — 2023/08  ·  1 yr 5 mo',
             exp4_desc: 'Administrative officer handling documentation, coordination, and execution of administrative tasks. Completed compulsory military service (Aug 2023).',
             exp5_title: 'Instructor', exp5_company: 'Ming Guang Education Co.',
-            exp5_date: '2019/09 ──▶ 2020/06 &nbsp;|&nbsp; 10 months &nbsp;|&nbsp; Kaohsiung',
+            exp5_date: '2019/09 — 2020/06  ·  10 months  ·  Kaohsiung',
             exp5_desc: 'Science and math tutor developing logical reasoning and knowledge transfer skills.',
-            proj1_name: '⚡ Edge AI Smart-Tracking Fan System',
+            proj1_name: 'Edge AI Smart-Tracking Fan System',
             proj1_desc: 'Integrates voice recognition, LLM dialogue, IR camera tracking, and home IoT control. Array mic with lightweight voice model + CV tracking model, PID-controlled DC fan to reduce thermal energy waste, NLP-integrated embedded architecture.',
-            proj2_name: '🔧 Nanoclaw: Automated Compile &amp; Flash Tool',
+            proj2_name: 'Nanoclaw: Automated Compile & Flash Tool',
             proj2_desc: 'Built automated firmware workflow for Nordic nRF54 series via Claude Code platform. Designed context management, agent skills, and firmware deployment solutions — significantly boosting firmware development efficiency.',
-            proj3_name: '🧠 OCR × Transformer Translation Optimization',
+            proj3_name: 'OCR × Transformer Translation Optimization',
             proj3_desc: 'Used BYT5 knowledge distillation to generate pseudo-labels for fine-tuning biomedical OCR translation. Improved accuracy to 40%; sub-10M parameter model with cleaned small dataset achieved 30% overall translation accuracy.',
-            proj4_name: '🏛️ NYCU AI Architect Portfolio <span style="color:var(--magenta);font-size:11px">IN PROGRESS</span>',
+            proj4_name: 'NYCU AI Architect Portfolio <span style="font-family:var(--mono);font-size:10px;color:var(--text-muted);font-weight:500;letter-spacing:1px;margin-left:8px">IN PROGRESS</span>',
             proj4_desc: 'Deepening AI architecture knowledge at NYCU. Integrating Cloud/Core/Edge three-tier architecture, exploring AI deployment across industries. In progress (2025/10 ~).',
-            footer_name: 'ZHE-AN XIAO // SHIAO',
-            footer_status: 'STATUS: SEEKING_NEW_MISSION',
+            footer_name: 'ZHE-AN XIAO',
+            footer_status: 'Status: Seeking New Mission',
         }
     };
 
     let lang = localStorage.getItem('zxa_lang') || 'zh';
-    let lightMode = localStorage.getItem('zxa_mode') === 'light';
+    let darkMode = localStorage.getItem('zxa_mode') === 'dark';
 
     function applyLang(l) {
         lang = l;
@@ -928,22 +1110,11 @@
         });
     }
 
-    function applyMode(light) {
-        lightMode = light;
-        localStorage.setItem('zxa_mode', light ? 'light' : 'dark');
-        document.body.classList.toggle('light-mode', light);
-        document.getElementById('mode-btn').textContent = light ? '🌙 DARK' : '☀ LIGHT';
-    }
-
-    function typewrite(el, text, speed, done) {
-        el.textContent = '';
-        el.classList.add('typing');
-        let i = 0;
-        function tick() {
-            if (i < text.length) { el.textContent += text[i++]; setTimeout(tick, speed); }
-            else { el.classList.remove('typing'); el.setAttribute('data-text', text); if (done) done(); }
-        }
-        tick();
+    function applyMode(dark) {
+        darkMode = dark;
+        localStorage.setItem('zxa_mode', dark ? 'dark' : 'light');
+        document.body.classList.toggle('dark-mode', dark);
+        document.getElementById('mode-btn').textContent = dark ? '◑ Light' : '◐ Dark';
     }
 
     window.openContact = function() { document.getElementById('contact-modal').classList.add('open'); };
@@ -964,13 +1135,12 @@
     };
 
     document.addEventListener('DOMContentLoaded', () => {
-        applyMode(lightMode);
+        applyMode(darkMode);
         applyLang(lang);
-        typewrite(document.querySelector('.name-glitch'), '蕭哲安', 120, () => {});
         document.querySelectorAll('.skill-group-title').forEach(t => {
             t.addEventListener('click', () => t.closest('.skill-group').classList.toggle('collapsed'));
         });
-        document.getElementById('mode-btn').addEventListener('click', () => applyMode(!lightMode));
+        document.getElementById('mode-btn').addEventListener('click', () => applyMode(!darkMode));
         document.getElementById('lang-btn').addEventListener('click', () => applyLang(lang === 'zh' ? 'en' : 'zh'));
     });
 })();

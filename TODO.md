@@ -47,6 +47,13 @@
 - [x] **自動化更新 Skill 改進**（2026-05-07）
   - `resume-push` skill 支援 `PDF路徑` 參數、`分支` 參數、`minimal` / `classic` 風格主題
 
+- [x] **整體風格大改版：morcept.com 簡約風**（2026-05-13）
+  - 移除賽博龐克元素（霓虹、scanline、glitch、clip-path 切角）
+  - 改採白底深字、圓角卡片、細邊框、generous whitespace
+  - 字型改為 Noto Sans TC + Inter + JetBrains Mono
+  - 預設模式由 dark cyberpunk 改為 light minimalist
+  - 保留所有可點擊元素、i18n、PDF 匯出、Contact modal、訪客計數器等功能
+
 ---
 
 ## 已完成

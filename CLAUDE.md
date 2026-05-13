@@ -29,7 +29,16 @@
 
 ## 設計規則（強制）
 
-1. **禁止修改賽博龐克風格**：顏色（`--cyan #00f5ff` / `--magenta #ff00cc` / `--green #39ff14`）、字型、動畫、切角面板等一律不得變動，除非使用者明確要求。
+1. **目前風格：morcept.com 簡約風（v0.9 起）**
+   - 配色：黑白灰中性色系
+     - 主文字 `--text: #222222`（深色模式 `#f0f0f0`）
+     - 次文字 `--text-secondary: #555555`、`--text-muted: #999999`
+     - 背景 `--bg: #ffffff`、`--bg-soft: #fafafa`
+     - 邊框 `--border: #e8e8e8`、`--border-strong: #d4d4d4`
+   - 字型：`Noto Sans TC` + `Inter`（內文/標題）、`JetBrains Mono`（數據/標籤）
+   - 元件：圓角 12px 卡片、細邊框 + soft shadow（hover lift）、pill button（黑底白字）
+   - 動效：僅保留 hover lift / scale 微動效；**禁止**新增霓虹、glitch、scanline 類動畫
+   - 任何「賽博龐克」相關元素（霓虹色、clip-path 切角、glitch、scanline）一律不得加回，除非使用者明確要求復古
 2. **禁止修改排版結構**：左右雙欄、Stats Bar、Header / Footer 位置不得變動。
 3. **新增連結**：用 `<a>` 包裹元素，必須加 `text-decoration:none; color:inherit; display:block`，確保視覺完全不變。
 4. **每次更動 `index.html` 後**，必須同步更新 README.md（版本表）、CHANGELOG.md（新增版本條目）、TODO.md（勾選已完成項目）、CLAUDE.md（連結對照表 / 版本記錄）。
@@ -46,11 +55,11 @@
 | 🧠 OCR × Transformer 翻譯優化專案（→ DRIVE 按鈕） | `https://drive.google.com/drive/folders/17lfCUG3l4pKyeh4Tiow0iKpoI6pt31J9?usp=drive_link` | 新分頁 |
 | 🔧 Nanoclaw（→ YOUTUBE 按鈕） | `https://www.youtube.com/watch?si=GWQhakzTJZB3ECQC&v=q3xqWqy11ho&feature=youtu.be` | 新分頁 |
 | 🏛️ 交大 AI 架構師（→ DRIVE 按鈕） | `https://drive.google.com/file/d/19aE9BpgaeGVXs9VHT1B1IDvQBwjYg0N0/view` | 新分頁 |
-| ⬇ EXPORT PDF 按鈕（右下角固定） | `window.print()` | 瀏覽器列印對話框 |
-| ☀ LIGHT / 🌙 DARK 模式切換（左下角） | toggle `body.light-mode` | 切換深/淺色，localStorage 持久化 |
+| ↓ Export PDF 按鈕（右下角固定） | `window.print()` | 瀏覽器列印對話框 |
+| ◐ Dark / ◑ Light 模式切換（左下角） | toggle `body.dark-mode`（**注意：v0.9 起改為以 dark-mode class 為 alternate；預設為 light**） | 切換深/淺色，localStorage 持久化（`zxa_mode === 'dark'`） |
 | EN / 中 語言切換（左下角） | `data-i18n` 屬性 + JS translations | 中英內容互換，localStorage 持久化 |
-| ✉ CONTACT 聯絡按鈕（左下角） | 開啟 modal → 送出後 `mailto:` | 填寫姓名/Email/留言後開啟郵件客戶端 |
-| 技能分組標題（// SOFTWARE & AI 等） | toggle `.skill-group.collapsed` | 點擊展開/收合該組技能列表 |
+| ✉ Contact 聯絡按鈕（左下角） | 開啟 modal → 送出後 `mailto:` | 填寫姓名/Email/留言後開啟郵件客戶端 |
+| 技能分組標題（Software & AI 等） | toggle `.skill-group.collapsed` | 點擊展開/收合該組技能列表，`+` / `×` 圖示切換 |
 | 訪客計數器（footer 下方） | `https://visitor-badge.laobi.icu/badge?page_id=...` | 自動計數圖示 |
 
 ---
@@ -67,6 +76,7 @@
 | v0.6 | 2026-05-07 | 補完四張專案卡連結，改為 `.proj-btn` 按鈕設計 |
 | v0.7 | 2026-05-07 | PDF 匯出按鈕、`@media print`、行動裝置優化 |
 | v0.8 | 2026-05-07 | 深色/淺色切換、中英多語、打字機效果、技能折疊、聯絡表單、訪客計數器、Skill 升級 |
+| v0.9 | 2026-05-13 | 整體風格大改版：賽博龐克 → morcept.com 簡約風（白底深字、圓角卡片、細邊框、留白） |
 
 ---
 

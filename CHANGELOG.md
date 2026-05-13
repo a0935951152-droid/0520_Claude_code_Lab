@@ -4,6 +4,34 @@
 
 ---
 
+## [0.9] — 2026-05-13
+
+### Changed
+- `index.html` — **整體風格大改版**：由「賽博龐克」轉為「morcept.com 簡約風格」（參考 https://morcept.com/）
+  - 配色：霓虹三色（cyan/magenta/green）→ 黑白灰中性色系（#222 主色、#fafafa 區塊背景、#e8e8e8 邊框）
+  - 字型：Orbitron / Share Tech Mono → Noto Sans TC + Inter + JetBrains Mono（標題用 sans-serif，數據/標籤用 mono）
+  - 排版：clip-path 切角面板 → border-radius 12px 圓角卡片；霓虹發光 → 細邊框 + soft shadow（hover lift）
+  - 動畫：移除 scanline、glitch、flicker；保留打字機效果（可選）；新增 hover lift 微動效
+  - 頭像：六邊形 cyber 風 → 完整圓形深色 avatar circle，hover scale
+  - Stats Bar：clip-path 平行四邊形 → 等寬 grid 6 欄圓角卡片
+  - 經歷時間軸：菱形節點 + cyan 邊框 → 圓形描邊節點 + 細灰線
+  - 專案卡按鈕：cyan 發光邊框 → 黑底白字 pill button，hover 箭頭右移
+  - 技能折疊：▼ 旋轉 → `+` 與 `×` 切換（45° rotate）
+  - Modal：cyber clip-path → 圓角 + 陰影 + slideUp 入場動畫
+  - 預設模式：dark cyberpunk → **light minimalist**（dark mode 改為「優雅深色」非賽博龐克）
+  - 裝飾元素：scanline / grid background → 右上角放射狀漸層圓形（呼應 morcept 圓形元素）
+- `README.md` — 更新 v0.9 版本歷程
+- `CLAUDE.md` — 更新設計規則（賽博龐克 → morcept 簡約）、連結對照表、版本歷程
+- `TODO.md` — 新增「整體風格轉換」項目並勾選完成
+
+### Technical
+- CSS variables 全面重構：`--cyan/--magenta/--green` 退役，改為 `--text/--text-secondary/--text-muted/--border/--bg/--bg-soft` 等語意化命名
+- 字型 import：移除 Orbitron / Share Tech Mono，新增 Inter / JetBrains Mono；保留 Noto Sans TC
+- Light/Dark mode 邏輯反轉：light 為預設值（`localStorage.zxa_mode === 'dark'`）
+- 所有 i18n 內容、連結、可點擊元素皆保留（功能 zero regression）
+
+---
+
 ## [0.8] — 2026-05-07
 
 ### Added
