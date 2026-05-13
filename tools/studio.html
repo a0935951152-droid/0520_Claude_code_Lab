@@ -1,0 +1,614 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Design Studio · 0520 Resume</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --s-bg: #ffffff;
+            --s-panel: #fafafa;
+            --s-panel-2: #f3f4f6;
+            --s-text: #111827;
+            --s-text-dim: #6b7280;
+            --s-text-muted: #9ca3af;
+            --s-border: #e5e7eb;
+            --s-border-strong: #d1d5db;
+            --s-accent: #2563eb;
+            --s-accent-soft: #eff6ff;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html, body { height: 100%; overflow: hidden; }
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--s-bg);
+            color: var(--s-text);
+            display: flex;
+            flex-direction: column;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        /* HEADER */
+        header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px 18px;
+            border-bottom: 1px solid var(--s-border);
+            background: var(--s-bg);
+            flex-shrink: 0;
+            min-height: 52px;
+        }
+        .brand { display: flex; align-items: center; gap: 10px; }
+        .brand-name { font-weight: 700; font-size: 14px; letter-spacing: -0.2px; }
+        .brand-tag {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 10px;
+            color: var(--s-text-dim);
+            padding: 2px 7px;
+            border: 1px solid var(--s-border);
+            border-radius: 4px;
+            background: var(--s-panel);
+        }
+        .actions { display: flex; gap: 8px; align-items: center; }
+        .btn {
+            font-family: inherit;
+            font-size: 12px;
+            font-weight: 500;
+            padding: 6px 12px;
+            border-radius: 6px;
+            border: 1px solid var(--s-border);
+            background: var(--s-bg);
+            color: var(--s-text);
+            cursor: pointer;
+            transition: all 0.15s;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+        }
+        .btn:hover { background: var(--s-panel); border-color: var(--s-border-strong); }
+        .btn.primary {
+            background: var(--s-text);
+            color: var(--s-bg);
+            border-color: var(--s-text);
+        }
+        .btn.primary:hover { background: #000; }
+
+        /* MAIN LAYOUT */
+        main {
+            flex: 1;
+            display: grid;
+            grid-template-columns: 320px 1fr;
+            overflow: hidden;
+            min-height: 0;
+        }
+
+        /* SIDEBAR */
+        aside {
+            border-right: 1px solid var(--s-border);
+            background: var(--s-panel);
+            overflow-y: auto;
+            padding: 18px 16px 40px;
+        }
+        aside::-webkit-scrollbar { width: 8px; }
+        aside::-webkit-scrollbar-thumb { background: var(--s-border-strong); border-radius: 4px; }
+        aside::-webkit-scrollbar-track { background: transparent; }
+
+        .mode-section {
+            background: var(--s-bg);
+            border: 1px solid var(--s-border);
+            border-radius: 10px;
+            padding: 14px;
+            margin-bottom: 14px;
+        }
+        .mode-section.active {
+            border-color: var(--s-accent);
+            box-shadow: 0 0 0 3px var(--s-accent-soft);
+        }
+        .mode-title {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 10px;
+            font-weight: 600;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            color: var(--s-text);
+            margin-bottom: 12px;
+        }
+        .mode-title .pill {
+            font-size: 9px;
+            color: var(--s-accent);
+            background: var(--s-accent-soft);
+            padding: 2px 8px;
+            border-radius: 100px;
+            letter-spacing: 1px;
+        }
+
+        .token-group { margin-bottom: 10px; }
+        .token-group:last-child { margin-bottom: 0; }
+        .token-group-title {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 9px;
+            color: var(--s-text-muted);
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            margin-bottom: 6px;
+            padding-left: 2px;
+        }
+
+        .token-row {
+            display: grid;
+            grid-template-columns: 26px 1fr 78px;
+            align-items: center;
+            gap: 8px;
+            padding: 4px 0;
+        }
+        .swatch {
+            width: 26px;
+            height: 26px;
+            border-radius: 6px;
+            border: 1px solid var(--s-border-strong);
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            transition: transform 0.15s;
+            background-image:
+                linear-gradient(45deg, #eee 25%, transparent 25%),
+                linear-gradient(-45deg, #eee 25%, transparent 25%),
+                linear-gradient(45deg, transparent 75%, #eee 75%),
+                linear-gradient(-45deg, transparent 75%, #eee 75%);
+            background-size: 8px 8px;
+            background-position: 0 0, 0 4px, 4px -4px, -4px 0px;
+        }
+        .swatch::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: var(--c, #fff);
+        }
+        .swatch:hover { transform: scale(1.05); }
+        .swatch input[type="color"] {
+            position: absolute;
+            inset: 0;
+            cursor: pointer;
+            opacity: 0;
+            border: none;
+            padding: 0;
+            z-index: 2;
+        }
+        .token-name {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 11px;
+            color: var(--s-text);
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+        .token-hex {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 10px;
+            padding: 4px 6px;
+            border: 1px solid var(--s-border);
+            border-radius: 4px;
+            background: var(--s-bg);
+            color: var(--s-text);
+            width: 78px;
+            text-align: center;
+            outline: none;
+            transition: border-color 0.15s, box-shadow 0.15s;
+        }
+        .token-hex:focus {
+            border-color: var(--s-accent);
+            box-shadow: 0 0 0 3px var(--s-accent-soft);
+        }
+        .token-hex.invalid {
+            border-color: #ef4444;
+            background: #fef2f2;
+        }
+
+        /* PREVIEW */
+        .preview-area {
+            position: relative;
+            background: #f0f0f3;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+        .preview-bar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 8px 14px;
+            background: var(--s-panel);
+            border-bottom: 1px solid var(--s-border);
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 10px;
+            color: var(--s-text-dim);
+            letter-spacing: 0.5px;
+            flex-shrink: 0;
+        }
+        .preview-bar .path { display: flex; align-items: center; gap: 6px; }
+        .preview-bar .dot { width: 6px; height: 6px; border-radius: 50%; background: #10b981; }
+        .preview-bar .meta { display: flex; gap: 12px; }
+        .preview-frame-wrap {
+            flex: 1;
+            overflow: auto;
+            background: #f0f0f3;
+            position: relative;
+        }
+        iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+            background: white;
+            display: block;
+        }
+
+        /* TOAST */
+        .toast {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%) translateY(20px);
+            background: var(--s-text);
+            color: var(--s-bg);
+            padding: 10px 18px;
+            border-radius: 8px;
+            font-size: 12px;
+            font-weight: 500;
+            opacity: 0;
+            transition: opacity 0.2s, transform 0.2s;
+            pointer-events: none;
+            z-index: 1000;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.18);
+            white-space: pre-line;
+            text-align: center;
+        }
+        .toast.show {
+            opacity: 1;
+            transform: translateX(-50%) translateY(0);
+        }
+
+        /* HELP overlay */
+        .help-tip {
+            position: fixed;
+            bottom: 16px;
+            right: 16px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 10px;
+            color: var(--s-text-muted);
+            background: var(--s-panel);
+            padding: 6px 10px;
+            border: 1px solid var(--s-border);
+            border-radius: 6px;
+            letter-spacing: 0.5px;
+        }
+
+        @media (max-width: 800px) {
+            main { grid-template-columns: 1fr; grid-template-rows: auto 1fr; }
+            aside { border-right: none; border-bottom: 1px solid var(--s-border); max-height: 40vh; }
+            .actions .btn span.lbl { display: none; }
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <div class="brand">
+        <div class="brand-name">Design Studio</div>
+        <div class="brand-tag">M1 · v0.10.0</div>
+    </div>
+    <div class="actions">
+        <button class="btn" id="mode-toggle"><span>◐</span><span class="lbl">Light</span></button>
+        <button class="btn" id="reset-btn"><span>↺</span><span class="lbl">Reset</span></button>
+        <button class="btn primary" id="export-btn"><span>↓</span><span class="lbl">Export Patch</span></button>
+    </div>
+</header>
+
+<main>
+    <aside>
+        <div class="mode-section" id="section-light">
+            <div class="mode-title">
+                <span>Light Mode Tokens</span>
+                <span class="pill" id="light-pill">EDITING</span>
+            </div>
+            <div id="light-tokens"></div>
+        </div>
+        <div class="mode-section" id="section-dark">
+            <div class="mode-title">
+                <span>Dark Mode Tokens</span>
+                <span class="pill" id="dark-pill" style="display:none">EDITING</span>
+            </div>
+            <div id="dark-tokens"></div>
+        </div>
+    </aside>
+    <div class="preview-area">
+        <div class="preview-bar">
+            <div class="path">
+                <div class="dot"></div>
+                <span>../index.html</span>
+            </div>
+            <div class="meta">
+                <span id="meta-mode">light</span>
+                <span id="meta-changes">0 changes</span>
+            </div>
+        </div>
+        <div class="preview-frame-wrap">
+            <iframe id="preview" src="../index.html"></iframe>
+        </div>
+    </div>
+</main>
+
+<div class="toast" id="toast"></div>
+<div class="help-tip">Click swatch to pick · Type hex directly</div>
+
+<script>
+'use strict';
+
+const DEFAULT_TOKENS = {
+    light: {
+        '--bg':            { value: '#ffffff', group: 'Backgrounds' },
+        '--bg-soft':       { value: '#fafafa', group: 'Backgrounds' },
+        '--bg-section':    { value: '#f5f5f5', group: 'Backgrounds' },
+        '--text':          { value: '#222222', group: 'Text' },
+        '--text-secondary':{ value: '#555555', group: 'Text' },
+        '--text-muted':    { value: '#999999', group: 'Text' },
+        '--border':        { value: '#e8e8e8', group: 'Borders' },
+        '--border-strong': { value: '#d4d4d4', group: 'Borders' },
+        '--accent':        { value: '#222222', group: 'Accent' },
+        '--accent-hover':  { value: '#000000', group: 'Accent' },
+    },
+    dark: {
+        '--bg':            { value: '#0e0e10', group: 'Backgrounds' },
+        '--bg-soft':       { value: '#161618', group: 'Backgrounds' },
+        '--bg-section':    { value: '#1c1c1f', group: 'Backgrounds' },
+        '--text':          { value: '#f0f0f0', group: 'Text' },
+        '--text-secondary':{ value: '#b0b0b0', group: 'Text' },
+        '--text-muted':    { value: '#707070', group: 'Text' },
+        '--border':        { value: '#2a2a2e', group: 'Borders' },
+        '--border-strong': { value: '#3a3a3f', group: 'Borders' },
+        '--accent':        { value: '#f0f0f0', group: 'Accent' },
+        '--accent-hover':  { value: '#ffffff', group: 'Accent' },
+    }
+};
+
+const GROUPS = ['Backgrounds', 'Text', 'Borders', 'Accent'];
+const STORAGE_KEY = 'studio_state_v1';
+const STUDIO_VERSION = '0.10.0-M1';
+
+function defaultTokensFlat() {
+    const out = { light: {}, dark: {} };
+    for (const m of ['light', 'dark']) {
+        for (const [k, v] of Object.entries(DEFAULT_TOKENS[m])) out[m][k] = v.value;
+    }
+    return out;
+}
+
+function loadState() {
+    try {
+        const s = JSON.parse(localStorage.getItem(STORAGE_KEY));
+        if (s && s.tokens && s.tokens.light && s.tokens.dark) return s;
+    } catch (e) {}
+    return { tokens: defaultTokensFlat(), darkMode: false };
+}
+
+function saveState() {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+}
+
+const state = loadState();
+const iframe = document.getElementById('preview');
+
+function isValidHex(v) {
+    return /^#[0-9a-fA-F]{6}$/.test(v);
+}
+
+function buildTokenRow(mode, varName, value) {
+    const row = document.createElement('div');
+    row.className = 'token-row';
+    row.dataset.mode = mode;
+    row.dataset.var = varName;
+    row.innerHTML = `
+        <div class="swatch" style="--c:${value}">
+            <input type="color" value="${value}" data-mode="${mode}" data-var="${varName}" data-kind="color">
+        </div>
+        <div class="token-name" title="${varName}">${varName}</div>
+        <input type="text" class="token-hex" value="${value}" data-mode="${mode}" data-var="${varName}" data-kind="hex" maxlength="7" spellcheck="false">
+    `;
+    return row;
+}
+
+function renderControls() {
+    for (const mode of ['light', 'dark']) {
+        const container = document.getElementById(`${mode}-tokens`);
+        container.innerHTML = '';
+        for (const groupName of GROUPS) {
+            const groupDiv = document.createElement('div');
+            groupDiv.className = 'token-group';
+            const title = document.createElement('div');
+            title.className = 'token-group-title';
+            title.textContent = groupName;
+            groupDiv.appendChild(title);
+            for (const [varName, meta] of Object.entries(DEFAULT_TOKENS[mode])) {
+                if (meta.group !== groupName) continue;
+                groupDiv.appendChild(buildTokenRow(mode, varName, state.tokens[mode][varName]));
+            }
+            container.appendChild(groupDiv);
+        }
+    }
+    updateActiveSection();
+    updateChangeCount();
+}
+
+function updateActiveSection() {
+    document.getElementById('section-light').classList.toggle('active', !state.darkMode);
+    document.getElementById('section-dark').classList.toggle('active', state.darkMode);
+    document.getElementById('light-pill').style.display = state.darkMode ? 'none' : '';
+    document.getElementById('dark-pill').style.display = state.darkMode ? '' : 'none';
+    document.getElementById('meta-mode').textContent = state.darkMode ? 'dark' : 'light';
+    const btn = document.getElementById('mode-toggle');
+    btn.innerHTML = state.darkMode ? '<span>◑</span><span class="lbl">Dark</span>' : '<span>◐</span><span class="lbl">Light</span>';
+}
+
+function countChanges() {
+    const defaults = defaultTokensFlat();
+    let n = 0;
+    for (const m of ['light', 'dark']) {
+        for (const [k, v] of Object.entries(state.tokens[m])) {
+            if (defaults[m][k].toLowerCase() !== v.toLowerCase()) n++;
+        }
+    }
+    return n;
+}
+
+function updateChangeCount() {
+    const n = countChanges();
+    document.getElementById('meta-changes').textContent = n === 1 ? '1 change' : `${n} changes`;
+}
+
+function buildOverridesCss() {
+    const lightCss = Object.entries(state.tokens.light).map(([k, v]) => `${k}: ${v};`).join(' ');
+    const darkCss = Object.entries(state.tokens.dark).map(([k, v]) => `${k}: ${v};`).join(' ');
+    return `:root { ${lightCss} } body.dark-mode { ${darkCss} } .ctrl-btns, .export-btn { display: none !important; }`;
+}
+
+function applyToIframe() {
+    const doc = iframe.contentDocument;
+    if (!doc || !doc.body) return;
+    let style = doc.getElementById('studio-overrides');
+    if (!style) {
+        style = doc.createElement('style');
+        style.id = 'studio-overrides';
+        doc.head.appendChild(style);
+    }
+    style.textContent = buildOverridesCss();
+    doc.body.classList.toggle('dark-mode', state.darkMode);
+}
+
+function toast(msg) {
+    const t = document.getElementById('toast');
+    t.textContent = msg;
+    t.classList.add('show');
+    clearTimeout(toast._timer);
+    toast._timer = setTimeout(() => t.classList.remove('show'), 1900);
+}
+
+function buildPatch() {
+    const defaults = defaultTokensFlat();
+    const tokens = {};
+    const tokensDark = {};
+    for (const [k, v] of Object.entries(state.tokens.light)) {
+        if (defaults.light[k].toLowerCase() !== v.toLowerCase()) tokens[k] = v;
+    }
+    for (const [k, v] of Object.entries(state.tokens.dark)) {
+        if (defaults.dark[k].toLowerCase() !== v.toLowerCase()) tokensDark[k] = v;
+    }
+    return {
+        version: 'studio_patch_v1',
+        createdAt: new Date().toISOString(),
+        basedOn: { studioVersion: STUDIO_VERSION },
+        tokens,
+        tokensDark,
+        elementOverrides: [],
+        htmlPatches: []
+    };
+}
+
+async function exportPatch() {
+    const patch = buildPatch();
+    const isEmpty = Object.keys(patch.tokens).length === 0 && Object.keys(patch.tokensDark).length === 0;
+    if (isEmpty) {
+        toast('沒有修改可匯出');
+        return;
+    }
+    const json = JSON.stringify(patch, null, 2);
+    const blob = new Blob([json], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `studio-patch-${Date.now()}.json`;
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    URL.revokeObjectURL(url);
+    let copied = false;
+    try {
+        await navigator.clipboard?.writeText(json);
+        copied = true;
+    } catch (e) {}
+    toast(copied ? '✓ Patch 下載 + 已複製剪貼簿' : '✓ Patch 已下載');
+}
+
+function handleTokenChange(e) {
+    const t = e.target;
+    if (!t.dataset.var) return;
+    const mode = t.dataset.mode;
+    const varName = t.dataset.var;
+    let val = t.value.trim();
+    if (t.dataset.kind === 'hex') {
+        if (!val.startsWith('#')) val = '#' + val;
+        if (!isValidHex(val)) {
+            t.classList.add('invalid');
+            return;
+        }
+        t.classList.remove('invalid');
+    }
+    val = val.toLowerCase();
+    state.tokens[mode][varName] = val;
+    const row = t.closest('.token-row');
+    if (row) {
+        row.querySelector('.swatch').style.setProperty('--c', val);
+        row.querySelectorAll(`input[data-var="${varName}"]`).forEach(inp => {
+            if (inp !== t) inp.value = val;
+        });
+    }
+    applyToIframe();
+    saveState();
+    updateChangeCount();
+}
+
+function toggleMode() {
+    state.darkMode = !state.darkMode;
+    updateActiveSection();
+    applyToIframe();
+    saveState();
+}
+
+function resetAll() {
+    if (countChanges() > 0 && !confirm('清空所有 token 修改回到原始 morcept 風格？\n（不影響當前 light/dark 模式選擇）')) return;
+    state.tokens = defaultTokensFlat();
+    renderControls();
+    applyToIframe();
+    saveState();
+    toast('已重置為預設 tokens');
+}
+
+// Wire events
+document.addEventListener('input', handleTokenChange);
+document.addEventListener('change', handleTokenChange);
+document.getElementById('mode-toggle').addEventListener('click', toggleMode);
+document.getElementById('reset-btn').addEventListener('click', resetAll);
+document.getElementById('export-btn').addEventListener('click', exportPatch);
+
+iframe.addEventListener('load', applyToIframe);
+
+renderControls();
+
+// Tip: keyboard shortcut
+document.addEventListener('keydown', (e) => {
+    if ((e.metaKey || e.ctrlKey) && e.key === 'e') {
+        e.preventDefault();
+        exportPatch();
+    }
+    if ((e.metaKey || e.ctrlKey) && e.key === 'd') {
+        e.preventDefault();
+        toggleMode();
+    }
+});
+</script>
+</body>
+</html>

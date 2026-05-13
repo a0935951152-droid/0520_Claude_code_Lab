@@ -81,6 +81,7 @@
 | v0.9.1 | 2026-05-13 | 新增 `ARCHITECTURE.md` 架構紀錄檔；記錄未來「HTML Live Editor（不 push）」規劃 |
 | v0.9.2 | 2026-05-13 | 升級 Design Studio 規格（HTML + CSS tokens + 元件 inspector + responsive preview + theme presets + diff view + export） |
 | v0.9.3 | 2026-05-13 | §8.1 加入「Demo → Patch → Claude Code merge」工作流；新增 Patch JSON Schema 與 `/studio-merge` Skill 規格 |
+| v0.10.0 | 2026-05-13 | **Design Studio M1 上線**（`tools/studio.html`）：視覺化 Token Editor (Colors) + iframe 預覽 + localStorage + Export Patch JSON |
 
 ---
 

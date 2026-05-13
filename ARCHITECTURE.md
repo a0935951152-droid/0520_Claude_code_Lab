@@ -15,7 +15,9 @@
 ├── CHANGELOG.md            # Keep a Changelog 格式版本紀錄
 ├── TODO.md                 # 待辦 / 規劃
 ├── CLAUDE.md               # Claude Code 專案記憶（規則 / 連結對照 / token 位置）
-└── ARCHITECTURE.md         # ← 本檔，架構紀錄
+├── ARCHITECTURE.md         # ← 本檔，架構紀錄
+└── tools/
+    └── studio.html         # Design Studio（v0.10 起，M1 完成）— 視覺化 token 編輯
 ```
 
 外部資源：
@@ -454,6 +456,7 @@ studio.html → Claude Code 之間的合約。Claude Code 端的 `/studio-merge`
 | v0.7 | `@media print` 列印樣式、行動裝置斷點 |
 | v0.8 | i18n 模組、深淺模式、Contact modal、訪客計數器 |
 | **v0.9** | **morcept.com 簡約風大改版**（移除霓虹/glitch/clip-path、改 token 系統、本檔建立） |
+| v0.10 | **Design Studio M1 上線** — `tools/studio.html` 視覺化 Token Editor (Colors) + iframe 預覽 + Export Patch JSON |
 
 ---
 

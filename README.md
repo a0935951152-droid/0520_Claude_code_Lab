@@ -13,8 +13,19 @@
 ├── CHANGELOG.md        # 版本更新紀錄
 ├── TODO.md             # 待辦事項
 ├── CLAUDE.md           # Claude 專案記憶（規則 / 連結對照 / 注意事項）
-└── ARCHITECTURE.md     # 架構紀錄（檔案結構 / 設計 token / JS 模組 / 未來規劃）
+├── ARCHITECTURE.md     # 架構紀錄（檔案結構 / 設計 token / JS 模組 / 未來規劃）
+└── tools/
+    └── studio.html     # Design Studio — 視覺化 token 編輯器（M1，v0.10 起）
 ```
+
+### Design Studio（額外工具）
+
+訪問路徑：`tools/studio.html`（線上版同路徑）。
+
+- 視覺化編輯 light / dark 模式的 CSS tokens（顏色）
+- iframe 即時預覽 `index.html`
+- 變更僅存瀏覽器 localStorage，**不會寫回 `index.html`、不會觸發 git**
+- Export Patch 後丟給 Claude Code → 由 `/studio-merge` Skill 自動 merge + push（M8 規劃中）
 
 > 註：`/resume-push` Skill 屬使用者層級（`~/.claude/skills/resume-push.md`），不歸屬本 repo。
 
@@ -63,6 +74,7 @@
 | v0.9.1 | 2026-05-13 | 新增 `ARCHITECTURE.md` 架構紀錄；規劃未來 HTML Live Editor（不 push 額外工具） |
 | v0.9.2 | 2026-05-13 | 升級 §8.1 規格：HTML Live Editor → **Design Studio**（設計師等級工具，可同時操作 HTML / CSS tokens / 元件樣式） |
 | v0.9.3 | 2026-05-13 | §8.1 補強核心工作流：Demo → Patch JSON → Claude Code 自動 merge + push；新增 `/studio-merge` Skill 規格與 Patch JSON Schema |
+| v0.10.0 | 2026-05-13 | **Design Studio M1 上線**：`tools/studio.html` — 視覺化 Token Editor (Colors)、iframe 預覽、localStorage、Export Patch JSON |
 
 ---
 

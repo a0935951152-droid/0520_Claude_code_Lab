@@ -4,6 +4,36 @@
 
 ---
 
+## [0.10.0] — 2026-05-13
+
+### Added — Design Studio M1 上線
+- `tools/studio.html` — 設計師等級視覺化工具，**M1 milestone 完成**
+  - **Shell**：header (mode toggle / reset / export patch) + 320px sidebar + iframe preview
+  - **iframe 預覽**：載入 `../index.html`，自動注入 CSS overrides，隱藏 iframe 內 ctrl-btns 避免重複
+  - **Token Editor (Colors)** — 共 20 個 CSS 變數可即時編輯：
+    - Light Mode：bg / bg-soft / bg-section / text / text-secondary / text-muted / border / border-strong / accent / accent-hover
+    - Dark Mode：同一組 10 個變數
+    - 每 token 顯示 swatch + 變數名 + hex 輸入（雙向同步）
+    - 分組顯示：Backgrounds / Text / Borders / Accent
+  - **Mode Toggle**：切換 light/dark 即時套用，UI 用 active section + pill 標示當前編輯模式
+  - **LocalStorage 自動儲存**：key `studio_state_v1`，含 tokens 與 darkMode
+  - **Reset**：清空所有 token 修改回到 v0.9 預設（有確認 dialog）
+  - **Export Patch JSON**：
+    - 僅輸出與預設不同的 token（diff）
+    - 同時下載 `studio-patch-<timestamp>.json` + 複製到剪貼簿
+    - 對應 §8.1.8 Patch JSON Schema v1（`tokens` / `tokensDark` 區段）
+  - **變更計數**：右上 meta 顯示 `N changes`，協助使用者掌握修改幅度
+  - **鍵盤快捷鍵**：`⌘E` 匯出 patch、`⌘D` 切換模式
+- 訪問路徑：本地 `tools/studio.html` 或線上 `https://a0935951152-droid.github.io/0520_Claude_code_Lab/tools/studio.html`
+
+### Technical
+- 純 HTML/CSS/Vanilla JS 單檔（無建置、無外部 lib，除 Google Fonts CDN）
+- iframe 注入：`contentDocument.head` 加入 `<style id="studio-overrides">`，內容含 `:root` + `body.dark-mode` 與隱藏 iframe 控制按鈕
+- Patch 格式對齊 ARCHITECTURE.md §8.1.8 schema，但 M1 範圍 elementOverrides / htmlPatches 為空陣列（M3 / M4 補完）
+- 完全不寫回 `index.html`、不觸碰 `.git/`，與 §8.1 邊界一致
+
+---
+
 ## [0.9.3] — 2026-05-13
 
 ### Changed

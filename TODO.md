@@ -67,7 +67,7 @@
   - 形式：獨立 HTML 頁面 + iframe 預覽 + 左側控制面板（類 Webflow / Plasmic 體驗）
   - **同時編輯 HTML 內容 + CSS tokens + 元件樣式**（非僅 HTML）
   - 9 大功能模組：
-    - [ ] **M1** — 基礎 shell + iframe 預覽 + Token Editor (Colors)
+    - [x] **M1** — 基礎 shell + iframe 預覽 + Token Editor (Colors)（2026-05-13，v0.10.0）
     - [ ] **M2** — Token Editor 完整（字型 / 間距 / 圓角 / 陰影）+ localStorage 自動儲存
     - [ ] **M3** — Element Inspector（點選元件編輯個別 style）
     - [ ] **M4** — Content Editor（contenteditable + 區塊複製/刪除/排序）
