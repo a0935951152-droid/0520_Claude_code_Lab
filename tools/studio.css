@@ -93,6 +93,49 @@ header {
     border-color: var(--s-accent);
 }
 .btn.toggle.active:hover { background: #1d4ed8; }
+.btn .caret { font-size: 9px; margin-left: 2px; opacity: 0.7; }
+
+/* ── DROPDOWN ── */
+.dropdown { position: relative; }
+.dropdown-menu {
+    position: absolute;
+    top: calc(100% + 6px);
+    right: 0;
+    background: var(--s-bg);
+    border: 1px solid var(--s-border);
+    border-radius: 8px;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.08), 0 4px 8px rgba(0,0,0,0.04);
+    padding: 4px;
+    min-width: 220px;
+    z-index: 100;
+    display: none;
+}
+.dropdown.open .dropdown-menu { display: block; }
+.dropdown-menu button {
+    display: block;
+    width: 100%;
+    text-align: left;
+    background: none;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-family: inherit;
+    transition: background 0.12s;
+}
+.dropdown-menu button:hover { background: var(--s-accent-soft); }
+.dropdown-menu .dd-title {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--s-text);
+    margin-bottom: 2px;
+}
+.dropdown-menu .dd-desc {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: var(--s-text-muted);
+    letter-spacing: 0.3px;
+}
 
 /* ── MAIN LAYOUT ── */
 main {
@@ -361,6 +404,31 @@ aside::-webkit-scrollbar-track { background: transparent; }
     border-radius: 50%;
     background: var(--s-success);
 }
+.preview-bar .viewport-selector {
+    display: flex;
+    gap: 2px;
+    background: var(--s-bg);
+    border: 1px solid var(--s-border);
+    border-radius: 100px;
+    padding: 2px;
+}
+.preview-bar .viewport-selector button {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    padding: 4px 8px;
+    border: none;
+    background: transparent;
+    border-radius: 100px;
+    cursor: pointer;
+    color: var(--s-text-dim);
+    letter-spacing: 0.5px;
+    transition: all 0.15s;
+}
+.preview-bar .viewport-selector button:hover { color: var(--s-text); }
+.preview-bar .viewport-selector button.active {
+    background: var(--s-text);
+    color: var(--s-bg);
+}
 .preview-bar .meta { display: flex; gap: 10px; }
 .preview-bar .meta .mode-badge {
     padding: 1px 6px;
@@ -377,6 +445,15 @@ aside::-webkit-scrollbar-track { background: transparent; }
     overflow: auto;
     background: #f0f0f3;
     position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: stretch;
+    padding: 0;
+    transition: padding 0.25s ease;
+}
+.preview-frame-wrap.constrained {
+    padding: 16px;
+    background: repeating-linear-gradient(45deg, #e4e7ec, #e4e7ec 1px, #f0f0f3 1px, #f0f0f3 8px);
 }
 iframe {
     width: 100%;
@@ -384,6 +461,11 @@ iframe {
     border: none;
     background: white;
     display: block;
+    transition: max-width 0.25s ease, box-shadow 0.25s ease;
+}
+.preview-frame-wrap.constrained iframe {
+    box-shadow: 0 8px 32px rgba(0,0,0,0.12);
+    border-radius: 4px;
 }
 
 /* ── TOAST ── */

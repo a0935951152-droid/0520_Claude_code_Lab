@@ -458,9 +458,9 @@ studio.html → Claude Code 之間的合約。Claude Code 端的 `/studio-merge`
 | M4 | Content Editor（contenteditable + 區塊管理） | 1 PR |
 | M5 | Responsive Preview + Theme Presets | 1 PR |
 | M6 | History / Undo-Redo + Diff View | 1 PR |
-| M7 | Export 全套（HTML / tokens / patch / clipboard） + 對接 patch JSON schema | 1 PR |
-| M8 | `/studio-merge` Skill（Claude Code 端）— 解析 patch、套用、自動 commit+push | 1 PR |
-| M9 | 文件 + Demo 截圖，更新 README、開放 GitHub Pages tools 路徑 | 1 PR |
+| M7 | Export 全套（HTML / tokens / patch / clipboard） + 對接 patch JSON schema | 部分完成（v0.13）：Patch JSON + tokens.css 已實作，HTML export 留 v0.14 |
+| M8 | `/studio-merge` Skill（Claude Code 端）— 解析 patch、套用、自動 commit+push | **完成**（v0.13.0）— `~/.claude/skills/studio-merge.md` |
+| M9 | 文件 + Demo 截圖，更新 README、開放 GitHub Pages tools 路徑 | 部分完成（v0.13）：README 流程說明 + ARCHITECTURE 表，截圖留 v0.14 |
 
 每個 milestone 自成完整可用版本，可獨立 ship。
 
@@ -484,6 +484,8 @@ studio.html → Claude Code 之間的合約。Claude Code 端的 `/studio-merge`
 | v0.10 | **Design Studio M1 上線** — `tools/studio.html` 視覺化 Token Editor (Colors) + iframe 預覽 + Export Patch JSON |
 | v0.11 | **Studio 增強包**（M2/M4/M6 部分）— Theme Presets (5) / Text Edit / Move / Undo；patch schema v2 |
 | v0.12 | **檔案拆分守則 + Studio panel 跨欄拖曳** — index/studio 各拆 3 檔；sidebar resizable；patch schema v3 含 `panelLayout` |
+| v0.12.1 | **文件結構重整** — CLAUDE.md 瘦身、`RESUME.md` / `LINKS.md` 分檔 |
+| v0.13 | **Studio M5–M8 完成** — Responsive Preview、Redo、Export tokens.css、`/studio-merge` Skill；studio.js 拆出 `studio-export.js` 守住 1000 行 |
 
 ---
 

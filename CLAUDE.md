@@ -22,7 +22,9 @@
 
 - **插件**：`github@claude-plugins-official`
 - **Token 位置**：`~/.claude/settings.json` → `env.GITHUB_PERSONAL_ACCESS_TOKEN`
-- **Skill**：`/resume-push`（位於 `~/.claude/skills/resume-push.md`，user-scope）
+- **Skills**（user-scope，住在 `~/.claude/skills/`，不歸屬 repo）：
+  - `/resume-push` — PDF 履歷 → 設計 → 推送
+  - `/studio-merge` — Design Studio patch JSON → 套用到 repo → commit + push（v0.13.0 起）
 
 ---
 

@@ -22,19 +22,49 @@
 └── tools/
     ├── studio.html         # Design Studio shell
     ├── studio.css          # Studio CSS
-    └── studio.js           # Studio JS（token / text edit / move / undo / export）
+    ├── studio.js           # Studio 核心（state / history / tokens / modes / viewport）
+    └── studio-export.js    # Studio export 模組（buildPatch / exportPatch / exportTokensCSS）
 ```
+
+> User-scope Skill（不在 repo 內）：`~/.claude/skills/studio-merge.md` — 處理 Studio patch JSON 合併。
 
 > 拆檔守則：單一檔案達 1000 行即拆分（HTML → .css / .js）。詳見 CLAUDE.md §5。
 
 ### Design Studio（額外工具）
 
-訪問路徑：`tools/studio.html`（線上版同路徑）。
+訪問路徑：`tools/studio.html`（線上同路徑）。
 
-- 視覺化編輯 light / dark 模式的 CSS tokens（顏色）
-- iframe 即時預覽 `index.html`
-- 變更僅存瀏覽器 localStorage，**不會寫回 `index.html`、不會觸發 git**
-- Export Patch 後丟給 Claude Code → 由 `/studio-merge` Skill 自動 merge + push（M8 規劃中）
+**功能（v0.13.0，M1–M8 完成）：**
+- 視覺化編輯 light / dark 模式 CSS tokens（10 色 / 模式）
+- 5 個 Theme Presets（Morcept / Mono / Paper / Ocean / Forest）一鍵套用
+- ✏ 文字編輯模式（contenteditable 所有 `[data-i18n]` 元素）
+- ↕ Move 模式：拖曳項目排序 + **整塊 panel 跨欄拖曳**
+- ↶ Undo / ↷ Redo（最多 50 步、`⌘Z` / `⌘⇧Z`）
+- 📱 Responsive Preview（375 / 768 / 1024 / Full 切換）
+- 側欄可拖曳調寬（240–600px）
+- Export Patch JSON（給 `/studio-merge` 自動合併）或 tokens.css（純 CSS 變數）
+
+**使用流程：**
+
+```
+1. 打開履歷頁 → 左下角點「🎨 設計工具」
+   ↓
+2. Studio 線上開啟 → 玩配色 / 改文字 / 拖排序 / 切 viewport
+   ↓
+3. 滿意後點 「↓ Export」→ 選 Patch JSON
+   ↓
+4. 下載的 .json 拖回 Claude Code 對話 + 說「套上去」
+   ↓
+5. /studio-merge Skill 自動：
+   - 套用 tokens / textPatches / movePatches / panelLayout
+   - git add + commit + push
+   ↓
+6. GitHub Pages 自動部署（~30s）→ 履歷頁更新
+```
+
+**核心邊界：**
+- Studio 純前端 — 不會寫回 index.html、不會觸發 git
+- 所有合併動作明確發生在 Claude Code 端（有檔案系統 + git 權限）
 
 > 註：`/resume-push` Skill 屬使用者層級（`~/.claude/skills/resume-push.md`），不歸屬本 repo。
 
@@ -96,6 +126,7 @@
 | v0.11.0 | 2026-05-14 | **Studio 增強包**：Theme Presets (5 主題) + ✏ Text Edit + ↕ Move + ↶ Undo（`⌘Z`） |
 | v0.12.0 | 2026-05-14 | **拆檔**（index / studio 各拆 3 檔）+ 1000 行守則 + Sidebar 可拖移調寬 + Move 支援整塊 panel 跨欄拖曳 |
 | v0.12.1 | 2026-05-14 | **文件重整**：CLAUDE.md 瘦身（129→76 行）；履歷摘要 → `RESUME.md`、連結對照表 → `LINKS.md`、版本歷程留在 README |
+| v0.13.0 | 2026-05-14 | **Studio M5–M8 完成**：Responsive Preview、Redo（⌘⇧Z）、Export tokens.css、`/studio-merge` Skill 上線；studio.js 拆出 `studio-export.js` 守住 1000 行 |
 
 ---
 

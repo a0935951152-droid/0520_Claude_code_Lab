@@ -12,15 +12,28 @@
 <header>
     <div class="brand">
         <div class="brand-name">Design Studio</div>
-        <div class="brand-tag">M2+ · v0.12.0</div>
+        <div class="brand-tag">M5–M9 · v0.13.0</div>
     </div>
     <div class="actions">
         <button class="btn" id="mode-toggle"><span>◐</span><span class="lbl">Light</span></button>
         <button class="btn toggle" id="text-edit-toggle"><span>✏</span><span class="lbl">Text</span></button>
         <button class="btn toggle" id="move-toggle"><span>↕</span><span class="lbl">Move</span></button>
-        <button class="btn" id="undo-btn" disabled><span>↶</span><span class="lbl">Undo</span></button>
+        <button class="btn" id="undo-btn" disabled title="Undo (⌘Z)"><span>↶</span><span class="lbl">Undo</span></button>
+        <button class="btn" id="redo-btn" disabled title="Redo (⌘⇧Z)"><span>↷</span><span class="lbl">Redo</span></button>
         <button class="btn" id="reset-btn"><span>↺</span><span class="lbl">Reset</span></button>
-        <button class="btn primary" id="export-btn"><span>↓</span><span class="lbl">Export</span></button>
+        <div class="dropdown">
+            <button class="btn primary" id="export-btn"><span>↓</span><span class="lbl">Export</span><span class="caret">▾</span></button>
+            <div class="dropdown-menu" id="export-menu">
+                <button data-export="patch">
+                    <div class="dd-title">Patch JSON</div>
+                    <div class="dd-desc">給 Claude Code 合併用（推薦）</div>
+                </button>
+                <button data-export="css">
+                    <div class="dd-title">tokens.css</div>
+                    <div class="dd-desc">純 CSS 變數區塊</div>
+                </button>
+            </div>
+        </div>
     </div>
 </header>
 
@@ -72,20 +85,27 @@
                 <div class="dot"></div>
                 <span>../index.html</span>
             </div>
+            <div class="viewport-selector" id="viewport-selector">
+                <button data-vw="375" title="Mobile · 375px">📱 375</button>
+                <button data-vw="768" title="Tablet · 768px">📟 768</button>
+                <button data-vw="1024" title="Laptop · 1024px">💻 1024</button>
+                <button data-vw="auto" class="active" title="Full Width">⬜ Full</button>
+            </div>
             <div class="meta">
                 <span class="mode-badge" id="meta-mode">light</span>
                 <span class="changes-badge" id="meta-changes">0 changes</span>
             </div>
         </div>
-        <div class="preview-frame-wrap">
+        <div class="preview-frame-wrap" id="preview-wrap">
             <iframe id="preview" src="../index.html"></iframe>
         </div>
     </div>
 </main>
 
 <div class="toast" id="toast"></div>
-<div class="help-tip">Drag sidebar edge · ⌘Z undo · ⌘E export · ⌘D mode</div>
+<div class="help-tip">Drag sidebar · ⌘Z undo · ⌘⇧Z redo · ⌘E export</div>
 
 <script src="studio.js"></script>
+<script src="studio-export.js"></script>
 </body>
 </html>

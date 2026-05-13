@@ -4,6 +4,56 @@
 
 ---
 
+## [0.13.0] — 2026-05-14
+
+### Added — Studio M5 / M6 / M7 / M8 milestones（衝刺到 M9）
+
+**M5 — Responsive Preview**
+- `tools/studio.html` preview-bar 加 viewport selector 按鈕組：📱 375 / 📟 768 / 💻 1024 / ⬜ Full
+- iframe `max-width` 限制 + `.preview-frame-wrap.constrained` 加置中 + 棋盤背景 + 陰影邊框
+- viewport 選擇存 localStorage（`state.viewport`），下次重新打開記得
+
+**M6 — Redo（partial，diff view 留 v0.14）**
+- 新增 `redoStack`（最多 50 步）
+- `undo()` 把當前狀態推到 redoStack；`redo()` 反向操作
+- `⌘⇧Z` 或 `⌘Y` 快捷鍵 + 標題列 ↷ Redo 按鈕
+- 新 action 自動清空 redoStack（除了 undo 本身）
+
+**M7 — Export tokens.css（HTML export 留 v0.14）**
+- Export 按鈕改 dropdown：「Patch JSON」/「tokens.css」
+- 點 tokens.css → 下載純 CSS：`:root { ... } body.dark-mode { ... }` 區塊
+- 對應 Patch Schema v3 但純 CSS 路徑
+
+**M8 — `/studio-merge` Claude Code Skill 上線**
+- 新檔：`~/.claude/skills/studio-merge.md`（user-scope，不在 repo 內）
+- 完整流程：讀 patch → git pull → 套用 tokens/text/move/panel → diff 摘要 → 等使用者確認 → commit + push → 更新 CHANGELOG / README
+- 安全閥：basedOn hash 檢查、自動 backup、不跳過確認、空 patch 拒絕
+
+**M9 — 文件 / 整合（partial）**
+- README 加「使用流程」段落（履歷頁 → Studio → Export → Claude Code 合併 → push）
+- 完整 v0.1 → v0.13.0 版本表
+
+### Changed
+- `tools/studio.js` 拆出 `tools/studio-export.js`（守住 1000 行規則）：buildPatch / exportPatch / exportTokensCSS 三函式抽出
+- LocalStorage key 升級 `studio_state_v3`（加 `redoStack` / `viewport`）
+- `studio.html` 加 `<script src="studio-export.js">` 在 studio.js 之後載入
+- Header 多了 Redo 按鈕；Export 改為 dropdown
+
+### Deferred to v0.14
+- **M2** typography / spacing / radius / shadow tokens（需 styles.css 中度重構）
+- **M3** Element Inspector（點選元件編輯 inline style）
+- **M4** 區塊複製 / 刪除（duplicate / delete buttons）
+- **M6** Diff View（vs index.html 原版差異）
+- **M7** Export HTML（fetch + inline 整合）
+- 「PPT-style 自由定位」transform offset 模式
+
+### Technical
+- 所有 Studio 檔案均守住 1000 行：studio.html (111) / studio.css (522) / studio.js (924) / studio-export.js (87)
+- viewport constrained 狀態加棋盤背景視覺強化「裝置模擬」
+- redo 與 undo 共用 history stack 機制，靠 redoStack 對稱
+
+---
+
 ## [0.12.1] — 2026-05-14
 
 ### Changed — 文件結構重整

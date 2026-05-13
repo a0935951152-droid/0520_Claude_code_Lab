@@ -119,10 +119,12 @@ function loadState() {
             s.movePatches ??= {};
             s.panelLayout ??= null;
             s.history ??= [];
+            s.redoStack ??= [];
             s.currentPreset ??= 'morcept';
             s.textEditMode ??= false;
             s.moveMode ??= false;
             s.sidebarWidth ??= null;
+            s.viewport ??= 'auto';
             return s;
         }
     } catch (e) {}
@@ -133,10 +135,12 @@ function loadState() {
         movePatches: {},
         panelLayout: null,
         history: [],
+        redoStack: [],
         currentPreset: 'morcept',
         textEditMode: false,
         moveMode: false,
-        sidebarWidth: null
+        sidebarWidth: null,
+        viewport: 'auto'
     };
 }
 
@@ -162,10 +166,20 @@ function snapshotState() {
     };
 }
 
-function pushHistory(label) {
+function pushHistory(label, clearRedo = true) {
     state.history.push({ snapshot: snapshotState(), label, time: Date.now() });
     if (state.history.length > 50) state.history.shift();
-    updateUndoBtn();
+    if (clearRedo) state.redoStack = [];
+    updateHistoryBtns();
+}
+
+function restoreSnapshot(s) {
+    state.tokens = s.tokens;
+    state.textPatches = s.textPatches;
+    state.movePatches = s.movePatches;
+    state.panelLayout = s.panelLayout;
+    state.darkMode = s.darkMode;
+    state.currentPreset = s.currentPreset;
 }
 
 function undo() {
@@ -173,25 +187,40 @@ function undo() {
         toast('沒有可還原的步驟');
         return;
     }
+    state.redoStack.push({ snapshot: snapshotState(), label: state.history[state.history.length - 1].label });
+    if (state.redoStack.length > 50) state.redoStack.shift();
     const entry = state.history.pop();
-    state.tokens = entry.snapshot.tokens;
-    state.textPatches = entry.snapshot.textPatches;
-    state.movePatches = entry.snapshot.movePatches;
-    state.panelLayout = entry.snapshot.panelLayout;
-    state.darkMode = entry.snapshot.darkMode;
-    state.currentPreset = entry.snapshot.currentPreset;
+    restoreSnapshot(entry.snapshot);
     saveState();
     renderControls();
-    // Reload iframe to ensure DOM matches restored state
     iframe.src = '../index.html';
     updateChangeCount();
-    updateUndoBtn();
+    updateHistoryBtns();
     toast('↶ 已還原：' + entry.label);
 }
 
-function updateUndoBtn() {
-    document.getElementById('undo-btn').disabled = state.history.length === 0;
+function redo() {
+    if (state.redoStack.length === 0) {
+        toast('沒有可重做的步驟');
+        return;
+    }
+    state.history.push({ snapshot: snapshotState(), label: state.redoStack[state.redoStack.length - 1].label, time: Date.now() });
+    if (state.history.length > 50) state.history.shift();
+    const entry = state.redoStack.pop();
+    restoreSnapshot(entry.snapshot);
+    saveState();
+    renderControls();
+    iframe.src = '../index.html';
+    updateChangeCount();
+    updateHistoryBtns();
+    toast('↷ 已重做：' + entry.label);
 }
+
+function updateHistoryBtns() {
+    document.getElementById('undo-btn').disabled = state.history.length === 0;
+    document.getElementById('redo-btn').disabled = state.redoStack.length === 0;
+}
+const updateUndoBtn = updateHistoryBtns;
 
 // ============================================================
 // TOKEN ROW RENDERING
@@ -667,62 +696,8 @@ function toast(msg) {
     toast._timer = setTimeout(() => t.classList.remove('show'), 1900);
 }
 
-// ============================================================
-// PATCH JSON BUILD / EXPORT
-// ============================================================
-function buildPatch() {
-    const defaults = defaultTokensFlat();
-    const tokens = {};
-    const tokensDark = {};
-    for (const [k, v] of Object.entries(state.tokens.light)) {
-        if (defaults.light[k].toLowerCase() !== v.toLowerCase()) tokens[k] = v;
-    }
-    for (const [k, v] of Object.entries(state.tokens.dark)) {
-        if (defaults.dark[k].toLowerCase() !== v.toLowerCase()) tokensDark[k] = v;
-    }
-    return {
-        version: 'studio_patch_v3',
-        createdAt: new Date().toISOString(),
-        basedOn: { studioVersion: STUDIO_VERSION },
-        themePreset: state.currentPreset,
-        tokens,
-        tokensDark,
-        textPatches: { ...state.textPatches },
-        movePatches: { ...state.movePatches },
-        panelLayout: state.panelLayout ? structuredClone(state.panelLayout) : null,
-        elementOverrides: [],
-        htmlPatches: []
-    };
-}
-
-async function exportPatch() {
-    const patch = buildPatch();
-    const isEmpty = Object.keys(patch.tokens).length === 0
-        && Object.keys(patch.tokensDark).length === 0
-        && Object.keys(patch.textPatches).length === 0
-        && Object.keys(patch.movePatches).length === 0
-        && !patch.panelLayout;
-    if (isEmpty) {
-        toast('沒有修改可匯出');
-        return;
-    }
-    const json = JSON.stringify(patch, null, 2);
-    const blob = new Blob([json], { type: 'application/json' });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = `studio-patch-${Date.now()}.json`;
-    document.body.appendChild(a);
-    a.click();
-    a.remove();
-    URL.revokeObjectURL(url);
-    let copied = false;
-    try {
-        await navigator.clipboard?.writeText(json);
-        copied = true;
-    } catch (e) {}
-    toast(copied ? '✓ Patch 已下載 + 複製剪貼簿' : '✓ Patch 已下載');
-}
+// Export functions (buildPatch / exportTokensCSS / exportPatch) live in studio-export.js
+// to comply with the 1000-line file split rule.
 
 // ============================================================
 // PRESET APPLY
@@ -828,6 +803,53 @@ function toggleMoveMode() {
 }
 
 // ============================================================
+// RESPONSIVE VIEWPORT
+// ============================================================
+function setViewport(vw) {
+    state.viewport = vw || 'auto';
+    const wrap = document.getElementById('preview-wrap');
+    if (state.viewport === 'auto') {
+        wrap.classList.remove('constrained');
+        iframe.style.maxWidth = '';
+    } else {
+        wrap.classList.add('constrained');
+        iframe.style.maxWidth = state.viewport + 'px';
+    }
+    document.querySelectorAll('#viewport-selector button').forEach(b => {
+        b.classList.toggle('active', b.dataset.vw === state.viewport);
+    });
+    saveState();
+}
+
+function initViewportSelector() {
+    document.querySelectorAll('#viewport-selector button').forEach(b => {
+        b.addEventListener('click', () => setViewport(b.dataset.vw));
+    });
+    setViewport(state.viewport);
+}
+
+// ============================================================
+// EXPORT DROPDOWN
+// ============================================================
+function initExportDropdown() {
+    const btn = document.getElementById('export-btn');
+    const dropdown = btn.closest('.dropdown');
+    const menu = document.getElementById('export-menu');
+    btn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        dropdown.classList.toggle('open');
+    });
+    document.addEventListener('click', () => dropdown.classList.remove('open'));
+    menu.addEventListener('click', (e) => {
+        const item = e.target.closest('[data-export]');
+        if (!item) return;
+        dropdown.classList.remove('open');
+        if (item.dataset.export === 'patch') exportPatch();
+        else if (item.dataset.export === 'css') exportTokensCSS();
+    });
+}
+
+// ============================================================
 // SIDEBAR RESIZE
 // ============================================================
 function initResizeHandle() {
@@ -869,8 +891,8 @@ document.getElementById('mode-toggle').addEventListener('click', toggleMode);
 document.getElementById('text-edit-toggle').addEventListener('click', toggleTextEdit);
 document.getElementById('move-toggle').addEventListener('click', toggleMoveMode);
 document.getElementById('undo-btn').addEventListener('click', undo);
+document.getElementById('redo-btn').addEventListener('click', redo);
 document.getElementById('reset-btn').addEventListener('click', resetAll);
-document.getElementById('export-btn').addEventListener('click', exportPatch);
 
 iframe.addEventListener('load', () => {
     applyToIframe();
@@ -879,15 +901,17 @@ iframe.addEventListener('load', () => {
 
 // Keyboard shortcuts
 document.addEventListener('keydown', (e) => {
-    if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'z' && !e.shiftKey) {
+    const cmd = e.metaKey || e.ctrlKey;
+    if (cmd && e.key.toLowerCase() === 'z' && !e.shiftKey) {
         e.preventDefault();
         undo();
-    }
-    if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'e') {
+    } else if (cmd && (e.key.toLowerCase() === 'z' && e.shiftKey || e.key.toLowerCase() === 'y')) {
+        e.preventDefault();
+        redo();
+    } else if (cmd && e.key.toLowerCase() === 'e') {
         e.preventDefault();
         exportPatch();
-    }
-    if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'd') {
+    } else if (cmd && e.key.toLowerCase() === 'd') {
         e.preventDefault();
         toggleMode();
     }
@@ -896,3 +920,5 @@ document.addEventListener('keydown', (e) => {
 // Initial render
 renderControls();
 initResizeHandle();
+initViewportSelector();
+initExportDropdown();

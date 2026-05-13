@@ -68,24 +68,32 @@
   - **同時編輯 HTML 內容 + CSS tokens + 元件樣式**（非僅 HTML）
   - 9 大功能模組：
     - [x] **M1** — 基礎 shell + iframe 預覽 + Token Editor (Colors)（2026-05-13，v0.10.0）
-    - [~] **M2** — Token Editor 完整（字型 / 間距 / 圓角 / 陰影）+ localStorage 自動儲存
+    - [~] **M2** — Token Editor 完整（字型 / 間距 / 圓角 / 陰影）
       - [x] Theme Presets（Morcept / Mono / Paper / Ocean / Forest）（v0.11.0）
-      - [ ] 字型 / 間距 / 圓角 / 陰影 控制（保留下個 iteration）
-    - [ ] **M3** — Element Inspector（點選元件編輯個別 style）
+      - [ ] 字型 / 間距 / 圓角 / 陰影 控制 — **v0.14 規劃**（需 styles.css 加新 CSS 變數）
+    - [ ] **M3** — Element Inspector — **v0.14 規劃**
     - [~] **M4** — Content Editor
-      - [x] 文字編輯（contenteditable 所有 `[data-i18n]` 元素，含 ESC 退出）（v0.11.0）
-      - [x] 區塊排序（drag-drop on exp/project/edu/cert/lang items）（v0.11.0）
-      - [x] **整塊 panel 拖曳跨欄**（panel-title 為 drag handle，2026-05-14，v0.12.0）
-      - [ ] 區塊複製 / 刪除（保留）
-      - [ ] PPT-style 自由定位（free position via transform offset，研究中）
-    - [ ] **M5** — Responsive Preview（Mobile/Tablet/Desktop/Full）
+      - [x] 文字編輯（contenteditable 所有 `[data-i18n]` 元素）（v0.11.0）
+      - [x] 區塊排序（drag-drop items）（v0.11.0）
+      - [x] 整塊 panel 跨欄拖曳（v0.12.0）
+      - [ ] 區塊複製 / 刪除 — **v0.14 規劃**
+      - [ ] PPT-style 自由定位 — **v0.14+ 研究中**（transform offset，不破壞 responsive）
+    - [x] **M5** — Responsive Preview（375 / 768 / 1024 / Full）（v0.13.0）
     - [~] **M6** — History / Undo-Redo + Diff View
-      - [x] Undo（history stack 50 步、`⌘Z`、按鈕）（v0.11.0）
-      - [ ] Redo（`⌘⇧Z`）
-      - [ ] Diff View（保留 / 視需求）
-    - [ ] **M7** — Export 全套（HTML / tokens.css / patch JSON / clipboard）+ 對接 patch JSON schema
-    - [ ] **M8** — `/studio-merge` Claude Code Skill（讀 patch.json → 套用到 index.html → 自動 commit + push）
-    - [ ] **M9** — 文件 + Demo 截圖、更新 README、開放線上版
+      - [x] Undo（v0.11.0）
+      - [x] Redo（`⌘⇧Z` / `⌘Y` / 按鈕）（v0.13.0）
+      - [ ] Diff View — **v0.14 規劃**
+    - [~] **M7** — Export 全套
+      - [x] Patch JSON + clipboard（v0.10.0 / v0.11.0）
+      - [x] tokens.css 純變數區塊（v0.13.0）
+      - [ ] HTML 完整檔（fetch + inline）— **v0.14 規劃**
+    - [x] **M8** — `/studio-merge` Claude Code Skill（v0.13.0）
+      - 位置：`~/.claude/skills/studio-merge.md`（user-scope）
+      - 流程：read patch → pull → 套用 tokens/text/move/panel → diff 確認 → commit + push → 更新 CHANGELOG
+    - [~] **M9** — 文件 + Demo + 線上發佈
+      - [x] README 加「使用流程」段落、版本表完整（v0.13.0）
+      - [x] ARCHITECTURE 里程碑表更新（v0.13.0）
+      - [ ] Demo gif / 截圖（保留）
   - 邊界（強制）：
     - 禁止自動寫入 `index.html`（使用者必須自己 export → 手動覆蓋 → commit）
     - 禁止觸碰 `.git/`、禁止執行 git 指令
