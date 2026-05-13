@@ -4,6 +4,21 @@
 
 ---
 
+## [0.10.1] — 2026-05-14
+
+### Added
+- `index.html` — 左下 `.ctrl-btns` 新增第 4 顆按鈕 **🎨 Studio**（中文顯示「設計工具」）
+  - 連結 `tools/studio.html`，`target="_blank"` 新分頁開啟，使用者體驗：在履歷頁直接進入設計器
+  - 完整工作流串接：履歷頁 → 點 Studio → 線上 demo 調整 → Export Patch → 丟給 Claude Code → 合併 + push
+- `index.html` — i18n 加入 `studio_btn`（zh: 設計工具 / en: Studio）
+
+### Technical
+- 連結用 `<a>` 包裹，套用 CLAUDE.md §3 規則：`text-decoration:none; color:inherit;`
+- studio.html 內 `.ctrl-btns` 隱藏規則已涵蓋新按鈕（不會在 iframe 預覽中重複顯示）
+- 列印樣式 `@media print` 已隱藏整個 `.ctrl-btns` 容器，新按鈕不會出現在 PDF 匯出
+
+---
+
 ## [0.10.0] — 2026-05-13
 
 ### Added — Design Studio M1 上線

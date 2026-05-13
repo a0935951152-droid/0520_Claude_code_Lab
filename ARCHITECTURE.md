@@ -133,6 +133,7 @@
 | 交大 AI 專案 → View Drive | `https://drive.google.com/file/d/19aE9BpgaeGVXs9VHT1B1IDvQBwjYg0N0/view` |
 | Export PDF（右下） | `window.print()` |
 | Contact / Lang / Mode（左下） | JS handlers |
+| 🎨 Studio（左下，v0.10.1+） | `tools/studio.html`（新分頁） |
 
 ---
 

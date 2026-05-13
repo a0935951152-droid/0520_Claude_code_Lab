@@ -75,6 +75,7 @@
 | v0.9.2 | 2026-05-13 | 升級 §8.1 規格：HTML Live Editor → **Design Studio**（設計師等級工具，可同時操作 HTML / CSS tokens / 元件樣式） |
 | v0.9.3 | 2026-05-13 | §8.1 補強核心工作流：Demo → Patch JSON → Claude Code 自動 merge + push；新增 `/studio-merge` Skill 規格與 Patch JSON Schema |
 | v0.10.0 | 2026-05-13 | **Design Studio M1 上線**：`tools/studio.html` — 視覺化 Token Editor (Colors)、iframe 預覽、localStorage、Export Patch JSON |
+| v0.10.1 | 2026-05-14 | `index.html` 左下加 🎨 Studio 按鈕，串接「履歷頁 → Studio → Export → Claude Code 合併」完整工作流 |
 
 ---
 

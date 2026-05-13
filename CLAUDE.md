@@ -60,6 +60,7 @@
 | ◐ Dark / ◑ Light 模式切換（左下角） | toggle `body.dark-mode`（**注意：v0.9 起改為以 dark-mode class 為 alternate；預設為 light**） | 切換深/淺色，localStorage 持久化（`zxa_mode === 'dark'`） |
 | EN / 中 語言切換（左下角） | `data-i18n` 屬性 + JS translations | 中英內容互換，localStorage 持久化 |
 | ✉ Contact 聯絡按鈕（左下角） | 開啟 modal → 送出後 `mailto:` | 填寫姓名/Email/留言後開啟郵件客戶端 |
+| 🎨 Studio 設計工具按鈕（左下角） | `tools/studio.html` | 新分頁開啟 Design Studio（v0.10.1 起） |
 | 技能分組標題（Software & AI 等） | toggle `.skill-group.collapsed` | 點擊展開/收合該組技能列表，`+` / `×` 圖示切換 |
 | 訪客計數器（footer 下方） | `https://visitor-badge.laobi.icu/badge?page_id=...` | 自動計數圖示 |
 
@@ -82,6 +83,7 @@
 | v0.9.2 | 2026-05-13 | 升級 Design Studio 規格（HTML + CSS tokens + 元件 inspector + responsive preview + theme presets + diff view + export） |
 | v0.9.3 | 2026-05-13 | §8.1 加入「Demo → Patch → Claude Code merge」工作流；新增 Patch JSON Schema 與 `/studio-merge` Skill 規格 |
 | v0.10.0 | 2026-05-13 | **Design Studio M1 上線**（`tools/studio.html`）：視覺化 Token Editor (Colors) + iframe 預覽 + localStorage + Export Patch JSON |
+| v0.10.1 | 2026-05-14 | `index.html` 左下加 🎨 Studio 入口按鈕，完整串接「履歷 → Studio → Export → Claude Code 合併」工作流 |
 
 ---
 
