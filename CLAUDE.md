@@ -80,6 +80,7 @@
 | v0.9 | 2026-05-13 | 整體風格大改版：賽博龐克 → morcept.com 簡約風（白底深字、圓角卡片、細邊框、留白） |
 | v0.9.1 | 2026-05-13 | 新增 `ARCHITECTURE.md` 架構紀錄檔；記錄未來「HTML Live Editor（不 push）」規劃 |
 | v0.9.2 | 2026-05-13 | 升級 Design Studio 規格（HTML + CSS tokens + 元件 inspector + responsive preview + theme presets + diff view + export） |
+| v0.9.3 | 2026-05-13 | §8.1 加入「Demo → Patch → Claude Code merge」工作流；新增 Patch JSON Schema 與 `/studio-merge` Skill 規格 |
 
 ---
 

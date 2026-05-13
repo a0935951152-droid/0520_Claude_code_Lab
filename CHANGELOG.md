@@ -4,6 +4,26 @@
 
 ---
 
+## [0.9.3] — 2026-05-13
+
+### Changed
+- `ARCHITECTURE.md` §8.1 補強核心工作流：**Demo → Patch → Claude Code Merge**
+  - 新增 §8.1.1a 流程圖：browser studio.html（demo only）→ Export Patch JSON → Claude Code 自動 merge + commit + push
+  - 新增 §8.1.8 **Patch JSON Schema**：定義 studio ↔ Claude Code 的契約格式（tokens / tokensDark / elementOverrides / htmlPatches / basedOn hash 驗證）
+  - 新增 §8.1.9 **`/studio-merge` Skill 規格**（Claude Code 端負責 merge）
+  - 修正定位：使用者不需要「手動覆蓋 index.html」，只要把 patch 丟給 Claude Code 即可
+  - 開發里程碑由 M1–M8 擴充為 **M1–M9**（新增 M8 `/studio-merge` skill、M9 文件 + 線上發佈）
+- `TODO.md` 同步：M1–M9 子待辦表
+
+### Technical
+- Patch JSON Schema v1：
+  - `version` / `createdAt` / `basedOn.indexHtmlSha` 驗證
+  - `tokens` / `tokensDark` / `elementOverrides` / `htmlPatches` 四種變更類型
+  - 合併順序與衝突檢測規則
+- `/studio-merge` Skill 含 backup（`.bak.<ts>`）、diff 預覽、自動 CHANGELOG 條目
+
+---
+
 ## [0.9.2] — 2026-05-13
 
 ### Changed

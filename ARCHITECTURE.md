@@ -162,8 +162,41 @@ https://a0935951152-droid.github.io/0520_Claude_code_Lab/
 
 - 本地快速迭代設計，不污染 `index.html` 與 main 分支歷史
 - 把現有的 design token 系統（§3）暴露成可視化控制，讓非工程角色（自己 / 設計師 / 同學）也能改色、改字、調間距
-- 確認設計 OK 後，再由使用者**手動 export → 覆蓋 `index.html` → commit + push**
+- 確認設計 OK 後，**使用者把 patch.json 丟給 Claude Code → Claude 自動 merge + commit + push**
 - 屬於「**額外工具**」，與主簡歷 `index.html` **完全解耦**
+
+#### 8.1.1a 核心使用流程（Demo → Merge）
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│  Browser ── tools/studio.html                              │
+│  ┌────────────────────┐      ┌──────────────────────────┐  │
+│  │  Controls Panel    │  →   │  iframe = LIVE DEMO      │  │
+│  │  色彩/字型/排版/... │      │  (mutated index.html)    │  │
+│  └────────────────────┘      └──────────────────────────┘  │
+│           ↓                                                 │
+│      [ Export Patch (JSON) ]  or  [ Copy to Clipboard ]    │
+└─────────────────────────────────────────────────────────────┘
+                          ↓ patch.json
+┌─────────────────────────────────────────────────────────────┐
+│  Claude Code CLI                                            │
+│  $ /studio-merge ~/Downloads/patch.json                    │
+│   或：「幫我把這個 patch 套到 index.html 然後推上去」      │
+│   → 解析 patch                                              │
+│   → 套用 tokens / elementOverrides / htmlPatches            │
+│   → 寫回 index.html                                         │
+│   → git add → commit → push                                 │
+└─────────────────────────────────────────────────────────────┘
+                          ↓ GitHub Pages 自動部署
+                  https://...github.io/0520_Claude_code_Lab/
+```
+
+**關鍵原則**：
+- studio.html 內部：iframe 是 demo，純前端 mutation，**完全不碰 `index.html`**
+- 跨界（瀏覽器 → repo）：使用者主動 export patch 後拿給 Claude Code
+- Claude Code：read patch → mutate `index.html` → commit + push
+
+studio.html 本身**不能也不會**直接寫 `index.html` 或執行 git。merge 動作明確發生在 Claude Code 環境（有檔案系統與 git 權限）。
 
 #### 8.1.2 形式（已收斂）
 
@@ -262,7 +295,11 @@ https://a0935951152-droid.github.io/0520_Claude_code_Lab/
 | Export Diff | 下載 `studio.patch` — unified diff，可手動 apply |
 | Copy to Clipboard | 複製完整 HTML 到剪貼簿 |
 
-**完全沒有「直接寫回 `index.html`」按鈕。** 使用者必須自己下載、手動覆蓋、commit、push。
+**完全沒有「直接寫回 `index.html`」按鈕。** 使用者必須：
+1. **(推薦) Export Patch → 丟給 Claude Code** → 由 `/studio-merge` Skill 自動 merge + commit + push
+2. (備援) Export HTML → 自己手動覆蓋 → 自己 commit + push
+
+studio.html 本身仍然零接觸 `index.html` 與 git。
 
 **J. Reset**
 
@@ -331,7 +368,60 @@ https://a0935951152-droid.github.io/0520_Claude_code_Lab/
 中間：響應式 iframe 預覽  
 頂部：全域操作（reset / export / undo / redo）
 
-#### 8.1.8 開發里程碑
+#### 8.1.8 Patch JSON Schema
+
+studio.html → Claude Code 之間的合約。Claude Code 端的 `/studio-merge` 必須能 100% 還原這份 patch 到 `index.html`。
+
+```json
+{
+  "version": "studio_patch_v1",
+  "createdAt": "2026-05-13T15:42:00Z",
+  "basedOn": {
+    "indexHtmlSha": "abc123...",     // 從 index.html 算 hash，merge 時驗證未變
+    "studioVersion": "0.9.x"
+  },
+  "tokens": {                         // 修改 :root { } 內 CSS 變數
+    "--text": "#1a1a1a",
+    "--accent": "#4a90e2"
+  },
+  "tokensDark": {                     // 修改 body.dark-mode { } 內 CSS 變數
+    "--text": "#fafafa"
+  },
+  "elementOverrides": [               // 加 inline style 到指定元素
+    {
+      "selector": ".panel-title",
+      "styles": { "letter-spacing": "3px", "color": "var(--accent)" }
+    }
+  ],
+  "htmlPatches": [                    // 替換指定元素的 innerHTML
+    {
+      "selector": "h1.name-glitch",
+      "innerHTML": "新的姓名"
+    }
+  ],
+  "themePreset": "morcept-custom"     // 命名儲存，optional
+}
+```
+
+合併規則：
+1. `tokens` / `tokensDark` → 直接替換 `index.html` 內 `:root { }` 與 `body.dark-mode { }` 區塊內對應變數
+2. `elementOverrides` → 走 querySelectorAll，在元素上加 `style="..."`（或注入 `<style>` block）
+3. `htmlPatches` → 走 querySelectorAll，替換 `innerHTML`
+4. 順序執行：tokens → tokensDark → elementOverrides → htmlPatches
+5. 衝突檢測：basedOn.indexHtmlSha 與當前不符時，警告並要求人工確認
+
+#### 8.1.9 `/studio-merge` Claude Code Skill — **規劃中**
+
+| 屬性 | 內容 |
+|------|------|
+| 位置 | `~/.claude/skills/studio-merge.md`（user-scope，不歸屬 repo） |
+| 觸發 | `/studio-merge <patch.json 路徑>` 或自然語言「套用這個 patch」 |
+| 步驟 | 1. 讀 patch.json<br>2. 讀 `index.html` 並驗證 basedOn.indexHtmlSha<br>3. 套用 tokens / overrides / htmlPatches<br>4. Diff 預覽（讓使用者確認）<br>5. 寫回 `index.html`<br>6. 同步更新 CHANGELOG（自動產生 v0.x.x 條目）<br>7. git add + commit + push |
+| 安全閥 | 沖突或 hash 不符時暫停，等使用者決定<br>每次 merge 自動 backup `index.html.bak.<timestamp>` |
+
+> 此 Skill 屬於 Claude Code 端的工具，與 studio.html（瀏覽器端）共同構成完整工作流。
+
+#### 8.1.10 開發里程碑
 
 | Milestone | 範圍 | 預估 |
 |-----------|------|------|
@@ -341,10 +431,13 @@ https://a0935951152-droid.github.io/0520_Claude_code_Lab/
 | M4 | Content Editor（contenteditable + 區塊管理） | 1 PR |
 | M5 | Responsive Preview + Theme Presets | 1 PR |
 | M6 | History / Undo-Redo + Diff View | 1 PR |
-| M7 | Export 全套（HTML / tokens / patch / clipboard） | 1 PR |
-| M8 | 文件 + Demo gif，更新 README | 1 PR |
+| M7 | Export 全套（HTML / tokens / patch / clipboard） + 對接 patch JSON schema | 1 PR |
+| M8 | `/studio-merge` Skill（Claude Code 端）— 解析 patch、套用、自動 commit+push | 1 PR |
+| M9 | 文件 + Demo 截圖，更新 README、開放 GitHub Pages tools 路徑 | 1 PR |
 
 每個 milestone 自成完整可用版本，可獨立 ship。
+
+**M1–M7 在 repo 內、瀏覽器執行**；**M8 是 user-scope skill**（住在 `~/.claude/skills/`，不歸屬 repo）；**M9 是文件與發佈**。
 
 ### 8.2 其他未來方向（從 TODO.md 引用）
 

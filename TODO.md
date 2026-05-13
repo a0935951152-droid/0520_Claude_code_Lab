@@ -73,8 +73,9 @@
     - [ ] **M4** — Content Editor（contenteditable + 區塊複製/刪除/排序）
     - [ ] **M5** — Responsive Preview（Mobile/Tablet/Desktop/Full）+ Theme Presets（morcept / cyberpunk / mono-paper）
     - [ ] **M6** — History / Undo-Redo + Diff View（vs `index.html` 原版）
-    - [ ] **M7** — Export 全套（HTML / tokens.css / patch / clipboard）
-    - [ ] **M8** — 文件 + Demo gif，更新 README
+    - [ ] **M7** — Export 全套（HTML / tokens.css / patch JSON / clipboard）+ 對接 patch JSON schema
+    - [ ] **M8** — `/studio-merge` Claude Code Skill（讀 patch.json → 套用到 index.html → 自動 commit + push）
+    - [ ] **M9** — 文件 + Demo 截圖、更新 README、開放線上版
   - 邊界（強制）：
     - 禁止自動寫入 `index.html`（使用者必須自己 export → 手動覆蓋 → commit）
     - 禁止觸碰 `.git/`、禁止執行 git 指令
