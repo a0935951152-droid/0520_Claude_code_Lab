@@ -100,16 +100,21 @@
         document.getElementById('mode-btn').textContent = dark ? '◑ Light' : '◐ Dark';
     }
 
-    window.openContact = function() { document.getElementById('contact-modal').classList.add('open'); };
+    // ── Contact Endpoint (Google Apps Script Web App，含 spam/DDoS 防禦) ──
+    // 詳見 CONTACT_SETUP.md。後端必須是硬化版（v0.14.2）才能驗證以下欄位。
+    const CONTACT_ENDPOINT = 'https://script.google.com/macros/s/AKfycby1kve6W-Mz-PrTggPRNBla4iHpMFTMu4E89ew3IKtGGYwNub8QwGq9d3gWOQerR62o/exec';
+    const CONTACT_TOKEN = 'rms_0520_2026_x7k2';   // 與 Apps Script SHARED_TOKEN 同步
+    let formOpenedAt = 0;
+
+    window.openContact = function() {
+        document.getElementById('contact-modal').classList.add('open');
+        formOpenedAt = Date.now();
+    };
     window.closeContact = function() {
         document.getElementById('contact-modal').classList.remove('open');
         document.getElementById('cf-status').textContent = '';
     };
     window.handleOverlayClick = function(e) { if (e.target === document.getElementById('contact-modal')) window.closeContact(); };
-
-    // ── Contact Endpoint (Google Apps Script Web App, 寫入 Drive 試算表) ──
-    // 設定方式見 CONTACT_SETUP.md。未設定（placeholder）時自動 fallback 到 mailto:
-    const CONTACT_ENDPOINT = 'YOUR_APPS_SCRIPT_WEB_APP_URL';
 
     function fallbackMailto(name, email, msg, statusEl) {
         const sub = encodeURIComponent('[履歷聯絡] 來自 ' + name);
@@ -120,11 +125,22 @@
 
     window.submitContact = async function(e) {
         e.preventDefault();
-        const name = document.getElementById('cf-name').value;
-        const email = document.getElementById('cf-email').value;
-        const msg = document.getElementById('cf-msg').value;
+        const name = document.getElementById('cf-name').value.trim();
+        const email = document.getElementById('cf-email').value.trim();
+        const msg = document.getElementById('cf-msg').value.trim();
+        const website = (document.getElementById('cf-website') || {}).value || '';
         const statusEl = document.getElementById('cf-status');
         const submitBtn = e.target.querySelector('button[type="submit"]');
+
+        // 前端輕量檢查（後端會再驗一次）
+        if (msg.length < 5) {
+            statusEl.textContent = '訊息至少 5 個字';
+            return;
+        }
+        if (Date.now() - formOpenedAt < 2500) {
+            statusEl.textContent = '請稍等再送出';
+            return;
+        }
 
         // 若 endpoint 尚未設定 → 直接走 mailto
         if (!CONTACT_ENDPOINT || CONTACT_ENDPOINT.startsWith('YOUR_')) {
@@ -135,18 +151,19 @@
         try {
             if (submitBtn) submitBtn.disabled = true;
             statusEl.textContent = '送出中…';
-            // mode: 'no-cors' 避開 CORS preflight（Apps Script 不支援 OPTIONS）
-            // 缺點：無法讀回應，但 Apps Script 端會收到資料並寫 Sheet
             await fetch(CONTACT_ENDPOINT, {
                 method: 'POST',
                 mode: 'no-cors',
                 headers: { 'Content-Type': 'text/plain;charset=utf-8' },
                 body: JSON.stringify({
+                    token: CONTACT_TOKEN,
+                    website,                   // honeypot
+                    formOpenedAt,              // timing check
                     name, email, message: msg,
                     timestamp: new Date().toISOString(),
                     page: location.href,
                     lang: lang,
-                    userAgent: navigator.userAgent
+                    userAgent: navigator.userAgent.slice(0, 200)
                 })
             });
             statusEl.textContent = '✓ 已送出，將於 24 小時內回覆';

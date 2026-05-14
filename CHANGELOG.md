@@ -4,6 +4,58 @@
 
 ---
 
+## [0.14.2] — 2026-05-14
+
+### Added — Contact 表單接上 Google Drive + 多層 spam/DDoS 防禦
+
+- **CONTACT_ENDPOINT 已填入實際 URL**（Apps Script Web App）
+  - URL：`https://script.google.com/macros/s/AKfycby1kve6.../exec`
+  - 寫入：`Resume Contact 0520` Sheet（ID: `1zEJsCffy7OlLgIz3hqmWOMCGYBXCRE4K4Jbh-zf-hOY`，Claude 透過 Drive MCP 預先建好）
+
+- **多層硬化防禦**（CONTACT_SETUP.md 詳述）：
+  1. **Shared token** — 前後端共用 `rms_0520_2026_x7k2`，擋不讀 JS 的笨 bot
+  2. **Honeypot** — `index.html` 加 `<input id="cf-website">` 隱藏欄位，bot 通常會填
+  3. **Timing check** — 表單開啟 ≥ 2.5 秒才能送（前後端都驗）
+  4. **Origin check** — 後端比對 `page` 必須以白名單 origin 開頭
+  5. **Field validation** — name ≤ 100 / email ≤ 200 + regex / message 5–5000
+  6. **Payload size cap** — 後端拒絕 > 8KB body
+  7. **同 email cooldown** — 60 秒內同 email 拒收（PropertiesService + MD5 hash）
+  8. **全域 rate limit** — 每分鐘最多 10 筆（保護 Apps Script daily quota）
+  9. **統一錯誤回應** — 不洩漏拒絕原因，避免攻擊者試探
+
+- **前端配合改動**（`assets/scripts.js` / `index.html`）：
+  - 加 `CONTACT_TOKEN` 常數 + `formOpenedAt` 追蹤
+  - POST payload 加 `token` / `website`（honeypot）/ `formOpenedAt`
+  - 前端輕量驗證（message 長度、dwell time）
+  - 表單欄位加 `maxlength` 屬性
+
+- **CONTACT_SETUP.md 改為硬化版指南**：
+  - 完整硬化版 Apps Script 程式碼（直接複製貼上）
+  - 防禦層強度表（⭐⭐⭐⭐ 級評分）
+  - 進階段落：通知信、Cloudflare Turnstile、HMAC、緊急封鎖
+  - 疑難排解表新增「curl 怎麼測都過不了」等情境
+
+### ⚠️ Action Required（使用者）
+
+Apps Script 端需重新部署（**必須選 New version**）：
+1. https://script.google.com → 開「Resume Contact Receiver」（或當初命名的專案）
+2. 把整段程式碼換成 CONTACT_SETUP.md §步驟 2 的**硬化版**（已內建 SHEET_ID）
+3. 儲存 → Deploy → Manage deployments → ✏ → Version: **New version** → Deploy
+4. URL 不變，前端不用改
+
+### Technical
+- 後端拒絕情況統一回 `{ ok: false }`（不附原因），詳情走 console.log（看 Apps Script Executions）
+- Sheet 結構新增第 7 欄 `Meta`：JSON 含 UA 前 200 字 + dwell time（方便事後分析）
+- PropertiesService 用 MD5 hash email 後 16 字當 key（隱私 + 短 key）
+- 10% 機率清理 5 分鐘前的 minute counter（避免 Properties storage 爆）
+
+### 已知限制
+- 公開 URL + token 在 client JS 可讀 — 防護靠 layered defense，不是 secrecy
+- 真正大規模 DDoS 需 Cloudflare Turnstile / Worker 擋在前（見 §進階 B）
+- Apps Script daily quota 仍有上限（個人帳號），rate limit 是延緩不是免疫
+
+---
+
 ## [0.14.1] — 2026-05-14
 
 ### Added — Contact 表單接 Google Drive

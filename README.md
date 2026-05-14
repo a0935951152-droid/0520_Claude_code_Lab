@@ -133,6 +133,7 @@
 | v0.13.0 | 2026-05-14 | **Studio M5–M8 完成**：Responsive Preview、Redo（⌘⇧Z）、Export tokens.css、`/studio-merge` Skill 上線；studio.js 拆出 `studio-export.js` 守住 1000 行 |
 | v0.14.0 | 2026-05-14 | **M2 / M3 / M4 / M6 / M7 全部完成 → M7 里程碑全綠**：Geometry/Type 控制、Element Inspector、區塊 Delete、Diff View Modal、Full HTML Export；studio.js 拆出 modes/inspector/diff 三新檔 |
 | v0.14.1 | 2026-05-14 | **Contact 表單接 Google Drive**：`submitContact` 改 POST 到 Apps Script Web App（寫 Drive Sheet），失敗自動 fallback `mailto:`；新增 `CONTACT_SETUP.md` 完整設定指南 |
+| v0.14.2 | 2026-05-14 | **Contact 多層 spam/DDoS 防禦**：endpoint 填上 URL；前端 honeypot + timing + token；後端 origin/validation/cooldown/rate limit；Apps Script 須重新部署 New version |
 
 ---
 

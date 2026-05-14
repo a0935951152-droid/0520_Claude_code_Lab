@@ -285,17 +285,19 @@
         <div class="modal-title">Send a Message</div>
         <div class="modal-subtitle">無聲勝有聲 — Let your message speak</div>
         <form onsubmit="submitContact(event)">
+            <!-- honeypot: 隱藏欄位防 spam bot；真人看不到也選不到 -->
+            <input type="text" name="website" id="cf-website" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute; left:-9999px; opacity:0; height:0; width:0; pointer-events:none;">
             <div class="cf-group">
                 <label class="cf-label" for="cf-name">Name</label>
-                <input class="cf-input" id="cf-name" type="text" required placeholder="你的名字 / Your name">
+                <input class="cf-input" id="cf-name" type="text" required placeholder="你的名字 / Your name" maxlength="100">
             </div>
             <div class="cf-group">
                 <label class="cf-label" for="cf-email">Email</label>
-                <input class="cf-input" id="cf-email" type="email" required placeholder="your@email.com">
+                <input class="cf-input" id="cf-email" type="email" required placeholder="your@email.com" maxlength="200">
             </div>
             <div class="cf-group">
                 <label class="cf-label" for="cf-msg">Message</label>
-                <textarea class="cf-input" id="cf-msg" required placeholder="留言 / Message..."></textarea>
+                <textarea class="cf-input" id="cf-msg" required placeholder="留言 / Message..." minlength="5" maxlength="5000"></textarea>
             </div>
             <button type="submit" class="cf-submit">Send Message</button>
             <div class="cf-status" id="cf-status"></div>
