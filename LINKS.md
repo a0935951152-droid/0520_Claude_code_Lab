@@ -31,7 +31,7 @@
 
 | 按鈕 | 動作 | 行為 |
 |------|------|------|
-| ✉ Contact | `openContact()` 開啟 modal | 填寫姓名/Email/留言 → 送出後 `mailto:` |
+| ✉ Contact | `openContact()` 開啟 modal | 填寫姓名/Email/留言 → POST 到 Google Apps Script Web App（寫 Drive Sheet）；未設定 endpoint 時 fallback `mailto:`。詳見 `CONTACT_SETUP.md` |
 | EN / 中 | `applyLang()` | 中英內容互換，`data-i18n` 屬性同步；localStorage 持久化 `zxa_lang` |
 | ◐ Dark / ◑ Light | `applyMode()` | toggle `body.dark-mode` class；localStorage 持久化 `zxa_mode` |
 | 🎨 Studio / 設計工具 | `tools/studio.html` | 新分頁開啟 Design Studio（v0.10.1 起） |

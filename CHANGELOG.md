@@ -4,6 +4,34 @@
 
 ---
 
+## [0.14.1] — 2026-05-14
+
+### Added — Contact 表單接 Google Drive
+
+- `assets/scripts.js` — `submitContact` 改寫：
+  - 加 `CONTACT_ENDPOINT` 常數（預設 placeholder）
+  - 若 endpoint 已設定 → `fetch` POST JSON 到 Google Apps Script Web App（mode: no-cors）
+  - 送出成功 → 顯示「✓ 已送出，將於 24 小時內回覆」+ 清空表單 + 1.8s 後自動關 modal
+  - 送出失敗或 placeholder 仍在 → 自動 fallback 到原本的 `mailto:`
+  - 送出中 disable submit button
+  - POST payload 加入 `timestamp` / `page` / `lang` / `userAgent`，後續好分析來源
+- **新增 `CONTACT_SETUP.md`** — 完整 setup guide（約 5 分鐘）：
+  - 步驟 1：建 Google Sheet（標題列：Timestamp / Name / Email / Message / Page / Lang）
+  - 步驟 2：建 Apps Script，貼 `doPost` 範例（含 try/catch、寫入 sheet、optional 寄信通知）
+  - 步驟 3：部署為 Web App（Anyone access）
+  - 步驟 4：把 URL 給 Claude → 自動寫進 `CONTACT_ENDPOINT` 常數推送
+- 進階段落：寄信通知、honeypot 防垃圾、串 Slack/Notion、reCAPTCHA、隱私注意、疑難排解表
+- `LINKS.md` 更新 Contact 按鈕說明（POST → Drive Sheet + mailto fallback）
+
+### Next Step (需使用者操作)
+
+依 `CONTACT_SETUP.md` 步驟 1–3 完成後，把 Apps Script Web App URL 貼回對話，Claude 會：
+1. 把 URL 寫進 `assets/scripts.js` 的 `CONTACT_ENDPOINT`
+2. 推一個 v0.14.2 patch commit
+3. 履歷 contact 表單即上線
+
+---
+
 ## [0.14.0] — 2026-05-14
 
 ### Added — M2 / M3 / M4 delete / M6 Diff / M7 HTML 全部完成 → M7 里程碑全綠

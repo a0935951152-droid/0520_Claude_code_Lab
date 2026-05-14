@@ -106,15 +106,61 @@
         document.getElementById('cf-status').textContent = '';
     };
     window.handleOverlayClick = function(e) { if (e.target === document.getElementById('contact-modal')) window.closeContact(); };
-    window.submitContact = function(e) {
+
+    // ── Contact Endpoint (Google Apps Script Web App, 寫入 Drive 試算表) ──
+    // 設定方式見 CONTACT_SETUP.md。未設定（placeholder）時自動 fallback 到 mailto:
+    const CONTACT_ENDPOINT = 'YOUR_APPS_SCRIPT_WEB_APP_URL';
+
+    function fallbackMailto(name, email, msg, statusEl) {
+        const sub = encodeURIComponent('[履歷聯絡] 來自 ' + name);
+        const body = encodeURIComponent('姓名：' + name + '\nEmail：' + email + '\n\n' + msg);
+        window.location.href = 'mailto:a0935951152@gmail.com?subject=' + sub + '&body=' + body;
+        statusEl.textContent = '✓ 已開啟郵件客戶端，請確認傳送。';
+    }
+
+    window.submitContact = async function(e) {
         e.preventDefault();
         const name = document.getElementById('cf-name').value;
         const email = document.getElementById('cf-email').value;
         const msg = document.getElementById('cf-msg').value;
-        const sub = encodeURIComponent('[履歷聯絡] 來自 ' + name);
-        const body = encodeURIComponent('姓名：' + name + '\nEmail：' + email + '\n\n' + msg);
-        window.location.href = 'mailto:a0935951152@gmail.com?subject=' + sub + '&body=' + body;
-        document.getElementById('cf-status').textContent = '✓ 已開啟郵件客戶端，請確認傳送。';
+        const statusEl = document.getElementById('cf-status');
+        const submitBtn = e.target.querySelector('button[type="submit"]');
+
+        // 若 endpoint 尚未設定 → 直接走 mailto
+        if (!CONTACT_ENDPOINT || CONTACT_ENDPOINT.startsWith('YOUR_')) {
+            fallbackMailto(name, email, msg, statusEl);
+            return;
+        }
+
+        try {
+            if (submitBtn) submitBtn.disabled = true;
+            statusEl.textContent = '送出中…';
+            // mode: 'no-cors' 避開 CORS preflight（Apps Script 不支援 OPTIONS）
+            // 缺點：無法讀回應，但 Apps Script 端會收到資料並寫 Sheet
+            await fetch(CONTACT_ENDPOINT, {
+                method: 'POST',
+                mode: 'no-cors',
+                headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+                body: JSON.stringify({
+                    name, email, message: msg,
+                    timestamp: new Date().toISOString(),
+                    page: location.href,
+                    lang: lang,
+                    userAgent: navigator.userAgent
+                })
+            });
+            statusEl.textContent = '✓ 已送出，將於 24 小時內回覆';
+            document.getElementById('cf-name').value = '';
+            document.getElementById('cf-email').value = '';
+            document.getElementById('cf-msg').value = '';
+            setTimeout(() => window.closeContact(), 1800);
+        } catch (err) {
+            console.warn('Contact POST failed, fallback to mailto:', err);
+            statusEl.textContent = '送出失敗，改開郵件客戶端…';
+            setTimeout(() => fallbackMailto(name, email, msg, statusEl), 600);
+        } finally {
+            if (submitBtn) submitBtn.disabled = false;
+        }
     };
 
     document.addEventListener('DOMContentLoaded', () => {
