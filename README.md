@@ -22,8 +22,11 @@
 └── tools/
     ├── studio.html         # Design Studio shell
     ├── studio.css          # Studio CSS
-    ├── studio.js           # Studio 核心（state / history / tokens / modes / viewport）
-    └── studio-export.js    # Studio export 模組（buildPatch / exportPatch / exportTokensCSS）
+    ├── studio.js           # Studio 核心（state / history / tokens / viewport / geometry）
+    ├── studio-modes.js     # Text Edit + Move 模式（v0.14 抽出）
+    ├── studio-inspector.js # M3 Element Inspector（v0.14）
+    ├── studio-diff.js      # M6 Diff View modal（v0.14）
+    └── studio-export.js    # Patch JSON / tokens.css / Full HTML 三種 export
 ```
 
 > User-scope Skill（不在 repo 內）：`~/.claude/skills/studio-merge.md` — 處理 Studio patch JSON 合併。
@@ -127,6 +130,7 @@
 | v0.12.0 | 2026-05-14 | **拆檔**（index / studio 各拆 3 檔）+ 1000 行守則 + Sidebar 可拖移調寬 + Move 支援整塊 panel 跨欄拖曳 |
 | v0.12.1 | 2026-05-14 | **文件重整**：CLAUDE.md 瘦身（129→76 行）；履歷摘要 → `RESUME.md`、連結對照表 → `LINKS.md`、版本歷程留在 README |
 | v0.13.0 | 2026-05-14 | **Studio M5–M8 完成**：Responsive Preview、Redo（⌘⇧Z）、Export tokens.css、`/studio-merge` Skill 上線；studio.js 拆出 `studio-export.js` 守住 1000 行 |
+| v0.14.0 | 2026-05-14 | **M2 / M3 / M4 / M6 / M7 全部完成 → M7 里程碑全綠**：Geometry/Type 控制、Element Inspector、區塊 Delete、Diff View Modal、Full HTML Export；studio.js 拆出 modes/inspector/diff 三新檔 |
 
 ---
 

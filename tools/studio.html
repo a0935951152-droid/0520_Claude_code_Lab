@@ -12,12 +12,14 @@
 <header>
     <div class="brand">
         <div class="brand-name">Design Studio</div>
-        <div class="brand-tag">M5–M9 · v0.13.0</div>
+        <div class="brand-tag">M1–M7 · v0.14.0</div>
     </div>
     <div class="actions">
         <button class="btn" id="mode-toggle"><span>◐</span><span class="lbl">Light</span></button>
         <button class="btn toggle" id="text-edit-toggle"><span>✏</span><span class="lbl">Text</span></button>
         <button class="btn toggle" id="move-toggle"><span>↕</span><span class="lbl">Move</span></button>
+        <button class="btn toggle" id="inspect-toggle" title="點選元件編輯個別 style (M3)"><span>🔍</span><span class="lbl">Inspect</span></button>
+        <button class="btn" id="diff-btn" title="檢視 patch diff (M6)"><span>📋</span><span class="lbl">Diff</span></button>
         <button class="btn" id="undo-btn" disabled title="Undo (⌘Z)"><span>↶</span><span class="lbl">Undo</span></button>
         <button class="btn" id="redo-btn" disabled title="Redo (⌘⇧Z)"><span>↷</span><span class="lbl">Redo</span></button>
         <button class="btn" id="reset-btn"><span>↺</span><span class="lbl">Reset</span></button>
@@ -31,6 +33,10 @@
                 <button data-export="css">
                     <div class="dd-title">tokens.css</div>
                     <div class="dd-desc">純 CSS 變數區塊</div>
+                </button>
+                <button data-export="html">
+                    <div class="dd-title">Full HTML (self-contained)</div>
+                    <div class="dd-desc">完整單檔（CSS/JS inline，可離線開）</div>
                 </button>
             </div>
         </div>
@@ -53,9 +59,14 @@
         </div>
         <div class="mode-info" id="info-move">
             <strong>↕ Move Mode</strong><br>
-            拖曳項目重新排序（工作經歷 / 專案 / 學歷 / 證照 / 語言）。<br>
+            拖曳項目重新排序，懸停時右上 <strong>✕</strong> 刪除。<br>
             <strong>面板</strong>可整塊拖曳（左右欄互換、上下重排）— 拖標題即可。<br>
             <kbd>Esc</kbd> 退出　·　<kbd>⌘Z</kbd> 還原
+        </div>
+        <div class="mode-info" id="info-inspect">
+            <strong>🔍 Element Inspector</strong><br>
+            點 iframe 內任何元素 → 右側面板編輯個別 style（color / padding / border-radius 等）。<br>
+            <kbd>Esc</kbd> 退出
         </div>
 
         <!-- LIGHT TOKENS -->
@@ -74,6 +85,18 @@
                 <span class="pill" id="dark-pill" style="display:none">EDITING</span>
             </div>
             <div id="dark-tokens"></div>
+        </div>
+
+        <!-- M2 GEOMETRY & TYPE -->
+        <div class="mode-section">
+            <div class="mode-title"><span>Geometry &amp; Type</span></div>
+            <div id="geometry-section"></div>
+        </div>
+
+        <!-- M3 INSPECTOR -->
+        <div class="mode-section inspector-section" id="inspector-section">
+            <div class="mode-title"><span>Element Inspector</span></div>
+            <div id="inspector-content"></div>
         </div>
     </aside>
 
@@ -106,6 +129,9 @@
 <div class="help-tip">Drag sidebar · ⌘Z undo · ⌘⇧Z redo · ⌘E export</div>
 
 <script src="studio.js"></script>
+<script src="studio-modes.js"></script>
+<script src="studio-inspector.js"></script>
+<script src="studio-diff.js"></script>
 <script src="studio-export.js"></script>
 </body>
 </html>

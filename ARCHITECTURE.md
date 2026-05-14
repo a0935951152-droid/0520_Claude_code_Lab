@@ -20,9 +20,13 @@
 ├── CLAUDE.md
 ├── ARCHITECTURE.md         # ← 本檔
 └── tools/
-    ├── studio.html         # Design Studio shell（v0.12 起拆檔）
-    ├── studio.css          # Studio CSS
-    └── studio.js           # Studio 邏輯（token / text / move / undo / export）
+    ├── studio.html             # Design Studio shell
+    ├── studio.css              # Studio CSS（全部 UI 樣式）
+    ├── studio.js               # 核心（state / history / tokens / viewport / geometry / wire-up）
+    ├── studio-modes.js         # Text Edit + Move 模式 + iframe listeners（v0.14 抽出）
+    ├── studio-inspector.js     # M3 Element Inspector（v0.14）
+    ├── studio-diff.js          # M6 Diff View modal（v0.14）
+    └── studio-export.js        # Patch JSON / tokens.css / Full HTML
 ```
 
 **檔案分拆守則（v0.12 起）**：任何單一檔案達 1000 行即拆分。詳見 CLAUDE.md §5。
@@ -486,6 +490,7 @@ studio.html → Claude Code 之間的合約。Claude Code 端的 `/studio-merge`
 | v0.12 | **檔案拆分守則 + Studio panel 跨欄拖曳** — index/studio 各拆 3 檔；sidebar resizable；patch schema v3 含 `panelLayout` |
 | v0.12.1 | **文件結構重整** — CLAUDE.md 瘦身、`RESUME.md` / `LINKS.md` 分檔 |
 | v0.13 | **Studio M5–M8 完成** — Responsive Preview、Redo、Export tokens.css、`/studio-merge` Skill；studio.js 拆出 `studio-export.js` 守住 1000 行 |
+| v0.14 | **M2/M3/M4-del/M6/M7 全部完成** — Geometry & Type 控制、Element Inspector、區塊 Delete、Diff View modal、Full HTML Export；studio 拆 6 個 JS 檔 |
 
 ---
 

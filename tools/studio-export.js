@@ -57,6 +57,77 @@ ${darkLines}
     toast('✓ tokens.css 已下載');
 }
 
+async function exportHTML() {
+    const doc = iframe.contentDocument;
+    if (!doc || !doc.documentElement) {
+        toast('iframe 未載入');
+        return;
+    }
+    toast('打包中… 請稍候');
+    const clone = doc.documentElement.cloneNode(true);
+
+    // Remove Studio injected styles
+    clone.querySelectorAll('#studio-overrides, #studio-text-edit-style, #studio-move-style, #studio-inspect-style').forEach(el => el.remove());
+    clone.querySelectorAll('.studio-editable, .studio-movable, .studio-panel-handle, .studio-selected-inspect, .studio-hover-inspect').forEach(el => {
+        el.classList.remove('studio-editable', 'studio-movable', 'studio-panel-handle', 'studio-selected-inspect', 'studio-hover-inspect');
+        el.removeAttribute('contenteditable');
+        el.removeAttribute('draggable');
+    });
+
+    // Inline assets/styles.css
+    for (const link of clone.querySelectorAll('link[rel="stylesheet"][href^="assets/"]')) {
+        try {
+            const res = await fetch('../' + link.getAttribute('href'));
+            const css = await res.text();
+            // Build merged CSS: original + studio overrides (final tokens already in CSS)
+            const lightCss = Object.entries(state.tokens.light).map(([k, v]) => `${k}: ${v};`).join('\n    ');
+            const darkCss = Object.entries(state.tokens.dark).map(([k, v]) => `${k}: ${v};`).join('\n    ');
+            // Replace :root and body.dark-mode blocks tokens with current state
+            const overrideAppend = `\n\n/* Studio token overrides */\n:root {\n    ${lightCss}\n}\nbody.dark-mode {\n    ${darkCss}\n}\n`;
+            const style = doc.createElement('style');
+            style.textContent = css + overrideAppend;
+            link.replaceWith(style);
+        } catch (e) {
+            console.warn('Failed to inline', link.href, e);
+        }
+    }
+
+    // Inline assets/scripts.js (apply textPatches into T.zh / T.en before bundling)
+    for (const script of clone.querySelectorAll('script[src^="assets/"]')) {
+        try {
+            const res = await fetch('../' + script.getAttribute('src'));
+            let js = await res.text();
+            // For each textPatch, inject overrides into T.zh
+            const patches = state.textPatches || {};
+            if (Object.keys(patches).length) {
+                const inject = Object.entries(patches).map(([k, v]) => `T.zh['${k}'] = T.en['${k}'] = ${JSON.stringify(v)};`).join(' ');
+                js = js.replace('let lang = ', `${inject}\n    let lang = `);
+            }
+            const inline = doc.createElement('script');
+            inline.textContent = js;
+            script.replaceWith(inline);
+        } catch (e) {
+            console.warn('Failed to inline', script.src, e);
+        }
+    }
+
+    // Update title to mark exported
+    const title = clone.querySelector('title');
+    if (title) title.textContent = title.textContent + ' (Studio Export)';
+
+    const html = '<!DOCTYPE html>\n' + clone.outerHTML;
+    const blob = new Blob([html], { type: 'text/html' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `resume-${state.currentPreset}-${Date.now()}.html`;
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    URL.revokeObjectURL(url);
+    toast('✓ resume.html 已下載（單檔 self-contained）');
+}
+
 async function exportPatch() {
     const patch = buildPatch();
     const isEmpty = Object.keys(patch.tokens).length === 0

@@ -35,6 +35,38 @@ const DEFAULT_TOKENS = {
 };
 const GROUPS = ['Backgrounds', 'Text', 'Borders', 'Accent'];
 
+const DEFAULT_FONT_SERIF = "'Noto Sans TC', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif";
+const DEFAULT_FONT_MONO  = "'JetBrains Mono', ui-monospace, SFMono-Regular, monospace";
+
+const FONT_PRESETS = {
+    serif: [
+        { name: 'Default', value: DEFAULT_FONT_SERIF },
+        { name: 'Inter', value: "'Inter', sans-serif" },
+        { name: 'System', value: "system-ui, -apple-system, sans-serif" },
+        { name: 'Georgia', value: "Georgia, 'Times New Roman', serif" },
+    ],
+    mono: [
+        { name: 'JetBrains', value: DEFAULT_FONT_MONO },
+        { name: 'Fira Code', value: "'Fira Code', monospace" },
+        { name: 'IBM Plex', value: "'IBM Plex Mono', monospace" },
+        { name: 'System', value: "ui-monospace, SFMono-Regular, monospace" },
+    ]
+};
+
+const SHADOW_PRESETS = {
+    none:   { soft: 'none',                                                            hover: 'none' },
+    subtle: { soft: '0 1px 3px rgba(0,0,0,0.04), 0 1px 2px rgba(0,0,0,0.03)',          hover: '0 8px 24px rgba(0,0,0,0.08), 0 4px 8px rgba(0,0,0,0.04)' },
+    medium: { soft: '0 4px 12px rgba(0,0,0,0.06), 0 2px 4px rgba(0,0,0,0.04)',         hover: '0 16px 40px rgba(0,0,0,0.10), 0 8px 16px rgba(0,0,0,0.06)' },
+    strong: { soft: '0 8px 24px rgba(0,0,0,0.10), 0 4px 8px rgba(0,0,0,0.06)',         hover: '0 24px 56px rgba(0,0,0,0.16), 0 12px 24px rgba(0,0,0,0.10)' }
+};
+
+const DEFAULT_DESIGN = {
+    radiusCard: '12px',
+    shadowPreset: 'subtle',
+    fontSerif: DEFAULT_FONT_SERIF,
+    fontMono: DEFAULT_FONT_MONO
+};
+
 // ============================================================
 // THEME PRESETS
 // ============================================================
@@ -125,6 +157,9 @@ function loadState() {
             s.moveMode ??= false;
             s.sidebarWidth ??= null;
             s.viewport ??= 'auto';
+            s.designTokens ??= { ...DEFAULT_DESIGN };
+            s.elementOverrides ??= [];
+            s.inspectMode ??= false;
             return s;
         }
     } catch (e) {}
@@ -140,7 +175,10 @@ function loadState() {
         textEditMode: false,
         moveMode: false,
         sidebarWidth: null,
-        viewport: 'auto'
+        viewport: 'auto',
+        designTokens: { ...DEFAULT_DESIGN },
+        elementOverrides: [],
+        inspectMode: false
     };
 }
 
@@ -162,7 +200,9 @@ function snapshotState() {
         movePatches: structuredClone(state.movePatches),
         panelLayout: state.panelLayout ? structuredClone(state.panelLayout) : null,
         darkMode: state.darkMode,
-        currentPreset: state.currentPreset
+        currentPreset: state.currentPreset,
+        designTokens: structuredClone(state.designTokens),
+        elementOverrides: structuredClone(state.elementOverrides || [])
     };
 }
 
@@ -180,6 +220,8 @@ function restoreSnapshot(s) {
     state.panelLayout = s.panelLayout;
     state.darkMode = s.darkMode;
     state.currentPreset = s.currentPreset;
+    state.designTokens = s.designTokens || { ...DEFAULT_DESIGN };
+    state.elementOverrides = s.elementOverrides || [];
 }
 
 function undo() {
@@ -327,9 +369,12 @@ function updateChangeCount() {
 // IFRAME OVERRIDES
 // ============================================================
 function buildOverridesCss() {
+    const dt = state.designTokens || DEFAULT_DESIGN;
+    const sh = SHADOW_PRESETS[dt.shadowPreset] || SHADOW_PRESETS.subtle;
+    const designCss = `--radius-card: ${dt.radiusCard}; --shadow-soft: ${sh.soft}; --shadow-hover: ${sh.hover}; --serif: ${dt.fontSerif}; --mono: ${dt.fontMono};`;
     const lightCss = Object.entries(state.tokens.light).map(([k, v]) => `${k}: ${v};`).join(' ');
     const darkCss = Object.entries(state.tokens.dark).map(([k, v]) => `${k}: ${v};`).join(' ');
-    return `:root { ${lightCss} } body.dark-mode { ${darkCss} } .ctrl-btns, .export-btn { display: none !important; }`;
+    return `:root { ${lightCss} ${designCss} } body.dark-mode { ${darkCss} ${designCss} } .ctrl-btns, .export-btn { display: none !important; }`;
 }
 
 function injectOverrideStyle(doc) {
@@ -378,12 +423,14 @@ function applyContainerReorders(doc) {
         const children = Array.from(parent.querySelectorAll(`:scope > ${cfg.childSelector}`));
         const byId = new Map();
         children.forEach(el => byId.set(cfg.getId(el), el));
+        const usedIds = new Set();
         for (const id of order) {
             const el = byId.get(id);
-            if (el) parent.appendChild(el);
+            if (el) { parent.appendChild(el); usedIds.add(id); }
         }
+        // Remove unmatched (= deleted)
         for (const el of children) {
-            if (!order.includes(cfg.getId(el))) parent.appendChild(el);
+            if (!usedIds.has(cfg.getId(el))) el.remove();
         }
     }
 }
@@ -402,288 +449,15 @@ function applyToIframe() {
     applyPanelLayout(doc);
     applyContainerReorders(doc);
     applyTextPatches(doc);
+    if (typeof applyElementOverrides === 'function') applyElementOverrides(doc);
     doc.body.classList.toggle('dark-mode', state.darkMode);
-    // Re-apply edit/move modes if toggled
+    // Re-apply mode states
     setTextEditMode(state.textEditMode);
     setMoveMode(state.moveMode);
+    if (typeof setInspectMode === 'function') setInspectMode(state.inspectMode);
 }
 
-// ============================================================
-// TEXT EDIT MODE
-// ============================================================
-function setTextEditMode(on) {
-    state.textEditMode = on;
-    const doc = iframe.contentDocument;
-    if (!doc) return;
-    const editables = doc.querySelectorAll('[data-i18n]');
-    editables.forEach(el => {
-        if (on) {
-            el.contentEditable = 'true';
-            el.classList.add('studio-editable');
-        } else {
-            el.removeAttribute('contenteditable');
-            el.classList.remove('studio-editable');
-        }
-    });
-    let style = doc.getElementById('studio-text-edit-style');
-    if (on && !style) {
-        style = doc.createElement('style');
-        style.id = 'studio-text-edit-style';
-        style.textContent = `
-            .studio-editable {
-                outline: 2px dashed #2563eb !important;
-                outline-offset: 3px;
-                cursor: text !important;
-                min-height: 1em;
-                border-radius: 2px;
-                transition: outline-color 0.15s, background 0.15s;
-            }
-            .studio-editable:hover { outline-color: #1d4ed8 !important; background: rgba(37,99,235,0.04); }
-            .studio-editable:focus { outline-color: #1d4ed8 !important; background: rgba(37,99,235,0.08); }
-        `;
-        doc.head.appendChild(style);
-    } else if (!on && style) {
-        style.remove();
-    }
-    updateToggleStates();
-}
-
-function handleTextEditBlur(e) {
-    if (!e.target.matches?.('.studio-editable')) return;
-    const key = e.target.dataset.i18n;
-    if (!key) return;
-    const html = e.target.innerHTML.trim();
-    const defaultHtml = e.target.dataset.studioDefault;
-    if (defaultHtml === undefined) {
-        e.target.dataset.studioDefault = html;
-        return;
-    }
-    if (state.textPatches[key] === html) return;
-    pushHistory('text:' + key);
-    if (html === defaultHtml) {
-        delete state.textPatches[key];
-    } else {
-        state.textPatches[key] = html;
-    }
-    saveState();
-    updateChangeCount();
-}
-
-// ============================================================
-// MOVE MODE (items + panels with cross-column support)
-// ============================================================
-function setMoveMode(on) {
-    state.moveMode = on;
-    const doc = iframe.contentDocument;
-    if (!doc) return;
-    const movables = doc.querySelectorAll('.exp-item, .project-item, .edu-item, .cert-item, .lang-item');
-    movables.forEach(el => {
-        if (on) { el.draggable = true; el.classList.add('studio-movable'); }
-        else { el.draggable = false; el.classList.remove('studio-movable'); }
-    });
-    const panelHandles = doc.querySelectorAll('.main-grid > div > .panel > .panel-title');
-    panelHandles.forEach(el => {
-        if (on) { el.draggable = true; el.classList.add('studio-panel-handle'); }
-        else { el.draggable = false; el.classList.remove('studio-panel-handle'); }
-    });
-    let style = doc.getElementById('studio-move-style');
-    if (on && !style) {
-        style = doc.createElement('style');
-        style.id = 'studio-move-style';
-        style.textContent = `
-            .studio-movable {
-                cursor: move !important;
-                position: relative;
-                transition: transform 0.15s, opacity 0.15s;
-            }
-            .studio-movable:hover {
-                outline: 2px dashed #2563eb !important;
-                outline-offset: 2px;
-                border-radius: 4px;
-            }
-            .studio-movable::before {
-                content: '⋮⋮';
-                position: absolute;
-                left: -16px;
-                top: 50%;
-                transform: translateY(-50%);
-                color: #2563eb;
-                font-size: 14px;
-                letter-spacing: -3px;
-                font-weight: 900;
-                opacity: 0.8;
-                pointer-events: none;
-            }
-            .studio-movable.dragging { opacity: 0.4; }
-            .studio-movable.drag-over-top { box-shadow: 0 -3px 0 #2563eb; }
-            .studio-movable.drag-over-bottom { box-shadow: 0 3px 0 #2563eb; }
-
-            .studio-panel-handle {
-                cursor: move !important;
-                position: relative;
-                background: rgba(37,99,235,0.06) !important;
-                border-radius: 4px;
-                padding: 6px 10px !important;
-                margin: -6px -10px 12px !important;
-            }
-            .studio-panel-handle:hover {
-                background: rgba(37,99,235,0.16) !important;
-            }
-            .studio-panel-handle::after {
-                content: '⋮⋮ DRAG PANEL';
-                font-family: 'JetBrains Mono', monospace;
-                font-size: 9px;
-                letter-spacing: 1px;
-                color: #2563eb;
-                margin-left: auto;
-                padding-left: 8px;
-                opacity: 0.8;
-            }
-            .main-grid > div > .panel.studio-panel-target.drag-over-top { box-shadow: 0 -3px 0 #2563eb; border-radius: 12px; }
-            .main-grid > div > .panel.studio-panel-target.drag-over-bottom { box-shadow: 0 3px 0 #2563eb; border-radius: 12px; }
-            .main-grid > div > .panel.studio-panel-dragging { opacity: 0.4; }
-        `;
-        doc.head.appendChild(style);
-    } else if (!on && style) {
-        style.remove();
-    }
-    updateToggleStates();
-}
-
-function attachIframeListeners() {
-    const doc = iframe.contentDocument;
-    if (!doc || doc._studioListenersAttached) return;
-    doc._studioListenersAttached = true;
-
-    // Text edit: capture blur
-    doc.addEventListener('blur', handleTextEditBlur, true);
-
-    // Drag & drop for move mode
-    doc.addEventListener('dragstart', (e) => {
-        let src = null;
-        if (e.target.classList?.contains('studio-panel-handle')) {
-            src = e.target.closest('.panel');
-            if (src) src.classList.add('studio-panel-dragging');
-        } else if (e.target.classList?.contains('studio-movable')) {
-            src = e.target;
-            src.classList.add('dragging');
-        }
-        if (!src) return;
-        dragSrc = src;
-        try {
-            e.dataTransfer.effectAllowed = 'move';
-            e.dataTransfer.setData('text/plain', '');
-        } catch {}
-    });
-
-    doc.addEventListener('dragend', () => {
-        if (dragSrc) {
-            dragSrc.classList.remove('dragging', 'studio-panel-dragging');
-        }
-        doc.querySelectorAll('.drag-over-top, .drag-over-bottom').forEach(el => {
-            el.classList.remove('drag-over-top', 'drag-over-bottom', 'studio-panel-target');
-        });
-        dragSrc = null;
-    });
-
-    doc.addEventListener('dragover', (e) => {
-        if (!dragSrc) return;
-        let target;
-        if (dragSrc.classList.contains('panel')) {
-            target = e.target.closest?.('.panel');
-            if (!target || target === dragSrc) return;
-            if (!target.closest('.main-grid')) return;
-            target.classList.add('studio-panel-target');
-        } else {
-            target = e.target.closest?.('.studio-movable');
-            if (!target || target === dragSrc || target.parentNode !== dragSrc.parentNode) return;
-        }
-        e.preventDefault();
-        doc.querySelectorAll('.drag-over-top, .drag-over-bottom').forEach(el => {
-            if (el !== target) el.classList.remove('drag-over-top', 'drag-over-bottom');
-        });
-        const rect = target.getBoundingClientRect();
-        const before = e.clientY < rect.top + rect.height / 2;
-        target.classList.remove('drag-over-top', 'drag-over-bottom');
-        target.classList.add(before ? 'drag-over-top' : 'drag-over-bottom');
-    });
-
-    doc.addEventListener('drop', (e) => {
-        if (!dragSrc) return;
-        let target;
-        const isPanel = dragSrc.classList.contains('panel');
-        if (isPanel) {
-            target = e.target.closest?.('.panel');
-            if (!target || target === dragSrc || !target.closest('.main-grid')) return;
-        } else {
-            target = e.target.closest?.('.studio-movable');
-            if (!target || target === dragSrc || target.parentNode !== dragSrc.parentNode) return;
-        }
-        e.preventDefault();
-        const parent = target.parentNode;
-        const rect = target.getBoundingClientRect();
-        const before = e.clientY < rect.top + rect.height / 2;
-
-        if (isPanel) {
-            pushHistory('move:panel');
-            parent.insertBefore(dragSrc, before ? target : target.nextSibling);
-            captureLayoutSnapshot();
-        } else {
-            pushHistory('move:' + identifyContainer(parent));
-            parent.insertBefore(dragSrc, before ? target : target.nextSibling);
-            captureContainerOrder(parent);
-        }
-
-        target.classList.remove('drag-over-top', 'drag-over-bottom', 'studio-panel-target');
-        saveState();
-        updateChangeCount();
-    });
-
-    // ESC to exit modes
-    doc.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape') {
-            if (state.textEditMode) {
-                setTextEditMode(false);
-                saveState();
-                toast('已退出文字編輯');
-            } else if (state.moveMode) {
-                setMoveMode(false);
-                saveState();
-                toast('已退出排序模式');
-            }
-        }
-    });
-}
-
-function identifyContainer(parent) {
-    for (const [key, cfg] of Object.entries(CONTAINERS)) {
-        const sample = parent.querySelector(`:scope > ${cfg.childSelector}`);
-        if (sample) return key;
-    }
-    return 'unknown';
-}
-
-function captureContainerOrder(parent) {
-    for (const [key, cfg] of Object.entries(CONTAINERS)) {
-        const sample = parent.querySelector(`:scope > ${cfg.childSelector}`);
-        if (!sample) continue;
-        const order = Array.from(parent.querySelectorAll(`:scope > ${cfg.childSelector}`)).map(el => cfg.getId(el)).filter(Boolean);
-        state.movePatches[key] = order;
-        return;
-    }
-}
-
-function captureLayoutSnapshot() {
-    const doc = iframe.contentDocument;
-    const grid = doc.querySelector('.main-grid');
-    if (!grid) return;
-    const cols = grid.children;
-    if (cols.length < 2) return;
-    state.panelLayout = {
-        left: Array.from(cols[0].querySelectorAll(':scope > .panel')).map(getPanelTitle).filter(Boolean),
-        right: Array.from(cols[1].querySelectorAll(':scope > .panel')).map(getPanelTitle).filter(Boolean)
-    };
-}
+// Text Edit + Move Mode + iframe listeners moved to studio-modes.js (1000-line rule)
 
 // ============================================================
 // TOAST
@@ -846,6 +620,7 @@ function initExportDropdown() {
         dropdown.classList.remove('open');
         if (item.dataset.export === 'patch') exportPatch();
         else if (item.dataset.export === 'css') exportTokensCSS();
+        else if (item.dataset.export === 'html') exportHTML();
     });
 }
 
@@ -897,6 +672,7 @@ document.getElementById('reset-btn').addEventListener('click', resetAll);
 iframe.addEventListener('load', () => {
     applyToIframe();
     attachIframeListeners();
+    if (typeof attachInspectorListeners === 'function') attachInspectorListeners();
 });
 
 // Keyboard shortcuts
@@ -917,8 +693,89 @@ document.addEventListener('keydown', (e) => {
     }
 });
 
-// Initial render
+// ============================================================
+// M2 GEOMETRY & TYPE CONTROLS
+// ============================================================
+function renderGeometryControls() {
+    const sec = document.getElementById('geometry-section');
+    if (!sec) return;
+    const dt = state.designTokens;
+    const radiusNum = parseInt(dt.radiusCard) || 12;
+    sec.innerHTML = `
+        <div class="ctl-row">
+            <label>Card Radius</label>
+            <input type="range" min="0" max="24" value="${radiusNum}" id="radius-slider" step="1">
+            <span class="ctl-val" id="radius-val">${radiusNum}px</span>
+        </div>
+        <div class="ctl-row ctl-row-col">
+            <label>Shadow</label>
+            <div class="shadow-presets">
+                ${Object.keys(SHADOW_PRESETS).map(k => `<button type="button" data-shadow="${k}" class="${dt.shadowPreset === k ? 'active' : ''}">${k}</button>`).join('')}
+            </div>
+        </div>
+        <div class="ctl-row">
+            <label>Heading Font</label>
+            <select id="font-serif-select">
+                ${FONT_PRESETS.serif.map(f => `<option value="${f.value}" ${dt.fontSerif === f.value ? 'selected' : ''}>${f.name}</option>`).join('')}
+            </select>
+        </div>
+        <div class="ctl-row">
+            <label>Mono Font</label>
+            <select id="font-mono-select">
+                ${FONT_PRESETS.mono.map(f => `<option value="${f.value}" ${dt.fontMono === f.value ? 'selected' : ''}>${f.name}</option>`).join('')}
+            </select>
+        </div>
+    `;
+    document.getElementById('radius-slider').addEventListener('input', (e) => {
+        const v = e.target.value + 'px';
+        if (state.designTokens.radiusCard === v) return;
+        if (activeTokenSession !== 'radius') {
+            pushHistory('radius');
+            activeTokenSession = 'radius';
+        }
+        clearTimeout(tokenSessionTimer);
+        tokenSessionTimer = setTimeout(() => { activeTokenSession = null; }, 800);
+        state.designTokens.radiusCard = v;
+        document.getElementById('radius-val').textContent = v;
+        applyToIframe();
+        saveState();
+        updateChangeCount();
+    });
+    sec.querySelectorAll('[data-shadow]').forEach(btn => {
+        btn.addEventListener('click', () => {
+            const k = btn.dataset.shadow;
+            if (state.designTokens.shadowPreset === k) return;
+            pushHistory('shadow:' + k);
+            state.designTokens.shadowPreset = k;
+            applyToIframe();
+            saveState();
+            renderGeometryControls();
+            updateChangeCount();
+        });
+    });
+    document.getElementById('font-serif-select').addEventListener('change', (e) => {
+        pushHistory('font:serif');
+        state.designTokens.fontSerif = e.target.value;
+        applyToIframe();
+        saveState();
+        updateChangeCount();
+    });
+    document.getElementById('font-mono-select').addEventListener('change', (e) => {
+        pushHistory('font:mono');
+        state.designTokens.fontMono = e.target.value;
+        applyToIframe();
+        saveState();
+        updateChangeCount();
+    });
+}
+
+// ============================================================
+// INIT
+// ============================================================
 renderControls();
+renderGeometryControls();
 initResizeHandle();
 initViewportSelector();
 initExportDropdown();
+if (typeof initInspector === 'function') initInspector();
+if (typeof initDiff === 'function') initDiff();

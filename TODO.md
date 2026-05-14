@@ -68,25 +68,26 @@
   - **同時編輯 HTML 內容 + CSS tokens + 元件樣式**（非僅 HTML）
   - 9 大功能模組：
     - [x] **M1** — 基礎 shell + iframe 預覽 + Token Editor (Colors)（2026-05-13，v0.10.0）
-    - [~] **M2** — Token Editor 完整（字型 / 間距 / 圓角 / 陰影）
-      - [x] Theme Presets（Morcept / Mono / Paper / Ocean / Forest）（v0.11.0）
-      - [ ] 字型 / 間距 / 圓角 / 陰影 控制 — **v0.14 規劃**（需 styles.css 加新 CSS 變數）
-    - [ ] **M3** — Element Inspector — **v0.14 規劃**
-    - [~] **M4** — Content Editor
-      - [x] 文字編輯（contenteditable 所有 `[data-i18n]` 元素）（v0.11.0）
-      - [x] 區塊排序（drag-drop items）（v0.11.0）
+    - [x] **M2** — Token Editor 完整
+      - [x] Theme Presets（v0.11.0）
+      - [x] Card Radius slider + Shadow 4 preset + Heading/Mono Font dropdown（v0.14.0）
+      - [ ] 間距 base 控制 — 延後（需 styles.css 大幅重構）
+    - [x] **M3** — Element Inspector（v0.14.0）— click element → 10 個編輯屬性 → 存 elementOverrides
+    - [x] **M4** — Content Editor
+      - [x] 文字編輯（v0.11.0）
+      - [x] 區塊排序（v0.11.0）
       - [x] 整塊 panel 跨欄拖曳（v0.12.0）
-      - [ ] 區塊複製 / 刪除 — **v0.14 規劃**
-      - [ ] PPT-style 自由定位 — **v0.14+ 研究中**（transform offset，不破壞 responsive）
-    - [x] **M5** — Responsive Preview（375 / 768 / 1024 / Full）（v0.13.0）
-    - [~] **M6** — History / Undo-Redo + Diff View
-      - [x] Undo（v0.11.0）
-      - [x] Redo（`⌘⇧Z` / `⌘Y` / 按鈕）（v0.13.0）
-      - [ ] Diff View — **v0.14 規劃**
-    - [~] **M7** — Export 全套
+      - [x] 區塊 Delete（v0.14.0）
+      - [ ] 區塊 Duplicate — 延後（patch schema 需擴充）
+      - [ ] PPT-style 自由定位 — 延後（v0.15+ 研究中）
+    - [x] **M5** — Responsive Preview（v0.13.0）
+    - [x] **M6** — History / Undo-Redo + Diff View
+      - [x] Undo / Redo（v0.11 / v0.13）
+      - [x] Diff View modal（v0.14.0）
+    - [x] **M7** — Export 全套
       - [x] Patch JSON + clipboard（v0.10.0 / v0.11.0）
       - [x] tokens.css 純變數區塊（v0.13.0）
-      - [ ] HTML 完整檔（fetch + inline）— **v0.14 規劃**
+      - [x] Full HTML self-contained（v0.14.0）
     - [x] **M8** — `/studio-merge` Claude Code Skill（v0.13.0）
       - 位置：`~/.claude/skills/studio-merge.md`（user-scope）
       - 流程：read patch → pull → 套用 tokens/text/move/panel → diff 確認 → commit + push → 更新 CHANGELOG

@@ -4,6 +4,59 @@
 
 ---
 
+## [0.14.0] — 2026-05-14
+
+### Added — M2 / M3 / M4 delete / M6 Diff / M7 HTML 全部完成 → M7 里程碑全綠
+
+**M2 — Geometry & Type 控制（典型 design token：圓角 / 陰影 / 字型）**
+- `assets/styles.css` 新增 `--radius-card: 12px` CSS 變數，refactor 4 個關鍵 border-radius（panel / stats-bar / project-item / modal-box）改用 var
+- Studio 側欄新增「Geometry & Type」段：
+  - **Card Radius** slider（0–24px，連續滑動算同一 history session）
+  - **Shadow** 4 個 preset 按鈕：none / subtle / medium / strong
+  - **Heading Font** / **Mono Font** dropdown（各 4 個 preset：Default / Inter / System / Georgia 等）
+- 設計 token 存 `state.designTokens`，套用方式：`buildOverridesCss` 注入 `--radius-card / --shadow-soft / --shadow-hover / --serif / --mono`
+
+**M3 — Element Inspector**（新檔 `tools/studio-inspector.js`）
+- 🔍 Inspect 按鈕（與 Text / Move 互斥）
+- 開啟後 cursor crosshair，hover 顯示橘色虛線、click 鎖定藍色實線
+- 側欄 Inspector 面板顯示選取元素 selector + 10 個可編輯屬性：
+  - color / background-color（含色盤 + hex 雙欄）
+  - font-size / font-weight / padding / margin / border-radius / letter-spacing / line-height
+  - text-align（dropdown）
+- 變更存 `state.elementOverrides = [{ selector, styles }]`，套用為 inline `style`
+- 「清除此元素所有覆寫」按鈕一鍵還原
+- Selector 生成：優先 `[data-i18n="..."]`，否則 `#id`，否則 4 層 CSS path
+
+**M4 — 區塊 Delete**（duplicate 仍延後）
+- Move 模式下 hover 顯示右上紅色 ✕ 按鈕（22×22 圓形）
+- 點擊立即刪除該項 + 更新 movePatches order（移除該 id）
+- `applyContainerReorders` 改為「unmatched 即刪除」（從前是 append 到尾）
+
+**M6 — Diff View Modal**（新檔 `tools/studio-diff.js`）
+- 📋 Diff 按鈕 → 全螢幕 modal
+- 區段化顯示：Tokens（含色塊預覽）/ Theme Preset / Text Edits / Item Reorders / Panel Layout / Element Overrides
+- 空 state 顯示「尚無任何修改」
+- `Esc` 或點 backdrop 關閉
+
+**M7 — Full HTML Export**（self-contained）
+- Export dropdown 新增第 3 選項「Full HTML」
+- 流程：clone iframe DOM → 移除 Studio 注入 style → fetch `assets/styles.css` 並 inline → fetch `assets/scripts.js`、若有 textPatches 在 i18n table 之前 inject 覆寫 → 序列化下載
+- 單檔自足，可離線打開、可分享、可印 PDF
+
+### Changed — 拆檔（守 1000 行規則）
+- `studio.js` 1105 → 781 行：text-edit / move / iframe listeners 抽到新檔 `tools/studio-modes.js`（286 行）
+- Studio 變成 6 個 JS 檔案組合（studio + modes + inspector + diff + export，以及 HTML / CSS）
+- LocalStorage schema 加 `designTokens` / `elementOverrides` / `inspectMode`
+- History snapshot 加 `designTokens` / `elementOverrides` 欄位（Undo 也能還原 inspector 變更）
+
+### Technical
+- 檔案行數：studio.html 137 / studio.css 799 / studio.js 781 / studio-modes 286 / studio-inspector 238 / studio-diff 143 / studio-export 158（每個都 < 800）
+- assets/styles.css 加 `--radius-card`（同時補到 `:root` 與 `body.dark-mode`）
+- Studio 控制連續操作（slider 拖移）只算一個 history session（避免 undo 步數爆炸）
+- Inspect 模式自動互斥 Text / Move（同時只能一個 mode 啟用）
+
+---
+
 ## [0.13.0] — 2026-05-14
 
 ### Added — Studio M5 / M6 / M7 / M8 milestones（衝刺到 M9）
