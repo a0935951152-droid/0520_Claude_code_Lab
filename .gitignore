@@ -1,0 +1,17 @@
+# 部署 / 開發流程文件（依 CLAUDE.md §6 守則：不進 public repo）
+CONTACT_SETUP.md
+*.setup.md
+*.deploy.md
+
+# Studio 本地匯出 / patch
+studio-patch-*.json
+tokens-*.css
+resume-*.html
+
+# 系統雜物
+.DS_Store
+*.bak
+*.bak.*
+.idea/
+.vscode/
+node_modules/

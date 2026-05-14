@@ -4,6 +4,26 @@
 
 ---
 
+## [0.14.3] — 2026-05-14
+
+### Changed — 新守則：部署 / 開發流程資訊不進 public repo
+
+- `CLAUDE.md` §6 新規則：部署過程 / 第三方服務設定步驟 / 操作截圖 / 長篇 Action Required 等內部資訊不 commit
+- 改放：Claude memory（`~/.claude/projects/.../memory/`）/ user-scope skill（`~/.claude/skills/`）/ 本機 notes + gitignore
+- 理由：public repo 是「成果」不是「過程」；部署細節洩漏增加攻擊面、且資訊隨時間過期
+- **`CONTACT_SETUP.md` 從 repo 移除**（git rm --cached），本機檔案保留作為個人參考
+- 新增 `.gitignore` — 排除 `CONTACT_SETUP.md` / `*.setup.md` / `*.deploy.md` / Studio 匯出檔 / 系統雜物
+- `README.md` / `LINKS.md` 移除指向 `CONTACT_SETUP.md` 的引用，改為「問 Claude 或本機檔案」
+- Claude memory 新增 2 個檔案：
+  - `feedback-no-deploy-docs-in-repo.md`（守則本身）
+  - `project-0520-resume-lab.md`（含 endpoint / Sheet ID / token 等個人化資訊）
+
+### Technical
+- 既有 commit history 仍含 `CONTACT_SETUP.md`（v0.14.1–v0.14.2）— 未強制清除歷史（強制 force-push rewrite 風險高）
+- 本機 `CONTACT_SETUP.md` 由 `.gitignore` 保護，未來 commit 不會再被加入
+
+---
+
 ## [0.14.2] — 2026-05-14
 
 ### Added — Contact 表單接上 Google Drive + 多層 spam/DDoS 防禦

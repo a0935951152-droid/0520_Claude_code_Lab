@@ -55,6 +55,18 @@
    - 每個版本 → `CHANGELOG.md`（新增條目）+ `README.md`（版本表新增一列）
    - **不要把這些寫進 CLAUDE.md** — CLAUDE.md 只放守則 / 環境，內容資料分檔。
 
+6. **部署流程 / 開發流程資訊不進 public repo**（v0.14.3 起）：
+   - **不該 push 的東西**：
+     - 帳號設定步驟、第三方服務一次性設定（如 Google Apps Script 部署步驟）
+     - 個人 API key / Sheet ID / endpoint URL 的「設定指南」（程式碼裡實際用到的常數可以，但純設定文件不行）
+     - 操作步驟截圖、internal 內部說明書
+     - CHANGELOG 「⚠️ Action Required」段落也應簡短，不要長篇步驟
+   - **改放這裡**：
+     - Claude memory 系統（`~/.claude/projects/.../memory/`）— 跨對話可調閱
+     - User-scope skill（`~/.claude/skills/*.md`）— 自動觸發的指南，如 `/studio-merge`
+     - 本機 notes（`~/Documents/` 等）+ gitignore
+   - **理由**：public repo 是「成果」不是「過程」；部署步驟洩漏增加攻擊面、且資訊容易過期；個人化操作筆記不該被 GitHub 索引
+
 ---
 
 ## 文件導覽（按需讀取）

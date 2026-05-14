@@ -19,7 +19,6 @@
 ├── ARCHITECTURE.md         # 架構紀錄（檔案結構 / token / JS 模組 / Studio 規格）
 ├── RESUME.md               # 蕭哲安履歷資料摘要（v0.12.1 起，從 CLAUDE.md 抽出）
 ├── LINKS.md                # index.html 可點擊元素 / 外部連結對照（v0.12.1 起，從 CLAUDE.md 抽出）
-├── CONTACT_SETUP.md        # Contact 表單接 Google Drive 設定指南（v0.14.1 起）
 └── tools/
     ├── studio.html         # Design Studio shell
     ├── studio.css          # Studio CSS
@@ -134,6 +133,7 @@
 | v0.14.0 | 2026-05-14 | **M2 / M3 / M4 / M6 / M7 全部完成 → M7 里程碑全綠**：Geometry/Type 控制、Element Inspector、區塊 Delete、Diff View Modal、Full HTML Export；studio.js 拆出 modes/inspector/diff 三新檔 |
 | v0.14.1 | 2026-05-14 | **Contact 表單接 Google Drive**：`submitContact` 改 POST 到 Apps Script Web App（寫 Drive Sheet），失敗自動 fallback `mailto:`；新增 `CONTACT_SETUP.md` 完整設定指南 |
 | v0.14.2 | 2026-05-14 | **Contact 多層 spam/DDoS 防禦**：endpoint 填上 URL；前端 honeypot + timing + token；後端 origin/validation/cooldown/rate limit；Apps Script 須重新部署 New version |
+| v0.14.3 | 2026-05-14 | **新守則：部署/開發流程資訊不 push** — CLAUDE.md §6 + `.gitignore`；`CONTACT_SETUP.md` 從 repo 移除（保留本機），個人化資訊（Sheet ID / endpoint）存進 Claude memory |
 
 ---
 
