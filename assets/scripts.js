@@ -83,6 +83,13 @@
     let lang = localStorage.getItem('zxa_lang') || 'zh';
     let darkMode = localStorage.getItem('zxa_mode') === 'dark';
 
+    // SEO meta descriptions per language. Updated by applyLang() so search engines
+    // and OG share previews reflect the user's selected locale.
+    const META_DESC = {
+        zh: '蕭哲安 (ZHE-AN XIAO) — AI & Firmware Engineer。LLM / CV / Edge AI 實戰經驗，跨域整合 AI × 生醫 × 硬體開發。新竹，遠端可配合。',
+        en: 'ZHE-AN XIAO — AI & Firmware Engineer. Hands-on experience across LLM, computer vision, Edge AI, and embedded firmware. Based in Hsinchu, Taiwan. Open to remote.',
+    };
+
     function applyLang(l) {
         lang = l;
         localStorage.setItem('zxa_lang', l);
@@ -92,6 +99,10 @@
             const k = el.dataset.i18n;
             if (T[l] && T[l][k] !== undefined) el.innerHTML = T[l][k];
         });
+        const desc = document.getElementById('meta-description');
+        if (desc && META_DESC[l]) desc.setAttribute('content', META_DESC[l]);
+        const ogLocale = document.getElementById('og-locale');
+        if (ogLocale) ogLocale.setAttribute('content', l === 'zh' ? 'zh_TW' : 'en_US');
     }
 
     function applyMode(dark) {

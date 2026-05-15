@@ -4,6 +4,43 @@
 
 ---
 
+## [0.17.0] — 2026-05-15
+
+### Added — v1.0 RC3：公開分享基礎建設
+
+讓履歷站「丟到 LinkedIn / 公司 / 面試官也不會丟臉」的最後一塊拼圖：LICENSE、SEO meta、Open Graph、Twitter Card、JSON-LD 結構化資料、SVG favicon、README 中英雙語化。
+
+#### LICENSE
+- 新檔 `LICENSE` — Creative Commons Attribution-NonCommercial 4.0（CC BY-NC 4.0）
+- 含 scope clarification：covers code / tokens / layout / tooling；**不** 授權姓名、肖像、履歷內容（後者也已 v0.15.0 gitignore）
+
+#### SEO / Open Graph
+- `index.html` `<head>` 加：
+  - `<meta name="description">` + `<meta name="author">` + `<meta name="theme-color">`（light/dark adaptive）
+  - `<link rel="canonical">`
+  - 完整 OG protocol：`og:type=profile` / `og:title` / `og:description` / `og:url` / `og:locale` + `og:locale:alternate` / `profile:first_name` / `profile:last_name`
+  - Twitter Card `summary` 版
+- `assets/scripts.js` `applyLang()` 加 `META_DESC` 雙語並動態切換 `<meta name="description">` 與 `og:locale`（zh_TW ↔ en_US）
+
+#### JSON-LD（schema.org/Person）
+- `index.html` 加 `<script type="application/ld+json">` 結構化資料：
+  - `Person` + `jobTitle` / `address` / `sameAs` (GitHub)
+  - `alumniOf`（中山 + 陽明交大）/ `hasCredential`（AI-900）
+  - `knowsAbout`（15 個技術 tag）/ `knowsLanguage`（中英韓日）
+- Google / Bing 等可解析；履歷站被搜尋時可能出現 rich snippet
+
+#### Favicon
+- 新檔 `assets/favicon.svg` — 圓圈內「蕭」字風格
+- `prefers-color-scheme` 自適應（light: 黑底白字 / dark: 白底黑字）
+- 現代瀏覽器 100% 支援；無需多尺寸 PNG/ICO
+
+#### README 中英雙語化
+- 頂部加 LICENSE badge + Live site badge
+- 「English summary」段：給國際面試官 / 公司能快速判斷
+- 結構樹補 `assets/favicon.svg` + `LICENSE`
+
+---
+
 ## [0.16.0] — 2026-05-15
 
 ### Changed — v1.0 RC2：ARCHITECTURE.md 全面對齊到 v0.15.0 實況
