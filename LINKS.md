@@ -59,14 +59,6 @@
 
 ---
 
-## Footer
-
-| 元素 | 連結 |
-|------|------|
-| 訪客計數器 | `https://visitor-badge.laobi.icu/badge?page_id=a0935951152-droid.0520_Claude_code_Lab` |
-
----
-
 ## i18n Keys 對照（重要 keys）
 
 文字編輯時須意識：所有 `data-i18n` 元素都有對應的中英文字串在 `assets/scripts.js` 的 `T.zh` / `T.en` 物件內。

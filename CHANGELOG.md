@@ -4,6 +4,24 @@
 
 ---
 
+## [0.17.1] — 2026-05-15
+
+### Performance — v1.0 RC3.1：Lighthouse Performance 修補
+
+跑完 Lighthouse 後針對 Performance 三個扣分項一次處理掉。其他三維度（A11y / Best Practices / SEO）都已過 90，本輪不動。
+
+#### Render-blocking 字體載入（節省 ~1,510ms）
+- `index.html` 字體 link 前加 `<link rel="preconnect" href="https://fonts.googleapis.com">` + `<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>`
+- 效果：fonts.gstatic.com 的 DNS/TLS 跟 fonts.googleapis.com CSS 平行跑，不必等 CSS 載完才開始字體握手。預期回收 1,000–1,300ms
+
+#### 移除 visitor-badge.laobi.icu
+- 移除 `index.html` `<div class="visitor-badge">`（footer 內）
+- 移除 `assets/styles.css` 3 行 `.visitor-badge` 樣式
+- 移除 `LINKS.md` 「訪客計數器」對照表
+- 理由：第三方 PNG 每次重抓（no-cache 12 KiB / 150ms 額外延遲）；計數本來就因 caching/bot 不準；視覺上偏「2010 年部落格」感，不符合 morcept 簡約定位。實際流量需求未來可接 Plausible / GA / Cloudflare Web Analytics
+
+---
+
 ## [0.17.0] — 2026-05-15
 
 ### Added — v1.0 RC3：公開分享基礎建設

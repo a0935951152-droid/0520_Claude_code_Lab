@@ -162,6 +162,7 @@ Code is licensed under [CC BY-NC 4.0](LICENSE) — free to study and adapt for n
 | v0.15.0 | 2026-05-15 | **v1.0 RC1：程式碼健康** — Studio 6 個 bug / 死碼 / 跨檔脆弱 / inspect 性能修正；contact endpoint+token 抽到 `assets/config.js`；M9 demo 截圖標 dropped；後端方向（v0.15–v0.17 舊規劃 / B1 / B2）reset 回 v0.14.3 後重啟編號 |
 | v0.16.0 | 2026-05-15 | **v1.0 RC2：文件對齊** — `ARCHITECTURE.md` 從 v0.9 全面重寫到 v0.15.0 實況：§1 補 config.js + Studio 6 模組、§3 token 位置改 styles.css、§5 補 JS 模組職責、§7 部署文字、§8 Studio 從「規劃中」改「現有架構」、§9 版本表補 v0.10–v0.15、§10 維護規則重整 |
 | v0.17.0 | 2026-05-15 | **v1.0 RC3：公開分享基建** — LICENSE (CC BY-NC 4.0) / SEO meta + canonical + theme-color / Open Graph + Twitter Card / JSON-LD schema.org/Person / SVG favicon（light-dark 自適應）/ README 中英雙語化 + badges；`applyLang()` 動態切換 meta description + og:locale |
+| v0.17.1 | 2026-05-15 | **v1.0 RC3.1：Lighthouse Performance** — 字體 `<link rel="preconnect">` (~1,510ms render-blocking 拿回 1,000–1,300ms)；移除 visitor-badge.laobi.icu 第三方圖（cache 12 KiB + 150ms 延遲 + 視覺偏舊），順手清掉 `.visitor-badge` CSS + LINKS 對照 |
 
 ---
 
