@@ -1,4 +1,5 @@
-# 部署 / 開發流程文件（依 CLAUDE.md §6 守則：不進 public repo）
+# 部署 / 開發流程文件 — 個人化操作筆記不入 public repo
+# (詳見 ~/.claude/projects/.../memory/feedback-no-deploy-docs-in-repo.md)
 CONTACT_SETUP.md
 *.setup.md
 *.deploy.md

@@ -97,11 +97,16 @@ async function exportHTML() {
         try {
             const res = await fetch('../' + script.getAttribute('src'));
             let js = await res.text();
-            // For each textPatch, inject overrides into T.zh
+            // Inject textPatches at the // __STUDIO_INJECT__ marker in scripts.js.
+            // scripts.js owns the marker so this stays stable across formatting changes.
             const patches = state.textPatches || {};
             if (Object.keys(patches).length) {
                 const inject = Object.entries(patches).map(([k, v]) => `T.zh['${k}'] = T.en['${k}'] = ${JSON.stringify(v)};`).join(' ');
-                js = js.replace('let lang = ', `${inject}\n    let lang = `);
+                const MARKER = '// __STUDIO_INJECT__';
+                if (js.indexOf(MARKER) === -1) {
+                    throw new Error('scripts.js missing // __STUDIO_INJECT__ marker — export aborted');
+                }
+                js = js.replace(MARKER, `${MARKER}\n    ${inject}`);
             }
             const inline = doc.createElement('script');
             inline.textContent = js;

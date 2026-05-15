@@ -4,6 +4,34 @@
 
 ---
 
+## [0.15.0] — 2026-05-15
+
+### Changed — v1.0 RC1：程式碼健康 + 後端方向徹底回退
+
+正式版 v1.0.0 第一階段（共四階段：v0.15 程式碼 / v0.16 文件 / v0.17 公開分享基建 / v0.17.1 QA）。先把 v0.14.3 後曾走過、後來放棄的後端方向（v0.15–v0.17 舊規劃 / Supabase B1 / B2 Auth UI）完全收掉，再修上次 review 找到的小 bug。
+
+#### Fixes — Studio
+- `tools/studio.js` 刪 `const updateUndoBtn = updateHistoryBtns` 死碼別名，唯一呼叫處改回 `updateHistoryBtns()`
+- `tools/studio.js` `let dragSrc = null` → `const studioDrag = { src: null }`；命名空間化跨檔共享，避免日後 IIFE / module 化時靜默壞掉
+- `tools/studio-modes.js` 全部 `dragSrc` ref 對齊新命名空間 + 檔頭 Depends-on 註解更新
+- `tools/studio-export.js` 把脆弱的 `js.replace('let lang = ', ...)` 改成 anchor marker (`// __STUDIO_INJECT__`) 注入；marker 缺失時 throw（fail loud，不再靜默漏 patch）
+- `tools/studio-inspector.js` 移除 inspect mode 樣式裡的 `* { cursor: crosshair !important }`（觸發全元素 reflow），改 body 層 cursor + cascade，UX 不變但開啟瞬間順很多
+- `tools/studio-modes.js` 文字編輯 `e.target.innerHTML` 加 `TODO(security)` 註記：目前 textPatches 只走本機 / `/studio-merge` 不需 sanitize，未來若走不受信任通道需加 DOMPurify
+
+#### Changed — Frontend config
+- 新檔 `assets/config.js`：contact endpoint + shared token 抽出，`scripts.js` 從 `window.__SITE_CONFIG__` 讀（前端藏不住、純集中管理；理由註解寫在 config.js 開頭）
+- `index.html` 加 `<script src="assets/config.js">` 在 scripts.js 之前
+- `assets/scripts.js` 加 `// __STUDIO_INJECT__` marker，搭配上面 studio-export 改動
+
+#### Docs
+- `TODO.md` 把 Studio M9「Demo gif / 截圖」標 dropped（Studio 是個人工具，不對外推廣，不需 demo 素材）
+- `.gitignore` 移除已不存在的 CLAUDE.md §6 引用，改指向 Claude memory feedback 檔
+
+#### Dropped（無 changelog 紀錄，已從 history 移除）
+- v0.15.0–v0.17.0 後端方向（Cloud Studio Backend 規劃 / B1 Supabase schema / B2 Auth UI / `app/` 雲端入口 / GitHub Actions deploy workflow）— 2026-05-15 reset 到 v0.14.3 + force-push origin/main
+
+---
+
 ## [0.14.3] — 2026-05-14
 
 ### Changed — 新守則：部署 / 開發流程資訊不進 public repo

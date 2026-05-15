@@ -79,6 +79,7 @@
         }
     };
 
+    // __STUDIO_INJECT__  (do not remove; tools/studio-export.js injects textPatches here)
     let lang = localStorage.getItem('zxa_lang') || 'zh';
     let darkMode = localStorage.getItem('zxa_mode') === 'dark';
 
@@ -100,10 +101,13 @@
         document.getElementById('mode-btn').textContent = dark ? '◑ Light' : '◐ Dark';
     }
 
-    // ── Contact Endpoint (Google Apps Script Web App，含 spam/DDoS 防禦) ──
-    // 詳見 CONTACT_SETUP.md。後端必須是硬化版（v0.14.2）才能驗證以下欄位。
-    const CONTACT_ENDPOINT = 'https://script.google.com/macros/s/AKfycby1kve6W-Mz-PrTggPRNBla4iHpMFTMu4E89ew3IKtGGYwNub8QwGq9d3gWOQerR62o/exec';
-    const CONTACT_TOKEN = 'rms_0520_2026_x7k2';   // 與 Apps Script SHARED_TOKEN 同步
+    // ── Contact endpoint config ──
+    // Values live in assets/config.js (loaded before this file). Backend must be
+    // the hardened Apps Script version (v0.14.2) for the spam/DDoS chain to fire.
+    // 詳見本機 CONTACT_SETUP.md。
+    const _cfg = (window.__SITE_CONFIG__ && window.__SITE_CONFIG__.contact) || {};
+    const CONTACT_ENDPOINT = _cfg.endpoint || '';
+    const CONTACT_TOKEN = _cfg.sharedToken || '';
     let formOpenedAt = 0;
 
     window.openContact = function() {

@@ -188,7 +188,10 @@ function saveState() {
 
 const state = loadState();
 const iframe = document.getElementById('preview');
-let dragSrc = null;
+// Shared with studio-modes.js. Wrapped in an object so the cross-file reference
+// is explicit — bare `let dragSrc` worked but was fragile if anyone wraps the
+// file in an IIFE or moves it to modules later.
+const studioDrag = { src: null };
 
 // ============================================================
 // HISTORY (Undo)
@@ -262,7 +265,6 @@ function updateHistoryBtns() {
     document.getElementById('undo-btn').disabled = state.history.length === 0;
     document.getElementById('redo-btn').disabled = state.redoStack.length === 0;
 }
-const updateUndoBtn = updateHistoryBtns;
 
 // ============================================================
 // TOKEN ROW RENDERING
@@ -305,7 +307,7 @@ function renderControls() {
     renderPresets();
     updateActiveSection();
     updateChangeCount();
-    updateUndoBtn();
+    updateHistoryBtns();
     updateToggleStates();
 }
 

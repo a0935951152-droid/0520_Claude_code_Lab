@@ -1,7 +1,7 @@
 /* ============================================================
    Design Studio · iframe edit modes (Text Edit / Move)
    v0.14.0 — extracted from studio.js for 1000-line rule
-   Depends on: studio.js (state, iframe, dragSrc, pushHistory, saveState,
+   Depends on: studio.js (state, iframe, studioDrag, pushHistory, saveState,
                           updateChangeCount, updateToggleStates, toast,
                           getPanelTitle, CONTAINERS)
    ============================================================ */
@@ -51,6 +51,11 @@ function handleTextEditBlur(e) {
     if (!e.target.matches?.('.studio-editable')) return;
     const key = e.target.dataset.i18n;
     if (!key) return;
+    // TODO(security): innerHTML is captured verbatim and stored in textPatches.
+    // Current consumers (Studio export → /studio-merge skill) only run locally
+    // for the repo owner, so an HTML-shaped patch is not a privilege risk today.
+    // If textPatches ever flow through an untrusted channel, sanitize here
+    // (e.g. DOMPurify) or use textContent and re-escape on apply.
     const html = e.target.innerHTML.trim();
     const defaultHtml = e.target.dataset.studioDefault;
     if (defaultHtml === undefined) {
@@ -178,7 +183,7 @@ function attachIframeListeners() {
             src.classList.add('dragging');
         }
         if (!src) return;
-        dragSrc = src;
+        studioDrag.src = src;
         try {
             e.dataTransfer.effectAllowed = 'move';
             e.dataTransfer.setData('text/plain', '');
@@ -186,24 +191,25 @@ function attachIframeListeners() {
     });
 
     doc.addEventListener('dragend', () => {
-        if (dragSrc) dragSrc.classList.remove('dragging', 'studio-panel-dragging');
+        if (studioDrag.src) studioDrag.src.classList.remove('dragging', 'studio-panel-dragging');
         doc.querySelectorAll('.drag-over-top, .drag-over-bottom').forEach(el => {
             el.classList.remove('drag-over-top', 'drag-over-bottom', 'studio-panel-target');
         });
-        dragSrc = null;
+        studioDrag.src = null;
     });
 
     doc.addEventListener('dragover', (e) => {
-        if (!dragSrc) return;
+        const src = studioDrag.src;
+        if (!src) return;
         let target;
-        if (dragSrc.classList.contains('panel')) {
+        if (src.classList.contains('panel')) {
             target = e.target.closest?.('.panel');
-            if (!target || target === dragSrc) return;
+            if (!target || target === src) return;
             if (!target.closest('.main-grid')) return;
             target.classList.add('studio-panel-target');
         } else {
             target = e.target.closest?.('.studio-movable');
-            if (!target || target === dragSrc || target.parentNode !== dragSrc.parentNode) return;
+            if (!target || target === src || target.parentNode !== src.parentNode) return;
         }
         e.preventDefault();
         doc.querySelectorAll('.drag-over-top, .drag-over-bottom').forEach(el => {
@@ -216,15 +222,16 @@ function attachIframeListeners() {
     });
 
     doc.addEventListener('drop', (e) => {
-        if (!dragSrc) return;
+        const src = studioDrag.src;
+        if (!src) return;
         let target;
-        const isPanel = dragSrc.classList.contains('panel');
+        const isPanel = src.classList.contains('panel');
         if (isPanel) {
             target = e.target.closest?.('.panel');
-            if (!target || target === dragSrc || !target.closest('.main-grid')) return;
+            if (!target || target === src || !target.closest('.main-grid')) return;
         } else {
             target = e.target.closest?.('.studio-movable');
-            if (!target || target === dragSrc || target.parentNode !== dragSrc.parentNode) return;
+            if (!target || target === src || target.parentNode !== src.parentNode) return;
         }
         e.preventDefault();
         const parent = target.parentNode;
@@ -233,11 +240,11 @@ function attachIframeListeners() {
 
         if (isPanel) {
             pushHistory('move:panel');
-            parent.insertBefore(dragSrc, before ? target : target.nextSibling);
+            parent.insertBefore(src, before ? target : target.nextSibling);
             captureLayoutSnapshot();
         } else {
             pushHistory('move:' + identifyContainer(parent));
-            parent.insertBefore(dragSrc, before ? target : target.nextSibling);
+            parent.insertBefore(src, before ? target : target.nextSibling);
             captureContainerOrder(parent);
         }
 

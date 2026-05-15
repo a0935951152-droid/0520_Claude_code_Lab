@@ -91,10 +91,10 @@
     - [x] **M8** — `/studio-merge` Claude Code Skill（v0.13.0）
       - 位置：`~/.claude/skills/studio-merge.md`（user-scope）
       - 流程：read patch → pull → 套用 tokens/text/move/panel → diff 確認 → commit + push → 更新 CHANGELOG
-    - [~] **M9** — 文件 + Demo + 線上發佈
+    - [x] **M9** — 文件 + 線上發佈
       - [x] README 加「使用流程」段落、版本表完整（v0.13.0）
       - [x] ARCHITECTURE 里程碑表更新（v0.13.0）
-      - [ ] Demo gif / 截圖（保留）
+      - [-] ~~Demo gif / 截圖~~ — dropped 2026-05-15（v0.15.0，Studio 是個人工具，不對外推廣）
   - 邊界（強制）：
     - 禁止自動寫入 `index.html`（使用者必須自己 export → 手動覆蓋 → commit）
     - 禁止觸碰 `.git/`、禁止執行 git 指令

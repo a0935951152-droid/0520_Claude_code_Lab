@@ -54,10 +54,13 @@ function setInspectMode(on) {
     if (on && !style) {
         style = doc.createElement('style');
         style.id = 'studio-inspect-style';
+        // body-level cursor inherits to descendants instead of the previous `*`
+        // selector, which forced a style recalculation across every element on
+        // toggle. cursor cascades by default, so this matches the old UX.
         style.textContent = `
-            .studio-hover-inspect { outline: 2px dashed #f59e0b !important; outline-offset: 2px; cursor: crosshair !important; }
+            body { cursor: crosshair !important; }
+            .studio-hover-inspect { outline: 2px dashed #f59e0b !important; outline-offset: 2px; }
             .studio-selected-inspect { outline: 2px solid #2563eb !important; outline-offset: 2px; box-shadow: 0 0 0 4px rgba(37,99,235,0.15) !important; }
-            * { cursor: crosshair !important; }
         `;
         doc.head.appendChild(style);
     } else if (!on && style) {

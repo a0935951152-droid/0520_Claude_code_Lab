@@ -11,7 +11,8 @@
 ├── index.html              # 履歷網頁 shell（v0.12 起拆檔）
 ├── assets/
 │   ├── styles.css          # 履歷 CSS
-│   └── scripts.js          # 履歷 JS（i18n / mode / contact form）
+│   ├── scripts.js          # 履歷 JS（i18n / mode / contact form）
+│   └── config.js           # contact endpoint / shared token（v0.15.0 起抽出）
 ├── README.md               # 專案說明 + 完整版本歷程
 ├── CHANGELOG.md            # Keep a Changelog 格式版本紀錄
 ├── TODO.md                 # 待辦 / 規劃中功能
@@ -134,6 +135,7 @@
 | v0.14.1 | 2026-05-14 | **Contact 表單接 Google Drive**：`submitContact` 改 POST 到 Apps Script Web App（寫 Drive Sheet），失敗自動 fallback `mailto:`；新增 `CONTACT_SETUP.md` 完整設定指南 |
 | v0.14.2 | 2026-05-14 | **Contact 多層 spam/DDoS 防禦**：endpoint 填上 URL；前端 honeypot + timing + token；後端 origin/validation/cooldown/rate limit；Apps Script 須重新部署 New version |
 | v0.14.3 | 2026-05-14 | **新守則：部署/開發流程資訊不 push** — CLAUDE.md §6 + `.gitignore`；`CONTACT_SETUP.md` 從 repo 移除（保留本機），個人化資訊（Sheet ID / endpoint）存進 Claude memory |
+| v0.15.0 | 2026-05-15 | **v1.0 RC1：程式碼健康** — Studio 6 個 bug / 死碼 / 跨檔脆弱 / inspect 性能修正；contact endpoint+token 抽到 `assets/config.js`；M9 demo 截圖標 dropped；後端方向（v0.15–v0.17 舊規劃 / B1 / B2）reset 回 v0.14.3 後重啟編號 |
 
 ---
 
