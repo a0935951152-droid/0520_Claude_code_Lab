@@ -4,6 +4,28 @@
 
 ---
 
+## [0.16.0] — 2026-05-15
+
+### Changed — v1.0 RC2：ARCHITECTURE.md 全面對齊到 v0.15.0 實況
+
+`ARCHITECTURE.md` 從 v0.9（2026-05-13 寫成）一口氣同步到 v0.15.0（差 6 個版本）。先前文件多處與實際代碼脫節，本輪是 v1.0 文件穩定的基準線。
+
+#### 主要落差修正
+- **Header**：對應版本 v0.9 → v0.15.0；日期 2026-05-13 → 2026-05-15
+- **§1 檔案結構**：補 `assets/config.js`（v0.15.0 新增）+ Studio 6 個 JS 模組現況；新增「本機保留（gitignored）」與「外部資源（user-scope）」區塊，清楚標示 `CONTACT_SETUP.md` / `RESUME.md` / `~/.claude/...` 內容
+- **§3 設計 Token**：定義位置從 `index.html` 改為 `assets/styles.css`（v0.12 後一直如此，文件未同步）；補 `--accent / --accent-hover / --radius-card`；加「Studio 可調 tokens」段
+- **§4 排版**：固定元素由 3 顆 pill 改為 4 顆（v0.10.1 加入 🎨 Studio）
+- **§5 JS 模組**：分「履歷頁」與「Studio」兩段；補 `// __STUDIO_INJECT__` marker（v0.15.0）；Studio 6 檔的職責與行數逐一列出
+- **§7 部署**：移除「v0.9 現況」字眼，標明 v0.15.0 為純 GH Pages auto-deploy（v0.17.0 試過 Actions 已 reset 回退）；加「單一入口」設計原則段
+- **§8 Design Studio**：整段重構從「未來規劃」改為「現有架構」：核心工作流 / 9 個功能模組（v0.14.0 完成版）/ LocalStorage 結構 / Patch JSON Schema v3 / `/studio-merge` Skill / 完整里程碑（M1–M9）+ 延後項
+- **§9 版本對應**：補 v0.10–v0.15 共 10 個版本條目；加註「已從 history 移除」段（v0.15–v0.17 舊規劃）
+- **§10 維護規則**：從 CLAUDE.md §10 對齊回來（CLAUDE.md 7697009 移除舊 §6 後文件分散，重整為本檔權威源）
+
+#### 不變的部分
+- §2 技術棧、§4 排版主體、§6 可點擊元素摘要、§10.1–§10.4 / §10.7 守則條文
+
+---
+
 ## [0.15.0] — 2026-05-15
 
 ### Changed — v1.0 RC1：程式碼健康 + 後端方向徹底回退

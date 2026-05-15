@@ -136,6 +136,7 @@
 | v0.14.2 | 2026-05-14 | **Contact 多層 spam/DDoS 防禦**：endpoint 填上 URL；前端 honeypot + timing + token；後端 origin/validation/cooldown/rate limit；Apps Script 須重新部署 New version |
 | v0.14.3 | 2026-05-14 | **新守則：部署/開發流程資訊不 push** — CLAUDE.md §6 + `.gitignore`；`CONTACT_SETUP.md` 從 repo 移除（保留本機），個人化資訊（Sheet ID / endpoint）存進 Claude memory |
 | v0.15.0 | 2026-05-15 | **v1.0 RC1：程式碼健康** — Studio 6 個 bug / 死碼 / 跨檔脆弱 / inspect 性能修正；contact endpoint+token 抽到 `assets/config.js`；M9 demo 截圖標 dropped；後端方向（v0.15–v0.17 舊規劃 / B1 / B2）reset 回 v0.14.3 後重啟編號 |
+| v0.16.0 | 2026-05-15 | **v1.0 RC2：文件對齊** — `ARCHITECTURE.md` 從 v0.9 全面重寫到 v0.15.0 實況：§1 補 config.js + Studio 6 模組、§3 token 位置改 styles.css、§5 補 JS 模組職責、§7 部署文字、§8 Studio 從「規劃中」改「現有架構」、§9 版本表補 v0.10–v0.15、§10 維護規則重整 |
 
 ---
 
