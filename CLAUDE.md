@@ -61,7 +61,7 @@
 
 | 想知道什麼 | 讀哪個檔 |
 |------------|----------|
-| 蕭哲安履歷文字 / 經歷 / 技能 / 證照 | `RESUME.md` |
+| 蕭哲安履歷文字 / 經歷 / 技能 / 證照 | `RESUME.md`（本機保留，已 gitignore） |
 | `index.html` 所有可點擊元素 / 外部連結 | `LINKS.md` |
 | 完整版本歷程（v0.1 → 現在） | `README.md`（總表）或 `CHANGELOG.md`（詳細） |
 | 架構 / CSS tokens / JS 模組 / Studio 規格 / Patch JSON schema | `ARCHITECTURE.md` |

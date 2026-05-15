@@ -17,7 +17,7 @@
 ├── TODO.md                 # 待辦 / 規劃中功能
 ├── CLAUDE.md               # Claude Code 專案守則（精簡版，v0.12.1 起）
 ├── ARCHITECTURE.md         # 架構紀錄（檔案結構 / token / JS 模組 / Studio 規格）
-├── RESUME.md               # 蕭哲安履歷資料摘要（v0.12.1 起，從 CLAUDE.md 抽出）
+├── RESUME.md               # （本機保留，已 gitignore）蕭哲安履歷資料摘要
 ├── LINKS.md                # index.html 可點擊元素 / 外部連結對照（v0.12.1 起，從 CLAUDE.md 抽出）
 └── tools/
     ├── studio.html         # Design Studio shell
@@ -88,7 +88,7 @@
 | 檔案 | 內容 | 何時讀 |
 |------|------|--------|
 | `CLAUDE.md` | 設計守則 + 環境參數 + 文件導覽 | 每次對話開頭自動載入 |
-| `RESUME.md` | 蕭哲安履歷文字摘要（基本 / 學歷 / 經歷 / 技能 / 證照 / 專案） | 需要編輯履歷內容時 |
+| `RESUME.md` | 蕭哲安履歷文字摘要（基本 / 學歷 / 經歷 / 技能 / 證照 / 專案）— **本機保留，已 gitignore** | 需要編輯履歷內容時 |
 | `LINKS.md` | `index.html` 可點擊元素 / 連結對照表 | 連結變動或新增互動元素時 |
 | `ARCHITECTURE.md` | 設計 token / JS 模組 / 部署流程 / Studio 規格 / Patch schema | 做結構性改動時 |
 | `README.md` | 專案總覽 + 完整版本表 | 想看歷史脈絡時 |

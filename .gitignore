@@ -3,6 +3,9 @@ CONTACT_SETUP.md
 *.setup.md
 *.deploy.md
 
+# 個人履歷原文（本機保留，不入 public repo）
+RESUME.md
+
 # Studio 本地匯出 / patch
 studio-patch-*.json
 tokens-*.css
